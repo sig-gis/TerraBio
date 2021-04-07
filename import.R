@@ -8,7 +8,8 @@
 
 ## ------- Load Packages -------------------------------------
 
-library(raster, rgdal, maptools, dplyr)
+library(raster, rgdal, maptools)
+library("dplyr") # dplyr wants to be in quotes, no idea why.
 
 ## ------- Projections ---------------------------------------
 
