@@ -39,13 +39,19 @@ summary(pca.all.farm)
 ## Let's plot the PCA. 
 
 plot(pca.all.cocoa.and.farm$x[,1:2], xlab="PC1 (41%)", ylab = "PC2 (13.4%)")
-plot_prcomp(all.cocoa.and.farm[-1])
+plot_prcomp(all.cocoa.and.farm[-1], prcomp_args = list(scale. = T, center = T))
 
-plot(pca.all.farm$x[,1], pca.all.farm$x[,2], xlab="PC1 (52%)", ylab = "PC2 (15%)")
-plot(pca.all.farm$x[,2], pca.all.farm$x[,3], xlab="PC1 (15%)", ylab = "PC2 (11%)")
 
-plot_prcomp(all.farm[-1])
+
+plot_prcomp(all.farm[-1], prcomp_args = list(scale. = T, center = T))
 
 plot_prcomp(all.cocoa[-1])
 
+kmeans.all.farm <- kmeans(x = pca.all.farm$x[,1:3], centers = 3)
 
+
+plot(pca.all.farm$x[,1], pca.all.farm$x[,2], xlab="PC1 (52%)", ylab = "PC2 (15%)", col = kmeans.all.farm$cluster) # one extreme outlier for PC2, almost certainly the very large field.
+plot(pca.all.farm$x[,2], pca.all.farm$x[,3], xlab="PC1 (15%)", ylab = "PC2 (11%)", col = kmeans.all.farm$cluster)
+
+write.csv(x = pca.all.farm$rotation, file =  "pca-all-farm-rotation.csv")
+write.csv(x = pca.all.farm$x, file =  "pca-all-farm-x.csv")
