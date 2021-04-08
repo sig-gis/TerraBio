@@ -44,6 +44,13 @@ farm.landuse.rast <- raster("../Xingue basin/mu_sfx_150properties/mu_sfx_landuse
 farm.boundary.shp <- shapefile('../Xingue basin/mu_sfx_150properties/mu_sfx_boundary_150properties_5880.shp', verbose = T)
 
 
+farm.boundary.shp$gid <- as.integer(farm.boundary.shp$gid)
+
+farm.boundary.shp <- farm.boundary.shp[order(farm.boundary.shp$gid) , ] 
+
+# There is no number 42, which is unfortunate. Create a new ID field so that mapping is easier later.
+
+farm.boundary.shp$farm_id <- 1:150
 
 
 # mapbiomas_2019 <- raster("") # add proper mapbiomas data for most recent year of 2019

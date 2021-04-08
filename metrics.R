@@ -8,6 +8,7 @@
 
 library(raster)
 library(landscapemetrics)
+library(corrplot)
 library("dplyr")
 library("maptools")
 
@@ -17,8 +18,7 @@ source("import.R")
 
 ## Note, for landscapemetrics package, this must be as a raster with units in meters.
 
-#show_patches(farm.landuse.rast)
-
+# show_patches(farm.landuse.rast)
 
 
 ## ------- Calculate FORM Metrics ----------------------------
@@ -42,7 +42,7 @@ hist(FRACM.class$value[FRACM.class$class==5 & FRACM.class$metric=="frac_mn"])
 
 FRACM.landscape <- sample_lsm(farm.landuse.rast, y = farm.boundary.shp, level = "landscape", metric = "frac")
 
-hist(FRACM.landscape$value[FRACM.landscape$metric=="frac_cv"])
+hist(FRACM.landscape$value[FRACM.landscape$metric=="frac_mn"])
 
 
 
@@ -55,7 +55,7 @@ hist(AREAM.class$value[AREAM.class$metric=="area_mn" & AREAM.class$class==5])
 
 AREAM.landscape <- sample_lsm(farm.landuse.rast, y = farm.boundary.shp, level = "landscape", metric = "area")
 
-hist(AREAM.landscape$value[AREAM.landscape$metric=="area_cv"])
+hist(AREAM.landscape$value[AREAM.landscape$metric=="area_mn"])
 
 
 
@@ -76,20 +76,14 @@ hist(TOTALAREA$value, breaks = 30)
 
 AI.class <- sample_lsm(farm.landuse.rast, y = farm.boundary.shp, level = "class", metric = "ai")
 
-hist(AI.class$value[AI$class == 5])
+hist(AI.class$value[AI.class$class == 5])
+hist(AI.class$value[AI.class$class == 7])
 
 AI.landscape <- sample_lsm(farm.landuse.rast, y = farm.boundary.shp, level = "landscape", metric = "ai")
 
 hist(AI.landscape$value)
 
 
-## Cohesion
-
-COHESION.class <- sample_lsm(farm.landuse.rast, y = farm.boundary.shp, level = "class", metric = "cohesion")
-
-hist(COHESION.class$value[COHESION.class$class==5])
-
-COHESION.landscape <- sample_lsm(farm.landuse.rast, y = farm.boundary.shp, level = "landscape", metric = "cohesion")
 
 
 
@@ -223,18 +217,15 @@ all.farm <- tibble(
     plot_id = FRACM.landscape$plot_id[FRACM.landscape$metric=="frac_mn"],
     
     FRACM.mean.farm = FRACM.landscape$value[FRACM.landscape$metric=="frac_mn"],
-
-    AREAM.mean.farm = AREAM.landscape$value[AREAM.landscape$metric=="area_mn"],
-
     TOTALAREA.farm = TOTALAREA$value,
-    AI.farm = AI.landscape$value,
-    COHESION.farm = COHESION.landscape$value,
+    ## AREAM.mean.farm = AREAM.landscape$value[AREAM.landscape$metric=="area_mn"],
+    ## AI.farm = AI.landscape$value,
     NUMPAT.farm = NUMPAT.landscape$value,
     PD.farm = PD.landscape$value,
     EDGE.farm = EDGE.landscape$value,
     SHDI.farm = SHDI$value,
-    ENG.farm = ENT$value,
-    CONDENT.farm = CONDENT$value,
+    ## ENG.farm = ENT$value,
+    ## CONDENT.farm = CONDENT$value,
     CONT.mean.farm = CONT.landscape$value[CONT.landscape$metric == "contig_mn"],
 
 )
