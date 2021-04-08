@@ -1,4 +1,4 @@
-## Calculate metrics data for TerraBio for the form analysis. 
+## Calculate metrics data for TerraBio for the farm sampling design. 
 
 ##
 ## Import --> [[Metrics]] --> Sampling
@@ -6,7 +6,10 @@
 
 ## ------- Load Packages -------------------------------------
 
-library(raster, landscapemetrics, landscapetools, dplyr, maptools)
+library(raster)
+library(landscapemetrics)
+library("dplyr")
+library("maptools")
 
 ## ------- Load Data -----------------------------------------
 
@@ -39,14 +42,8 @@ hist(FRACM.class$value[FRACM.class$class==5 & FRACM.class$metric=="frac_mn"])
 
 FRACM.landscape <- sample_lsm(farm.landuse.rast, y = farm.boundary.shp, level = "landscape", metric = "frac")
 
-hist(FRACM.landscape$value[FRACM.landscape$metric=="frac_mn"])
+hist(FRACM.landscape$value[FRACM.landscape$metric=="frac_cv"])
 
-
-## Perimeter-area ratio
-
-PAFRAC.class <- sample_lsm(farm.landuse.rast, y = farm.boundary.shp, level = "class", metric = "pafrac")
-
-hist(PAFRAC.class)
 
 
 ## area metrics of cocoa plots/farms
@@ -79,11 +76,11 @@ hist(TOTALAREA$value, breaks = 30)
 
 AI.class <- sample_lsm(farm.landuse.rast, y = farm.boundary.shp, level = "class", metric = "ai")
 
-hist(AI$value[AI$class == 5])
+hist(AI.class$value[AI$class == 5])
 
 AI.landscape <- sample_lsm(farm.landuse.rast, y = farm.boundary.shp, level = "landscape", metric = "ai")
 
-hist(AI$value)
+hist(AI.landscape$value)
 
 
 ## Cohesion
@@ -124,9 +121,28 @@ PLAND <- sample_lsm(farm.landuse.rast, y = farm.boundary.shp, level = "class", m
 
 hist(PLAND$value[PLAND$class==5])
 
+
+
 ## Edge density
 
-ed
+EDGE.class <- sample_lsm(farm.landuse.rast, y = farm.boundary.shp, level = "class", metric = "ed")
+
+hist(EDGE.class$value[EDGE.class$class == 5])
+
+
+EDGE.landscape <- sample_lsm(farm.landuse.rast, y = farm.boundary.shp, level = "landscape", metric = "ed")
+
+hist(EDGE.landscape$value)
+
+
+
+
+# quick cor test.
+
+cor(PD.landscape$value, EDGE.landscape$value)
+plot(PD.landscape$value, EDGE.landscape$value)
+
+
 
 
 ## ------- Calculate HETEROGENEITY Metrics -------------------
@@ -137,17 +153,22 @@ SHDI <- sample_lsm(farm.landuse.rast, y = farm.boundary.shp, level = "landscape"
 
 hist(SHDI$value)
 
+
 # Shannon Entropy
 
 ENT <- sample_lsm(farm.landuse.rast, y = farm.boundary.shp, level = "landscape", metric = "ent")
 
 hist(ENT$value)
 
+
 # Conditional Entropy
 
 CONDENT <- sample_lsm(farm.landuse.rast, y = farm.boundary.shp, level = "landscape", metric = "condent")
 
 hist(CONDENT$value)
+
+
+
 
 ## ------- Calculate CONNECTIVITY Metrics --------------------
 
@@ -161,7 +182,7 @@ hist(CONT.class$value[CONT.class$metric == "contig_mn" & CONT.class$class == 5])
 
 CONT.landscape <- sample_lsm(farm.landuse.rast, y = farm.boundary.shp, level = "landscape", metric = "contig")
 
-hist(CONT.landscape$value[CONT.landscape$metric == "contig_mn"])
+hist(CONT.landscape$value[CONT.landscape$metric == "contig_cv"])
 
 
 
@@ -170,6 +191,53 @@ hist(CONT.landscape$value[CONT.landscape$metric == "contig_mn"])
 
 ## ------- Looking at correlation ---------------------------
 
-class.metrics <- sample_lsm(farm.landuse.rast, y = farm.boundary.shp, level = "class", metric = c("contig", "pland"))
+## Method suggested in landscapemetrics documentation; this doesn't allow for the y argument so it doesn't work.
 
-show_correlation(metrics, method = "pearson")
+# class.metrics <- calculate_lsm(farm.landuse.rast, y = farm.boundary.shp, level = "class")
+
+# show_correlation(metrics, method = "pearson")
+
+
+## Method using corrplot.
+
+all.cocoa<- tibble(
+    plot_id = FRACM.class$plot_id[FRACM.class$class==5 & FRACM.class$metric=="frac_mn"],
+    FRACM.mean.cocoa = FRACM.class$value[FRACM.class$class==5 & FRACM.class$metric=="frac_mn"],
+    AREAM.mean.cocoa = AREAM.class$value[AREAM.class$metric=="area_mn" & AREAM.class$class==5],
+    CLASSAREA.cocoa = CLASSAREA$value[CLASSAREA$class==5],
+    AI.cocoa = AI.class$value[AI.class$class == 5],
+    
+    PD.cocoa = PD.class$value[PD.class$class == 5],
+    PLAND.cocoa = PLAND$value[PLAND$class==5],
+    EDGE.cocoa = EDGE.class$value[EDGE.class$class == 5],
+    
+    CONT.cocoa = CONT.class$value[CONT.class$metric == "contig_mn" & CONT.class$class == 5]
+    
+)
+
+cor(all.cocoa)
+corrplot::corrplot(cor(all.cocoa[-1]), method = "shade")
+
+
+all.farm <- tibble(
+    plot_id = FRACM.landscape$plot_id[FRACM.landscape$metric=="frac_mn"],
+    
+    FRACM.mean.farm = FRACM.landscape$value[FRACM.landscape$metric=="frac_mn"],
+
+    AREAM.mean.farm = AREAM.landscape$value[AREAM.landscape$metric=="area_mn"],
+
+    TOTALAREA.farm = TOTALAREA$value,
+    AI.farm = AI.landscape$value,
+    COHESION.farm = COHESION.landscape$value,
+    NUMPAT.farm = NUMPAT.landscape$value,
+    PD.farm = PD.landscape$value,
+    EDGE.farm = EDGE.landscape$value,
+    SHDI.farm = SHDI$value,
+    ENG.farm = ENT$value,
+    CONDENT.farm = CONDENT$value,
+    CONT.mean.farm = CONT.landscape$value[CONT.landscape$metric == "contig_mn"],
+
+)
+
+corrplot(cor(all.farm[-1]), method = "shade")
+
