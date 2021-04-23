@@ -22,115 +22,196 @@ library(DataExplorer)
 
 ## ------- Run PCA on IMAFLORA -------------------------------------------
 
-## PCA assumes linear relationships between data. 
+## PCA assumes linear relationships between data and is sensitive to scaling. 
 
-## PCA is sensitive to scaling. 
+## All metrics, including forest, tree, crop, farm boundary (landscape)
+# 
+# pca.all.farm <- prcomp(all.farm[-1], center = T, scale. = TRUE)
+# summary(pca.all.farm)
+# 
+# kmeans.all.farm <- kmeans(x = pca.all.farm$x[, 1:3], centers = 3)
+# 
+# plot_prcomp(all.farm[-1], prcomp_args = list(scale. = T, center = T))
+# 
+# plot(
+#     pca.all.farm$x[, 1],
+#     pca.all.farm$x[, 2],
+#     xlab = "PC1",
+#     ylab = "PC2",
+#     col = kmeans.all.farm$cluster
+# ) # one extreme outlier for PC2, almost certainly the very large field.
+# plot(
+#     pca.all.farm$x[, 2],
+#     pca.all.farm$x[, 3],
+#     xlab = "PC2",
+#     ylab = "PC3",
+#     col = kmeans.all.farm$cluster
+# )
 
-pca.all.farm <- prcomp(all.farm[-1], center = T, scale. = TRUE)
-summary(pca.all.farm)
+## Only forest and farm boundary (landscape)
 
-pca.farm.forest.landscape <- prcomp(all.farm[ , 2:14], center = T, scale. = T)
+pca.farm.forest.landscape <- prcomp(all.farm[, grepl(pattern = ".farm|.forest", x = colnames(all.farm))], center = T, scale. = T)
 summary(pca.farm.forest.landscape)
 
-kmeans.all.farm <- kmeans(x = pca.all.farm$x[, 1:3], centers = 3)
+plot_prcomp(all.farm[, grepl(pattern = ".farm|.forest", x = colnames(all.farm))], prcomp_args = list(scale. = T, center = T))
 
-## Let's plot the PCA. 
+## Only forest
 
-plot_prcomp(all.farm[-1], prcomp_args = list(scale. = T, center = T))
-plot_prcomp(all.farm[, 2:14], prcomp_args = list(scale. = T, center = T))
+pca.farm.forest <- prcomp(all.farm[, grepl(pattern = ".forest", x = colnames(all.farm))], center = T, scale. = T)
+summary(pca.farm.forest)
 
-plot(pca.all.farm$x[, 1:2], xlab = "PC1", ylab = "PC2")
-plot(pca.all.farm$x[, c], xlab = "PC1", ylab = "PC2")
-
-plot(
-    pca.all.farm$x[, 1],
-    pca.all.farm$x[, 2],
-    xlab = "PC1",
-    ylab = "PC2",
-    col = kmeans.all.farm$cluster
-) # one extreme outlier for PC2, almost certainly the very large field.
-plot(
-    pca.all.farm$x[, 2],
-    pca.all.farm$x[, 3],
-    xlab = "PC2",
-    ylab = "PC3",
-    col = kmeans.all.farm$cluster
-)
+plot_prcomp(all.farm[, grepl(pattern = ".forest", x = colnames(all.farm))], prcomp_args = list(scale. = T, center = T))
 
 
 ## ------- Run PCA on MapBiomas -------------------------------------------
 
-## PCA assumes linear relationships between data. 
-
-## PCA is sensitive to scaling. 
+## Forest and farm boundary (landscape)
 
 pca.all.mb <- prcomp(all.mb[-1], center = T, scale. = TRUE)
 summary(pca.all.mb)
 
 kmeans.all.mb <- kmeans(x = pca.all.mb$x[,1:3], centers = 3)
 
-## Let's plot the PCA. 
+    plot_prcomp(all.mb[-1], prcomp_args = list(scale. = T, center = T))
+    
+    plot(pca.all.mb$x[, 1:2], xlab = "PC1", ylab = "PC2")
+    plot(pca.all.mb$x[, c(2, 3)], xlab = "PC2", ylab = "PC3")
+    
+    plot(
+        pca.all.mb$x[, 1],
+        pca.all.mb$x[, 2],
+        xlab = "PC1",
+        ylab = "PC2",
+        col = kmeans.all.mb$cluster
+    ) # one extreme outlier for PC2, almost certainly the very large field.
+    plot(
+        pca.all.mb$x[, 2],
+        pca.all.mb$x[, 3],
+        xlab = "PC2",
+        ylab = "PC3",
+        col = kmeans.all.mb$cluster
+    )
 
-plot_prcomp(all.mb[-1], prcomp_args = list(scale. = T, center = T))
-
-plot(pca.all.mb$x[, 1:2], xlab = "PC1", ylab = "PC2")
-plot(pca.all.mb$x[, c(2, 3)], xlab = "PC2", ylab = "PC3")
-
-plot(
-    pca.all.mb$x[, 1],
-    pca.all.mb$x[, 2],
-    xlab = "PC1",
-    ylab = "PC2",
-    col = kmeans.all.mb$cluster
-) # one extreme outlier for PC2, almost certainly the very large field.
-plot(
-    pca.all.mb$x[, 2],
-    pca.all.mb$x[, 3],
-    xlab = "PC2",
-    ylab = "PC3",
-    col = kmeans.all.mb$cluster
-)
-
+## Forest metrics only
+    
+    pca.forest.mb <- prcomp(all.mb[,grepl(x = colnames(all.mb), pattern = ".forest")], center = T, scale. = TRUE)
+    summary(pca.forest.mb)
+    
+    kmeans.forest.mb <- kmeans(x = pca.forest.mb$x[,1:3], centers = 3)
+    
+    plot_prcomp(all.mb[, grepl(x = colnames(all.mb), pattern = ".forest")], prcomp_args = list(scale. = T, center = T))
+    
+    plot(pca.forest.mb$x[, 1:2], xlab = "PC1", ylab = "PC2")
+    plot(pca.forest.mb$x[, c(2, 3)], xlab = "PC2", ylab = "PC3")
+    
+    plot(
+        pca.forest.mb$x[, 1],
+        pca.forest.mb$x[, 2],
+        xlab = "PC1",
+        ylab = "PC2",
+        col = kmeans.all.mb$cluster
+    ) # one extreme outlier for PC2, almost certainly the very large field.
+    plot(
+        pca.forest.mb$x[, 2],
+        pca.forest.mb$x[, 3],
+        xlab = "PC2",
+        ylab = "PC3",
+        col = kmeans.all.mb$cluster
+    )
 
 ## ------- Run PCA on TerraClass -------------------------------------------
 
-## PCA assumes linear relationships between data. 
+## Forest and farm boundary (landscape)
+        
+    pca.all.tc <- prcomp(all.tc[-1], center = T, scale. = TRUE)
+    summary(pca.all.tc)
+    
+    kmeans.all.tc <- kmeans(x = pca.all.tc$x[,1:3], centers = 3)
+    
+    
+    plot_prcomp(all.tc[-1], prcomp_args = list(scale. = T, center = T))
+    
+    
+    plot(pca.all.tc$x[, 1:2], xlab = "PC1", ylab = "PC2")
+    plot(pca.all.tc$x[, c(2, 3)], xlab = "PC2", ylab = "PC3")
+    
+    
+    plot(
+        pca.all.tc$x[, 1],
+        pca.all.tc$x[, 2],
+        xlab = "PC1",
+        ylab = "PC2",
+        col = kmeans.all.tc$cluster
+    ) # one extreme outlier for PC2, almost certainly the very large field.
+    plot(
+        pca.all.tc$x[, 2],
+        pca.all.tc$x[, 3],
+        xlab = "PC2",
+        ylab = "PC3",
+        col = kmeans.all.tc$cluster
+    )
 
-## PCA is sensitive to scaling. 
+## Forest only
+    
+    pca.forest.tc <-
+        prcomp(all.tc[, grepl(pattern = ".forest", x = colnames(all.tc))], center = T, scale. = TRUE)
+    summary(pca.forest.tc)
+    
+    kmeans.forest.tc <-
+        kmeans(x = pca.forest.tc$x[, 1:4], centers = 3)
+    
+    
+    plot_prcomp(all.tc[, grepl(pattern = ".forest", x = colnames(all.tc))], prcomp_args = list(scale. = T, center = T))
+    
+    
+## -------- Run PCA on TCH ------------------------
+    
+## Forest and farm boundary (landscape)
+    
+    pca.all.tch <- prcomp(all.tch[-1], center = T, scale. = TRUE)
+    summary(pca.all.tch)
+    
+    kmeans.all.tch <- kmeans(x = pca.all.tch$x[,1:3], centers = 3)
+    
+    
+    plot_prcomp(all.tch[-1], prcomp_args = list(scale. = T, center = T))
+    
+    
+    plot(pca.all.tch$x[, 1:2], xlab = "PC1", ylab = "PC2")
+    plot(pca.all.tch$x[, c(2, 3)], xlab = "PC2", ylab = "PC3")
+    
+    
+    plot(
+        pca.all.tch$x[, 1],
+        pca.all.tch$x[, 2],
+        xlab = "PC1",
+        ylab = "PC2",
+        col = kmeans.all.tch$cluster
+    ) # one extreme outlier for PC2, almost certainly the very large field.
+    plot(
+        pca.all.tch$x[, 2],
+        pca.all.tch$x[, 3],
+        xlab = "PC2",
+        ylab = "PC3",
+        col = kmeans.all.tch$cluster
+    )
+    
+    ## Forest only
+    
+    pca.forest.tch <-
+        prcomp(all.tch[, grepl(pattern = ".forest", x = colnames(all.tch))], center = T, scale. = TRUE)
+    summary(pca.forest.tch)
+    
+    kmeans.forest.tch <-
+        kmeans(x = pca.forest.tch$x[, 1:4], centers = 3)
+    
+    
+    plot_prcomp(all.tch[, grepl(pattern = ".forest", x = colnames(all.tch))], prcomp_args = list(scale. = T, center = T))
+    
+    
+    
 
-pca.all.tc <- prcomp(all.tc[-1], center = T, scale. = TRUE)
-summary(pca.all.tc)
-
-kmeans.all.tc <- kmeans(x = pca.all.tc$x[,1:3], centers = 3)
-
-## Let's plot the PCA. 
-
-plot_prcomp(all.tc[-1], prcomp_args = list(scale. = T, center = T))
-
-
-plot(pca.all.tc$x[, 1:2], xlab = "PC1", ylab = "PC2")
-plot(pca.all.tc$x[, c(2, 3)], xlab = "PC2", ylab = "PC3")
-
-
-plot(
-    pca.all.tc$x[, 1],
-    pca.all.tc$x[, 2],
-    xlab = "PC1",
-    ylab = "PC2",
-    col = kmeans.all.tc$cluster
-) # one extreme outlier for PC2, almost certainly the very large field.
-plot(
-    pca.all.tc$x[, 2],
-    pca.all.tc$x[, 3],
-    xlab = "PC2",
-    ylab = "PC3",
-    col = kmeans.all.tc$cluster
-)
-
-
-
-
-## Export
+## ------- Export ----------------------
 
 # write.csv(x = pca.all.farm$rotation, file =  "pca-all-farm-rotation.csv")
 

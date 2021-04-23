@@ -28,13 +28,19 @@ library(landmetrics)
 # for doing focal window calculations. https://github.com/jeffreyevans/landmetrics
 
 
-## ------- Load Data -----------------------------------------
+## ------- Load Data and Vars --------------------------------
 
 source("import.R")
 
 ## Note, for landscapemetrics package, this must be as a raster with units in meters.
 
 listlsm <- list_lsm()
+
+cleanup <- FALSE             # True will remove intermediary processing steps for cleaner environment.
+write.movingwindow <- FALSE  # True will cause moving window to run & write rasters. WARNING THIS IS VERY TIME INTENSIVE
+
+
+
 
 ## ------- Calculate Farm-based Metrics for MapBiomas ----------------------------
 
@@ -246,6 +252,56 @@ hist(CONT.landscape.mb.30m$value[CONT.landscape.mb.30m$metric == "contig_cv"])
 
 
 
+## Aggregation Index (AI)
+
+AI.class.mb.30m <-
+  sample_lsm(
+    mapbiomas.2018.rast,
+    y = farm.boundary.shp,
+    level = "class",
+    metric = "ai"
+  )
+
+hist(AI.class.mb.30m$value[ AI.class.mb.30m$class == 3])
+
+
+AI.landscape.mb.30m <-
+  sample_lsm(
+    mapbiomas.2018.rast,
+    y = farm.boundary.shp,
+    level = "landscape",
+    metric = "ai"
+  )
+
+hist(AI.landscape.mb.30m$value)
+
+
+## Effective mesh size
+
+# 
+# EMS.class.mb.30m <-
+#   sample_lsm(
+#     mapbiomas.2018.rast,
+#     y = farm.boundary.shp,
+#     level = "class",
+#     metric = "mesh"
+#   )
+# 
+# hist(EMS.class.mb.30m$value[ EMS.class.mb.30m$class == 3])
+# 
+# 
+# EMS.landscape.mb.30m <-
+#   sample_lsm(
+#     mapbiomas.2018.rast,
+#     y = farm.boundary.shp,
+#     level = "landscape",
+#     metric = "mesh"
+#   )
+# 
+# hist(EMS.landscape.mb.30m$value)
+
+
+
 ## ------- Looking at farm-based correlation ---------------------------
 
 ## Method using corrplot. First, build the different class tables--not all farms have all classes, and asking landscapemetrics to include all patch types causes a vector size error 
@@ -263,7 +319,8 @@ mb.forest <- tibble(
     PD.forest = PD.class.mb.30m$value[PD.class.mb.30m$class == 3],
     PLAND.forest = PLAND.class.mb.30m$value[PLAND.class.mb.30m$class == 3],
     CONT.forest = CONT.class.mb.30m$value[CONT.class.mb.30m$metric == "contig_mn" &
-                                                CONT.class.mb.30m$class == 3]
+                                                CONT.class.mb.30m$class == 3],
+    AI.forest = AI.class.mb.30m$value[ AI.class.mb.30m$class == 3]
     
 )
 
@@ -281,7 +338,7 @@ mb.landscape <- tibble(
     EDGE.farm = EDGE.landscape.mb.30m$value,
     SHDI.farm = SHDI.landscape.mb.30m$value,
     CONT.mean.farm = CONT.landscape.mb.30m$value[CONT.landscape.mb.30m$metric == "contig_mn"],
-    
+    AI.farm = AI.landscape.mb.30m$value
 )
 
 corrplot(cor(mb.landscape[-1]), method = "shade")
@@ -295,33 +352,58 @@ all.mb[is.na(all.mb)] <- 0
 corrplot(cor(all.mb[-1]), method = "shade")
 pairs(all.mb[-1], lower.panel = panel.smooth, upper.panel = panel.cor)
 
+
+## ------- Cleanup -------------------------------
+
+if (cleanup == TRUE){
+
+remove(FRACM.class.mb.30m, FRACM.landscape.mb.30m,
+       AREAM.class.mb.30m, 
+       TAREA.class.mb.30m, TAREA.landscape.mb.30m,
+       NUMPAT.landscape.mb.30m,
+       EDGE.class.mb.30m, EDGE.landscape.mb.30m,
+       PD.class.mb.30m, PD.landscape.mb.30m,
+       PLAND.class.mb.30m,PLAND.landscape.mb.30m,
+       SHDI.landscape.mb.30m,
+       CONT.class.mb.30m, CONT.landscape.mb.30m, 
+       AI.class.mb.30m, AI.landscape.mb.30m, 
+       EMS.class.mb.30m, EMS.landscape.mb.30m,
+       mb.forest, mb.landscape)
+
+}
+
+
+
+
 ## ------- Calculate moving window metrics for MapBiomas ---------------------------
 
 ## implementation with landscape metrics
 
 ## only landscape metrics are allowed for moving windows.
 
-moving_window <- matrix(1, nrow = 25, ncol = 25)
+## Note--this is prohibitively time intensive currently. 
 
-landscape.metrics <-
-    c("lsm_l_frac_mn",
-      "lsm_l_np",
-      "lsm_l_ed",
-      "lsm_l_pd",
-      "lsm_l_shdi",
-      "lsm_l_contig")
-
-window.landscape.mb <- window_lsm(mapbiomas.2018.rast, 
-                              window = moving_window,
-                              what = "lsm_l_pd", progress = T
-                              )
+# moving_window <- matrix(1, nrow = 25, ncol = 25)
+# 
+# landscape.metrics <-
+#     c("lsm_l_frac_mn",
+#       "lsm_l_np",
+#       "lsm_l_ed",
+#       "lsm_l_pd",
+#       "lsm_l_shdi",
+#       "lsm_l_contig")
+# 
+# window.landscape.mb <- window_lsm(mapbiomas.2018.rast, 
+#                               window = moving_window,
+#                               what = "lsm_l_pd", progress = T
+#                               )
 
 
 ## Implementation with landmetrics: metrics available:
 ## https://github.com/jeffreyevans/landmetrics/blob/master/R/focal.lmetrics.R
 ## This package allows for class type calculations
 
-# Here are the functions: note that Shannon's isn't available.
+# Here are the functions: note that Shannon's and Contiguity aren't available.
 # mean.frac.dim.index - mean of fractal dimension index.
 # mean.patch.area - average area of patches.
 # total.area - the sum of the areas (m2) of all patches of the corresponding patch type.
@@ -330,8 +412,13 @@ window.landscape.mb <- window_lsm(mapbiomas.2018.rast,
 # patch.density - the numbers of patches of the corresponding patch type divided by total landscape area (m2).
 # prop.landscape - the proportion of the total landscape represented by this class
 # patch.cohesion.index - measures the physical connectedness of the corresponding patch type.
-# 
+# aggregation.index - computed simply as an area-weighted mean class aggregation index, where each class is weighted by its proportional area in the landscape.
+# effective.mesh.size - equals 1 divided by the total landscape area (m2) multiplied by the sum of patch area (m2) squared, summed across all patches in the landscape.
 
+## The if condition here means that these processing intensive calculations
+## occur ONLY when needed.
+
+if (write.movingwindow == TRUE){
 
 FRAC.forest.window.mb <-
     focal.lmetrics(
@@ -352,3 +439,79 @@ TAREA.forest.window.mb <-
   )
 
 writeRaster(TAREA.forest.window.mb, "../Xingue basin/MapBiomas/TAREA.forest.5window.mb.tif")
+
+
+NUMPAT.forest.window.mb <-
+  focal.lmetrics(
+    mapbiomas.2018.rast,
+    w = 5,
+    land.value = 3,
+    metric = "n.patches"
+  )
+
+writeRaster(NUMPAT.forest.window.mb, "../Xingue basin/MapBiomas/NUMPAT.forest.5window.mb.tif")
+
+EDGE.forest.window.mb <-
+  focal.lmetrics(
+    mapbiomas.2018.rast,
+    w = 5,
+    land.value = 3,
+    metric = "edge.density"
+  )
+
+writeRaster(EDGE.forest.window.mb, "../Xingue basin/MapBiomas/EDGE.forest.5window.mb.tif")
+
+
+PD.forest.window.mb <-
+  focal.lmetrics(
+    mapbiomas.2018.rast,
+    w = 5,
+    land.value = 3,
+    metric = "patch.density"
+  )
+
+writeRaster(PD.forest.window.mb, "../Xingue basin/MapBiomas/PD.forest.5window.mb.tif")
+
+PLAND.forest.window.mb <-
+  focal.lmetrics(
+    mapbiomas.2018.rast,
+    w = 5,
+    land.value = 3,
+    metric = "prop.landscape"
+  )
+
+writeRaster(PLAND.forest.window.mb, "../Xingue basin/MapBiomas/PLAND.forest.5window.mb.tif")
+
+COHESION.forest.window.mb <-
+  focal.lmetrics(
+    mapbiomas.2018.rast,
+    w = 5,
+    land.value = 3,
+    metric = "patch.cohesion.index"
+  )
+
+writeRaster(COHESION.forest.window.mb, "../Xingue basin/MapBiomas/COHESION.forest.5window.mb.tif")
+
+
+AI.forest.window.mb <-
+  focal.lmetrics(
+    mapbiomas.2018.rast,
+    w = 5,
+    land.value = 3,
+    metric = "aggregation.index"
+  )
+
+writeRaster(AI.forest.window.mb, "../Xingue basin/MapBiomas/AI.forest.5window.mb.tif")
+
+EMS.forest.window.mb <-
+  focal.lmetrics(
+    mapbiomas.2018.rast,
+    w = 5,
+    land.value = 3,
+    metric = "effective.mesh.size"
+  )
+
+writeRaster(EMS.forest.window.mb, "../Xingue basin/MapBiomas/EMS.forest.5window.mb.tif")
+
+
+}

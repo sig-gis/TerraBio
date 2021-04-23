@@ -294,6 +294,7 @@ farm.tree.rast.30m <- reclassify(farm.landuse.rast.30m, rcl=isBecomes)
     hist(CONT.landscape.farm.30m$value[CONT.landscape.farm.30m$metric == "contig_cv"])
     
 
+    
 
 ## ------- Looking at correlation for Imaflora ---------------------------
 

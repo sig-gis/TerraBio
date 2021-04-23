@@ -85,8 +85,14 @@ mapbiomas.2018.rast <- trim(raster("../Xingue basin/MapBiomas/mapbiomas-xingue-2
 terraclass.2014.rast <- trim( raster("../Xingue basin/TerraClass/TerraClass-2014-5880.tif") )
 
 
-# UMD TCC and TCH data
+# UMD TCH data
 
-## The most recent data available is from 2020?
+## The most recent data available is from 2019?
 
+tch.2019.rast <- trim( raster ("../Xingue basin/TCH/Forest_height_2019_Xingue_5880.tif"))
+
+
+# Thibaud's data 
+
+thibaud.2020.rast <- trim(raster("../Xingue basin/Thibaud/brazil_para_new_5880.tif"))
 

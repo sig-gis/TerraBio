@@ -28,13 +28,18 @@ library(landmetrics)
 # for doing focal window calculations. https://github.com/jeffreyevans/landmetrics
 
 
-## ------- Load Data -----------------------------------------
+
+## ------- Load Data and Vars --------------------------------
 
 source("import.R")
 
 ## Note, for landscapemetrics package, this must be as a raster with units in meters.
 
 listlsm <- list_lsm()
+
+cleanup <- FALSE             # True will remove intermediary processing steps for cleaner environment.
+write.movingwindow <- FALSE  # True will cause moving window to run & write rasters. WARNING THIS IS VERY TIME INTENSIVE
+
 
 ## ------- Calculate Farm-based Metrics for TerraClass ----------------------------
 
@@ -92,7 +97,7 @@ FRACM.landscape.tc.30m <-
         metric = "frac"
     )
 
-hist(FRACM.landscape.tc.30mm$value[FRACM.landscape.tc.30m$metric ==
+hist(FRACM.landscape.tc.30m$value[FRACM.landscape.tc.30m$metric ==
                                        "frac_mn"])
 
 
@@ -238,8 +243,55 @@ CONT.landscape.tc.30m <-
         metric = "contig"
     )
 
-hist(CONT.landscape.tc.30m$value[CONT.landscape.tc.30m$metric == "contig_cv"])
+hist(CONT.landscape.tc.30m$value[CONT.landscape.tc.30m$metric == "contig_mn"])
 
+## Aggregation Index (AI)
+
+AI.class.tc.30m <-
+    sample_lsm(
+        terraclass.2014.rast,
+        y = farm.boundary.shp,
+        level = "class",
+        metric = "ai"
+    )
+
+hist(AI.class.tc.30m$value[ AI.class.tc.30m$class == 1])
+
+
+AI.landscape.tc.30m <-
+    sample_lsm(
+        terraclass.2014.rast,
+        y = farm.boundary.shp,
+        level = "landscape",
+        metric = "ai"
+    )
+
+hist(AI.landscape.tc.30m$value)
+
+
+## Effective mesh size
+# 
+# 
+# EMS.class.tc.30m <-
+#     sample_lsm(
+#         terraclass.2014.rast,
+#         y = farm.boundary.shp,
+#         level = "class",
+#         metric = "mesh"
+#     )
+# 
+# hist(EMS.class.tc.30m$value[ EMS.class.tc.30m$class == 1])
+# 
+# 
+# EMS.landscape.tc.30m <-
+#     sample_lsm(
+#         terraclass.2014.rast,
+#         y = farm.boundary.shp,
+#         level = "landscape",
+#         metric = "mesh"
+#     )
+# 
+# hist(EMS.landscape.tc.30m$value)
 
 
 ## ------- Looking at farm-based correlation ---------------------------
@@ -259,7 +311,8 @@ tc.forest <- tibble(
     PD.forest = PD.class.tc.30m$value[PD.class.tc.30m$class == 1],
     PLAND.forest = PLAND.class.tc.30m$value[PLAND.class.tc.30m$class == 1],
     CONT.forest = CONT.class.tc.30m$value[CONT.class.tc.30m$metric == "contig_mn" &
-                                              CONT.class.tc.30m$class == 1]
+                                              CONT.class.tc.30m$class == 1],
+    AI.forest = AI.class.tc.30m$value[AI.class.tc.30m$class == 1]
     
 )
 
@@ -276,7 +329,7 @@ tc.landscape <- tibble(
     EDGE.farm = EDGE.landscape.tc.30m$value,
     SHDI.farm = SHDI.landscape.tc.30m$value,
     CONT.mean.farm = CONT.landscape.tc.30m$value[CONT.landscape.tc.30m$metric == "contig_mn"],
-    
+    AI.farm = AI.landscape.tc.30m$value
 )
 
 corrplot(cor(tc.landscape[-1]), method = "shade")
@@ -289,6 +342,50 @@ all.tc <- left_join(tc.landscape, tc.forest)
 all.tc[is.na(all.tc)] <- 0
 corrplot(cor(all.tc[-1]), method = "shade")
 pairs(all.tc[-1], lower.panel = panel.smooth, upper.panel = panel.cor)
+pairs(all.tc[ , grepl(".forest", colnames(all.tc))], lower.panel = panel.smooth, upper.panel = panel.cor)
+
+
+## ------- Cleanup -------------------------------
+
+if (cleanup == TRUE){
+    
+    remove(FRACM.class.tc.30m, FRACM.landscape.tc.30m,
+           AREAM.class.tc.30m, 
+           TAREA.class.tc.30m, TAREA.landscape.tc.30m,
+           NUMPAT.landscape.tc.30m,
+           EDGE.class.tc.30m, EDGE.landscape.tc.30m,
+           PD.class.tc.30m, PD.landscape.tc.30m,
+           PLAND.class.tc.30m,PLAND.landscape.tc.30m,
+           SHDI.landscape.tc.30m,
+           CONT.class.tc.30m, CONT.landscape.tc.30m, 
+           AI.class.tc.30m, AI.landscape.tc.30m, 
+           EMS.class.tc.30m, EMS.landscape.tc.30m,
+           tc.forest, tc.landscape)
+    
+}
 
 
 ## ------- Calculate moving window metrics for TerraClass ---------------------------
+
+## implementation with landscape metrics
+
+## only landscape metrics are allowed for moving windows.
+
+## Note--this is prohibitively time intensive currently. 
+# 
+# moving_window <- matrix(1, nrow = 5, ncol = 5)
+# 
+# landscape.metrics <-
+#     c("lsm_l_frac_mn",
+#       "lsm_l_np",
+#       "lsm_l_ed",
+#       "lsm_l_pd",
+#       "lsm_l_shdi",
+#       "lsm_l_contig")
+# 
+# window.landscape.mb <- window_lsm(terraclass.2014.rast,
+#                               window = moving_window,
+#                               what = "lsm_l_pd", progress = T
+#                               )
+
+## This does not finish after ~20hrs
