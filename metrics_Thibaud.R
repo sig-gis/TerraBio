@@ -433,7 +433,7 @@ if (write.movingwindow == TRUE){
     writeRaster(TAREA.forest.window.thib, "../Xingue basin/Thibaud/TAREA.forest.5window.thib.tif")
     
     
-    NUMPAT.forest.window.thib <-
+     NUMPAT.forest.window.thib <-
         focal.lmetrics(
             thibaud.2020.rast,
             w = 5,

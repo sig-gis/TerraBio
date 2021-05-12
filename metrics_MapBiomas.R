@@ -36,9 +36,9 @@ source("import.R")
 
 listlsm <- list_lsm()
 
-cleanup <- FALSE             # True will remove intermediary processing steps for cleaner environment.
+cleanup <- TRUE             # True will remove intermediary processing steps for cleaner environment.
 write.movingwindow <- FALSE  # True will cause moving window to run & write rasters. WARNING THIS IS VERY TIME INTENSIVE
-
+mw.calcs <- FALSE # True will fix moving window to fill in spaces not calculated. It pulls from maps saved during write.movingwindow. 
 
 
 
@@ -94,18 +94,6 @@ hist(FRACM.class.mb.30m$value[FRACM.class.mb.30m$class == 3 &
                                     FRACM.class.mb.30m$metric == "frac_mn"])
 
 
-FRACM.landscape.mb.30m <-
-    sample_lsm(
-        mapbiomas.2018.rast,
-        y = farm.boundary.shp,
-        level = "landscape",
-        metric = "frac"
-    )
-
-hist(FRACM.landscape.mb.30m$value[FRACM.landscape.mb.30m$metric ==
-                                        "frac_mn"])
-
-
 
 # Total areas
 
@@ -121,30 +109,37 @@ TAREA.class.mb.30m <-
 hist(TAREA.class.mb.30m$value[TAREA.class.mb.30m$class == 3])
 
 
-TAREA.landscape.mb.30m <-
-    sample_lsm(
-        mapbiomas.2018.rast,
-        y = farm.boundary.shp,
-        level = "landscape",
-        metric = "ta"
-    )
+TAREA.class.mb.30m.buf <-
+  sample_lsm(
+    mapbiomas.2018.rast,
+    y = farm.boundary.buffer,
+    level = "class",
+    metric = "ca"
+  )
 
-hist(TAREA.landscape.mb.30m$value, breaks = 30)
-
+hist(TAREA.class.mb.30m.buf$value[TAREA.class.mb.30m.buf$class == 3])
 
 
 
 ## Number of patches
 
 
-NUMPAT.landscape.mb.30m <-
+NUMPAT.class.mb.30m <-
     sample_lsm(mapbiomas.2018.rast,
                y = farm.boundary.shp,
-               level = "landscape",
+               level = "class",
                metric = "np")
 
-hist(NUMPAT.landscape.mb.30m$value)
+hist(NUMPAT.class.mb.30m$value[NUMPAT.class.mb.30m$class == 3])
 
+
+NUMPAT.class.mb.30m.buf <-
+  sample_lsm(mapbiomas.2018.rast,
+             y = farm.boundary.buffer,
+             level = "class",
+             metric = "np")
+
+hist(NUMPAT.class.mb.30m.buf$value[NUMPAT.class.mb.30m.buf$class == 3])
 
 
 ## Edge density
@@ -161,18 +156,6 @@ hist(EDGE.class.mb.30m$value[EDGE.class.mb.30m$class == 3])
 
 
 
-EDGE.landscape.mb.30m <-
-    sample_lsm(
-        mapbiomas.2018.rast,
-        y = farm.boundary.shp,
-        level = "landscape",
-        metric = "ed"
-    )
-
-hist(EDGE.landscape.mb.30m$value)
-
-
-
 # patch density
 
 PD.class.mb.30m <-
@@ -186,16 +169,8 @@ PD.class.mb.30m <-
 hist(PD.class.mb.30m$value[PD.class.mb.30m$class == 3])
 
 
-PD.landscape.mb.30m <-
-    sample_lsm(mapbiomas.2018.rast,
-               y = farm.boundary.shp,
-               level = "landscape",
-               metric = "pd")
 
-hist(PD.landscape.mb.30m$value)
-
-
-# percentage of landscape (PLAND)
+# percentage of landscape
 
 PLAND.class.mb.30m <-
     sample_lsm(
@@ -208,19 +183,15 @@ PLAND.class.mb.30m <-
 hist(PLAND.class.mb.30m$value[PLAND.class.mb.30m$class == 3])
 
 
+PLAND.class.mb.30m.buf <-
+  sample_lsm(
+    mapbiomas.2018.rast,
+    y = farm.boundary.buffer,
+    level = "class",
+    metric = "pland"
+  )
 
-
-## Diversity of land covers--Shannon's diversity
-
-SHDI.landscape.mb.30m <-
-    sample_lsm(
-        mapbiomas.2018.rast,
-        y = farm.boundary.shp,
-        level = "landscape",
-        metric = "shdi"
-    )
-
-hist(SHDI.landscape.mb.30m$value)
+hist(PLAND.class.mb.30m.buf$value[PLAND.class.mb.30m.buf$class == 3])
 
 
 
@@ -240,17 +211,6 @@ hist(CONT.class.mb.30m$value[CONT.class.mb.30m$metric == "contig_mn" &
 
 
 
-CONT.landscape.mb.30m <-
-    sample_lsm(
-        mapbiomas.2018.rast,
-        y = farm.boundary.shp,
-        level = "landscape",
-        metric = "contig"
-    )
-
-hist(CONT.landscape.mb.30m$value[CONT.landscape.mb.30m$metric == "contig_cv"])
-
-
 
 ## Aggregation Index (AI)
 
@@ -264,41 +224,19 @@ AI.class.mb.30m <-
 
 hist(AI.class.mb.30m$value[ AI.class.mb.30m$class == 3])
 
-
-AI.landscape.mb.30m <-
+AI.class.mb.30m.buf <-
   sample_lsm(
     mapbiomas.2018.rast,
-    y = farm.boundary.shp,
-    level = "landscape",
+    y = farm.boundary.buffer,
+    level = "class",
     metric = "ai"
   )
 
-hist(AI.landscape.mb.30m$value)
+hist(AI.class.mb.30m.buf$value[ AI.class.mb.30m.buf$class == 3])
 
 
-## Effective mesh size
 
-# 
-# EMS.class.mb.30m <-
-#   sample_lsm(
-#     mapbiomas.2018.rast,
-#     y = farm.boundary.shp,
-#     level = "class",
-#     metric = "mesh"
-#   )
-# 
-# hist(EMS.class.mb.30m$value[ EMS.class.mb.30m$class == 3])
-# 
-# 
-# EMS.landscape.mb.30m <-
-#   sample_lsm(
-#     mapbiomas.2018.rast,
-#     y = farm.boundary.shp,
-#     level = "landscape",
-#     metric = "mesh"
-#   )
-# 
-# hist(EMS.landscape.mb.30m$value)
+
 
 
 
@@ -315,6 +253,7 @@ mb.forest <- tibble(
                                                        FRACM.class.mb.30m$metric == "frac_mn"],
     TAREA.forest = TAREA.class.mb.30m$value[TAREA.class.mb.30m$class ==
                                                   3],
+    NUMPAT.forest = NUMPAT.class.mb.30m$value[NUMPAT.class.mb.30m$class == 3],
     EDGE.forest = EDGE.class.mb.30m$value[EDGE.class.mb.30m$class == 3],
     PD.forest = PD.class.mb.30m$value[PD.class.mb.30m$class == 3],
     PLAND.forest = PLAND.class.mb.30m$value[PLAND.class.mb.30m$class == 3],
@@ -327,26 +266,22 @@ mb.forest <- tibble(
 cor(mb.forest)
 corrplot::corrplot(cor(mb.forest[-1]), method = "shade")
 
-
-mb.landscape <- tibble(
-    plot_id = FRACM.landscape.mb.30m$plot_id[FRACM.landscape.mb.30m$metric=="frac_mn"],
+# for the buffers
+mb.buffer <- tibble(
+    plot_id = TAREA.class.mb.30m.buf$plot_id[TAREA.class.mb.30m.buf$class == 3],
     
-    FRACM.mean.farm = FRACM.landscape.mb.30m$value[FRACM.landscape.mb.30m$metric=="frac_mn"],
-    TAREA.farm = TAREA.landscape.mb.30m$value,
-    NUMPAT.farm = NUMPAT.landscape.mb.30m$value,
-    PD.farm = PD.landscape.mb.30m$value,
-    EDGE.farm = EDGE.landscape.mb.30m$value,
-    SHDI.farm = SHDI.landscape.mb.30m$value,
-    CONT.mean.farm = CONT.landscape.mb.30m$value[CONT.landscape.mb.30m$metric == "contig_mn"],
-    AI.farm = AI.landscape.mb.30m$value
+    TAREA.buffer = TAREA.class.mb.30m.buf$value[TAREA.class.mb.30m.buf$class == 3],
+    NUMPAT.buffer = NUMPAT.class.mb.30m.buf$value[NUMPAT.class.mb.30m.buf$class == 3],
+    PLAND.buffer = PLAND.class.mb.30m.buf$value[PLAND.class.mb.30m.buf$class == 3],
+    AI.buffer = AI.class.mb.30m.buf$value[AI.class.mb.30m.buf$class == 3]
 )
 
-corrplot(cor(mb.landscape[-1]), method = "shade")
+corrplot(cor(mb.buffer[-1]), method = "shade")
 
 
 # Combine
 
-all.mb <- left_join(mb.landscape, mb.forest)
+all.mb <- left_join(mb.buffer, mb.forest)
 
 all.mb[is.na(all.mb)] <- 0
 corrplot(cor(all.mb[-1]), method = "shade")
@@ -357,18 +292,15 @@ pairs(all.mb[-1], lower.panel = panel.smooth, upper.panel = panel.cor)
 
 if (cleanup == TRUE){
 
-remove(FRACM.class.mb.30m, FRACM.landscape.mb.30m,
-       AREAM.class.mb.30m, 
-       TAREA.class.mb.30m, TAREA.landscape.mb.30m,
-       NUMPAT.landscape.mb.30m,
-       EDGE.class.mb.30m, EDGE.landscape.mb.30m,
-       PD.class.mb.30m, PD.landscape.mb.30m,
-       PLAND.class.mb.30m,PLAND.landscape.mb.30m,
-       SHDI.landscape.mb.30m,
-       CONT.class.mb.30m, CONT.landscape.mb.30m, 
-       AI.class.mb.30m, AI.landscape.mb.30m, 
-       EMS.class.mb.30m, EMS.landscape.mb.30m,
-       mb.forest, mb.landscape)
+remove(FRACM.class.mb.30m, 
+       TAREA.class.mb.30m, TAREA.class.mb.30m.buf,
+       NUMPAT.class.mb.30m, NUMPAT.class.mb.30m.buf,
+       EDGE.class.mb.30m,
+       PD.class.mb.30m, 
+       PLAND.class.mb.30m, PLAND.class.mb.30m.buf,
+       CONT.class.mb.30m, 
+       AI.class.mb.30m, AI.class.mb.30m.buf, 
+       mb.forest, mb.buffer)
 
 }
 
@@ -460,8 +392,7 @@ EDGE.forest.window.mb <-
   )
 
 writeRaster(EDGE.forest.window.mb, "../Xingue basin/MapBiomas/EDGE.forest.5window.mb.tif")
-
-
+ 
 PD.forest.window.mb <-
   focal.lmetrics(
     mapbiomas.2018.rast,
@@ -472,6 +403,7 @@ PD.forest.window.mb <-
 
 writeRaster(PD.forest.window.mb, "../Xingue basin/MapBiomas/PD.forest.5window.mb.tif")
 
+
 PLAND.forest.window.mb <-
   focal.lmetrics(
     mapbiomas.2018.rast,
@@ -481,6 +413,16 @@ PLAND.forest.window.mb <-
   )
 
 writeRaster(PLAND.forest.window.mb, "../Xingue basin/MapBiomas/PLAND.forest.5window.mb.tif")
+
+PLAND.forest.window.mb <-
+  focal.lmetrics(
+    mapbiomas.2018.rast,
+    w = 15,
+    land.value = 3,
+    metric = "prop.landscape"
+  )
+
+writeRaster(PLAND.forest.window.mb, "../Xingue basin/MapBiomas/PLAND.forest.15window.mb.tif")
 
 COHESION.forest.window.mb <-
   focal.lmetrics(
@@ -503,15 +445,233 @@ AI.forest.window.mb <-
 
 writeRaster(AI.forest.window.mb, "../Xingue basin/MapBiomas/AI.forest.5window.mb.tif")
 
-EMS.forest.window.mb <-
+AI.forest.window.mb <-
   focal.lmetrics(
     mapbiomas.2018.rast,
-    w = 5,
+    w = 15,
     land.value = 3,
-    metric = "effective.mesh.size"
+    metric = "aggregation.index"
   )
 
-writeRaster(EMS.forest.window.mb, "../Xingue basin/MapBiomas/EMS.forest.5window.mb.tif")
+writeRaster(AI.forest.window.mb, "../Xingue basin/MapBiomas/AI.forest.15window.mb.tif")
 
 
+}
+
+
+## -------- Modify moving window matrix ---------------------------
+
+## The moving window rasters that get computed are only computed at the edge of
+## forests. So we need to fill in the na values.
+
+
+if(mw_calcs == TRUE){
+
+## __FRAC__
+
+## load the data
+  FRAC.forest.window.mb <- raster("../Xingue basin/MapBiomas/FRAC.forest.5window.mb.tif")
+
+## assign desired values for forest and non-forest
+  forest = 1
+  nonforest = 1
+
+## Get rid of NA in the data
+  FRAC.forest.window.mb[is.na(FRAC.forest.window.mb)] <- 999
+  
+## create the base map based on the classified raster
+  temp.forest <- mapbiomas.2018.rast
+  temp.forest[temp.forest != 3] <- forest
+  temp.forest[temp.forest == 3] <- nonforest
+
+
+## Sum the two maps
+  
+  FRAC.forest.window.mb <-
+    overlay(
+      FRAC.forest.window.mb,
+      temp.forest,
+      fun = function(x, y) {
+        ifelse(x == 999 & y == nonforest, nonforest, ifelse(x == 999 & y == forest, forest, x))
+      }
+    )
+  
+  writeRaster(
+    FRAC.forest.window.mb,
+    "../Xingue basin/MapBiomas/FRAC.forest.5window.mb.filled.tif"
+  )
+      
+
+## __TAREA__
+  
+## load the data
+  TAREA.forest.window.mb <- raster("../Xingue basin/MapBiomas/TAREA.forest.5window.mb.tif")
+  
+## assign desired values for forest and non-forest
+  forest = 22500
+  nonforest = 0
+  
+## Get rid of NA in the data
+  TAREA.forest.window.mb[is.na(TAREA.forest.window.mb)] <- 999
+  
+## create the base map based on the classified raster
+  temp.forest <- mapbiomas.2018.rast
+  temp.forest[temp.forest != 3] <- forest
+  temp.forest[temp.forest == 3] <- nonforest
+  
+  
+## Sum the two maps
+  
+  TAREA.forest.window.mb <-
+    overlay(
+      TAREA.forest.window.mb,
+      temp.forest,
+      fun = function(x, y) {
+        ifelse(x == 999 & y == nonforest, nonforest, ifelse(x == 999 & y == forest, forest, x))
+      }
+    )
+  
+  writeRaster(
+    TAREA.forest.window.mb,
+    "../Xingue basin/MapBiomas/TAREA.forest.5window.mb.filled.tif",
+    overwrite = TRUE
+  )
+  
+## __EDGE__
+  
+## load the data
+  EDGE.forest.window.mb <- raster("../Xingue basin/MapBiomas/EDGE.forest.5window.mb.tif")
+  
+## assign desired values for forest and non-forest
+  forest = 0
+  nonforest = 0
+  
+## Get rid of NA in the data
+  EDGE.forest.window.mb[is.na(EDGE.forest.window.mb)] <- 999
+  
+## create the base map based on the classified raster
+  temp.forest <- mapbiomas.2018.rast
+  temp.forest[temp.forest != 3] <- forest
+  temp.forest[temp.forest == 3] <- nonforest
+  
+  
+## Sum the two maps
+  
+  EDGE.forest.window.mb <-
+    overlay(
+      EDGE.forest.window.mb,
+      temp.forest,
+      fun = function(x, y) {
+        ifelse(x == 999 & y == nonforest, nonforest, ifelse(x == 999 & y == forest, forest, x))
+      }
+    )
+  
+  writeRaster(
+    EDGE.forest.window.mb,
+    "../Xingue basin/MapBiomas/EDGE.forest.5window.mb.filled.tif"
+  )
+  
+## __PLAND__
+  
+## load the data
+  PLAND.forest.window.mb <- raster("../Xingue basin/MapBiomas/PLAND.forest.5window.mb.tif")
+  
+## assign desired values for forest and non-forest
+  forest = 1
+  nonforest = 0
+  
+## Get rid of NA in the data
+  PLAND.forest.window.mb[is.na(PLAND.forest.window.mb)] <- 999
+  
+## create the base map based on the classified raster
+  temp.forest <- mapbiomas.2018.rast
+  temp.forest[temp.forest != 3] <- forest
+  temp.forest[temp.forest == 3] <- nonforest
+  
+  
+## Sum the two maps
+  
+  PLAND.forest.window.mb <-
+    overlay(
+      PLAND.forest.window.mb,
+      temp.forest,
+      fun = function(x, y) {
+        ifelse(x == 999 & y == nonforest, nonforest, ifelse(x == 999 & y == forest, forest, x))
+      }
+    )
+  
+  writeRaster(
+    PLAND.forest.window.mb,
+    "../Xingue basin/MapBiomas/PLAND.forest.5window.mb.filled.tif"
+  )
+  
+## __COHESION__
+  
+  ## load the data
+  COHESION.forest.window.mb <- raster("../Xingue basin/MapBiomas/COHESION.forest.5window.mb.tif")
+  
+  ## assign desired values for forest and non-forest
+  forest = 8
+  nonforest = 0
+  
+  ## Get rid of NA in the data
+  COHESION.forest.window.mb[is.na(COHESION.forest.window.mb)] <- 999
+  
+  ## create the base map based on the classified raster
+  temp.forest <- mapbiomas.2018.rast
+  temp.forest[temp.forest != 3] <- forest
+  temp.forest[temp.forest == 3] <- nonforest
+  
+  
+  ## Sum the two maps
+  
+  COHESION.forest.window.mb <-
+    overlay(
+      COHESION.forest.window.mb,
+      temp.forest,
+      fun = function(x, y) {
+        ifelse(x == 999 & y == nonforest, nonforest, ifelse(x == 999 & y == forest, forest, x))
+      }
+    )
+  
+  writeRaster(
+    COHESION.forest.window.mb,
+    "../Xingue basin/MapBiomas/COHESION.forest.5window.mb.filled.tif"
+  )
+  
+  
+## __AI__
+  
+  ## load the data
+  AI.forest.window.mb <- raster("../Xingue basin/MapBiomas/AI.forest.5window.mb.tif")
+  
+  ## assign desired values for forest and non-forest
+  forest = 100
+  nonforest = 0
+  
+  ## Get rid of NA in the data
+  AI.forest.window.mb[is.na(AI.forest.window.mb)] <- 999
+  
+  ## create the base map based on the classified raster
+  temp.forest <- mapbiomas.2018.rast
+  temp.forest[temp.forest != 3] <- forest
+  temp.forest[temp.forest == 3] <- nonforest
+  
+  
+  ## Sum the two maps
+  
+  AI.forest.window.mb <-
+    overlay(
+      AI.forest.window.mb,
+      temp.forest,
+      fun = function(x, y) {
+        ifelse(x == 999 & y == nonforest, nonforest, ifelse(x == 999 & y == forest, forest, x))
+      }
+    )
+  
+  writeRaster(
+    AI.forest.window.mb,
+    "../Xingue basin/MapBiomas/AI.forest.5window.mb.filled.tif"
+  )
+  
 }

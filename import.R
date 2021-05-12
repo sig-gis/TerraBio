@@ -26,6 +26,7 @@ panel.cor <- function(x, y, digits=2, prefix="", cex.cor, ...)
     text(0.5, 0.5, txt, cex = (cex.cor) * (r+.5))
 }
 
+buffer.size <- 250
 
 ## ------- Projections ---------------------------------------
 
@@ -45,29 +46,28 @@ EPSG5880 <- CRS("+proj=poly +lat_0=0 +lon_0=-54 +x_0=5000000 +y_0=10000000 +ellp
 
 extent.shp <- shapefile("../Xingue basin/mu_sfx_bbox_car_boundaries/mu_sfx_bbox_5880_1kmbuf.shp")
 
-## Rasterized bounding box of farms data--buffered to 1km at 5m resolution
-
-extent.rast <- raster("../Xingue basin/mu_sfx_bbox_car_boundaries/mu_sfx_bbox_5880_1kmbuf.tif")
-
 
 
 ## Detailed 150 farms data from Imaflora
 
 farm.landuse.shp <- shapefile("../Xingue basin/mu_sfx_150properties/mu_sfx_landuse_150properties_5880.shp", verbose = T)
 
-farm.landuse.rast.5m <- raster("../Xingue basin/mu_sfx_150properties/mu_sfx_landuse_150properties_5880.tif")
-farm.landuse.rast.30m <- raster("../Xingue basin/mu_sfx_150properties/mu_sfx_landuse_150properties_5880_30m.tif")
+# farm.landuse.rast.5m <- raster("../Xingue basin/mu_sfx_150properties/mu_sfx_landuse_150properties_5880.tif")
 
 farm.boundary.shp <- shapefile('../Xingue basin/mu_sfx_150properties/mu_sfx_boundary_150properties_5880.shp', verbose = T)
-
-
-farm.boundary.shp$gid <- as.integer(farm.boundary.shp$gid)
-
-farm.boundary.shp <- farm.boundary.shp[order(farm.boundary.shp$gid) , ] 
-
-# There is no number 42, which is unfortunate. Create a new ID field so that mapping is easier later.
-
-farm.boundary.shp$farm_id <- 1:150
+    
+    farm.boundary.shp$gid <- as.integer(farm.boundary.shp$gid)
+    
+    farm.boundary.shp <- farm.boundary.shp[order(farm.boundary.shp$gid) , ] 
+    
+    # There is no number 42, which is unfortunate. Create a new ID field so that mapping is easier later.
+    
+    farm.boundary.shp$farm_id <- 1:150
+    
+    
+## Create buffers for 150 farms
+    
+    farm.boundary.buffer <- buffer(farm.boundary.shp, width = buffer.size, dissolve = FALSE)
 
 
 # Mapbiomas data
@@ -82,7 +82,7 @@ mapbiomas.2018.rast <- trim(raster("../Xingue basin/MapBiomas/mapbiomas-xingue-2
 
 ## The most recent data available is from 2014. See https://www.terraclass.gov.br/
 
-terraclass.2014.rast <- trim( raster("../Xingue basin/TerraClass/TerraClass-2014-5880.tif") )
+# terraclass.2014.rast <- trim( raster("../Xingue basin/TerraClass/TerraClass-2014-5880.tif") )
 
 
 # UMD TCH data
@@ -94,5 +94,5 @@ tch.2019.rast <- trim( raster ("../Xingue basin/TCH/Forest_height_2019_Xingue_58
 
 # Thibaud's data 
 
-thibaud.2020.rast <- trim(raster("../Xingue basin/Thibaud/brazil_para_new_5880.tif"))
+# thibaud.2020.rast <- trim(raster("../Xingue basin/Thibaud/brazil_para_new_5880.tif"))
 
