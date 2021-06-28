@@ -8,12 +8,15 @@
 
 library(raster)
 library(landscapemetrics)
-library("dplyr")
 library("maptools")
 library(DataExplorer)
 library(RStoolbox)
 library(factoextra)
 library(cluster)
+library(geosphere)
+library("dplyr")
+library(sf)
+library(rgeos)
 
 
 ## ------- Load Data ------------------------------------------------------
@@ -48,6 +51,12 @@ farm.landuse.shp$shd.cocoa <-
 table(farm.landuse.shp$shd.cocoa)
 
 
+## and now specify which farms have shaded cocoa
+
+farm.boundary.shp$shd.cocoa <- ifelse(farm.boundary.shp$id_prod %in%
+                                          farm.landuse.shp$id_prod[farm.landuse.shp$shd.cocoa == "shaded"],
+                                      yes = "shaded",
+                                      no = "notshaded")
 
 ## ------- Run PCA on MapBiomas -------------------------------------------
 
@@ -122,6 +131,43 @@ plot(
 
 fviz_dend(hcluster.forest.mb, k = 5)
 
+
+
+## ------- Run summary statistics -----------------------------------------
+
+## Find distance to river
+
+xingu <- shapefile("../Xingue basin/Xingu_river_5880.shp")
+
+temp <- t(rgeos::gDistance(farm.boundary.shp, xingu, byid = TRUE))
+attr(temp, "dimnames") <- NULL
+
+farm.boundary.shp$xingu.dist <- temp[,1]
+
+farm.boundary.df <- as(farm.boundary.shp, "data.frame")
+
+group_by(farm.boundary.df, shd.cocoa) %>% dplyr::summarise(
+    count = length(id_prod),
+    count.unique = length(unique(id_prod)),
+    mean.area = mean(area),
+    sd.area = sd(area),
+    mean.dist = mean(xingu.dist),
+    sd.dist = sd(xingu.dist)
+)
+
+buffer.metric.summary <-
+    left_join(farm.boundary.df, all.mb, c("farm_id" = "plot_id")) %>%
+    group_by(., shd.cocoa) %>%
+    select(contains("buffer")) %>%
+    dplyr::summarise_all(.funs = c("mean", "sd"))
+
+farm.metric.summary <-
+    left_join(farm.boundary.df, all.mb, c("farm_id" = "plot_id")) %>%
+    group_by(., shd.cocoa) %>%
+    select(contains("forest")) %>%
+    dplyr::summarise_all(.funs = c("mean", "sd"))
+
+head(all.mb)
 
 
 ## ------- Write files ------------------------------------------
