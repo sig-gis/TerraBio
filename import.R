@@ -10,7 +10,7 @@
 
 library(raster, rgdal)
 library(maptools)
-library("dplyr") # dplyr wants to be in quotes, no idea why.
+library(dplyr) 
 
 # panel.cor from https://www.rdocumentation.org/packages/graphics/versions/3.6.2/topics/pairs
 
