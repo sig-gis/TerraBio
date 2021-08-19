@@ -1,0 +1,45 @@
+---
+title: "Summary of TerraBio eDNA Results"
+author: "Karen Dyson"
+date: "8/19/2021"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Overview of eDNA data
+
+This should have the eDNA reads
+
+Total number of species variants
+
+
+## Key species questions and indicators
+
+### Key species present in our sample
+
+### Biodiversity Indicator 4 (ABF-KPI-6): Number of keystone/priority species due to intervention.
+
+We found _____ species present in cocoa fields (intervention) that were not present in pasture (counterfactual). These species include:
+
+Additionally, we found _____ species present in pasture not present in cocoa fields. These species include:
+
+______ species were present in both cocoa and pasture fields.
+
+
+
+```{r cars}
+summary(cars)
+```
+
+## Including Plots
+
+You can also embed plots, for example:
+
+```{r pressure, echo=FALSE}
+plot(pressure)
+```
+
+Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
