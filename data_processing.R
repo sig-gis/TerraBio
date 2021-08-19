@@ -11,14 +11,17 @@ library(dplyr)
 allSites <- "^id$|best_match|G[0-9][0-9]|P[0-9][0-9]"
 cocoaSites <- "^id$|best_match|G[0-9][0-9]"
 pastureSites <- "^id$|best_match|P[0-9][0-9]"
-keySpecies <- "LC049653|KC193777|NC_009592|AB120717"
+keySpecies <- "LC049653|KC193777|NC_009592|AB120717|nonsense"
     # this should be an identifier for whatever keySpecies we end up using. This
     # is just a random assortment for now
+keySpeciesList <- strsplit(keySpecies, "\\|")[[1]]
+speciesIDColumns <- "id$|best_match|species_list"
+
+
 
 
 ## Set variables
 rare <- 2 # how many times do you need to detect a species to count it?
-
 
 ## Import eDNA data
 
@@ -72,6 +75,12 @@ allSiteSpecies$landUse <- ifelse(grepl("G[0-9][0-9]",rownames(allSiteSpecies)),
                                  yes = "Pasture",
                                  no = "Unknown"))
     
+
+
+# Create a species lookup table
+speciesLookup <- motuData[, grepl(speciesIDColumns, colnames(motuData))]
+    
+
 
 ## Import site level data
 
