@@ -22,6 +22,8 @@ speciesIDColumns <- "id$|best_match|species_list"
 
 ## Set variables
 rare <- 2 # how many times do you need to detect a species to count it?
+perm <- 99999
+
 
 ## Import eDNA data
 
@@ -80,12 +82,19 @@ allSiteSpecies$landUse <- ifelse(grepl("G[0-9][0-9]",rownames(allSiteSpecies)),
 # Create a species lookup table
 speciesLookup <- motuData[, grepl(speciesIDColumns, colnames(motuData))]
     
+# Fake field plot groups.
+
+cocoaField <- c(rep("01C", 8), rep("02C", 6), rep("03C", 8), rep("04C", 9))
+pastureField <- c(rep("01P", 4), rep("02P", 5), rep("05P", 3), rep("07P", 3))
 
 
-## Import site level data
+## Import site level data, including data collected in the field.
 
 # Buffered land use characteristics
 
-# Data collected in the field
+## GIS data for the landscape
+
+
+
 
 # External datasets
