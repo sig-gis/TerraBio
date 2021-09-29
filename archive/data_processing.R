@@ -2,9 +2,9 @@
 ## This file takes eDNA data obtained from soil samples and prepares it for further analysis.
 
 ## Load packages
-
+library(plyr)
 library(dplyr)
-
+library(raster)
 
 ## groupings
 
@@ -27,7 +27,7 @@ perm <- 99999
 
 ## Import eDNA data
 
-motuData <- read.csv("BNA4.All_MOTUs_.csv", sep = ";", quote = "\'")
+motuData <- read.csv("FarmData/BNA4.All_MOTUs_.csv", sep = ";", quote = "\'")
 
 readsOnly <- motuData[ , grepl(allSites, colnames(motuData))]
 
@@ -90,11 +90,25 @@ pastureField <- c(rep("01P", 4), rep("02P", 5), rep("05P", 3), rep("07P", 3))
 
 ## Import site level data, including data collected in the field.
 
+# Need lat and long for species distribution models.
+sampledPlots <- shapefile("FarmData/sampledPlots.shp", verbose = T)
+
+plotNames <- unique(sampledPlots$ID)
+
+sampledPlotsTable <- tibble(plotName = sampledPlots$ID,
+                           xCentroid = sampledPlots$xCentroid,
+                           yCentroid = sampledPlots$yCentroid)
+
+
 # Buffered land use characteristics
+
+# not included for now based on time limitations...
 
 ## GIS data for the landscape
 
-
+TCH2019 <- raster("EnvironmentalData/tch2019.tif")
+topoDiversity <- raster("EnvironmentalData/topoDiversity.tif")
+ndvi <- raster("EnvironmentalData/ndvi.tif")
 
 
 # External datasets

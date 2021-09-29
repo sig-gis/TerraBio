@@ -38,3 +38,4 @@ vignettes/*.pdf
 # R Environment Variables
 .Renviron
 BNA4.All_MOTUs_.csv
+*.tif

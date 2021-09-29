@@ -1,0 +1,53 @@
+id,kingdom,phylum,class,order,family,genus,species,keySpecies,endangered,invasive,domesticated,common,note
+RSFX_000000353,Metazoa,Chordata,Aves,Columbiformes,Columbidae,Columbina,Columbina_picui,yes,no,no,no,Picui Ground-Dove,likes heavily degraded forest and shrubland
+RSFX_000000100,Metazoa,Chordata,Aves,Cuculiformes,Crotophagidae,Crotophaga,Crotophaga_ani,yes,no,no,no,Smooth-billed Ani,
+RSFX_000000512,Metazoa,Chordata,Aves,Galliformes,Phasianidae,Gallus,Gallus_gallus,no,no,no,yes,Red Junglefowl,these are chickens
+RSFX_000001030,Metazoa,Chordata,Aves,Passeriformes,Mohoidae,Family_Mohoidae,Family_Mohoidae,no,extinct,no,no,Mohoidae,"uh, this family is extinct. Also from Hawaii"
+RSFX_000000242,Metazoa,Chordata,Aves,Passeriformes,Turdidae,Turdus,Turdus_cardis,no,no,yes,no,Japanese Thrush,
+RSFX_000000001,Metazoa,Chordata,Mammalia,Artiodactyla,Bovidae,Bos,Bos_taurus,no,no,no,yes,Domestic cow,
+RSFX_000000801,Metazoa,Chordata,Mammalia,Artiodactyla,Bovidae,Bos,Genus_Bos,no,no,no,yes,Domestic cow,
+RSFX_000015482,Metazoa,Chordata,Mammalia,Artiodactyla,Bovidae,Bos,Bos_taurus,no,no,no,yes,Domestic cow,
+RSFX_000002425,Metazoa,Chordata,Mammalia,Artiodactyla,Bovidae,Bos,Genus_Bos,no,no,no,yes,Domestic cow,
+RSFX_000018781,Metazoa,Chordata,Mammalia,Artiodactyla,Bovidae,Bos,Genus_Bos,no,no,no,yes,Domestic cow,
+RSFX_000003738,Metazoa,Chordata,Mammalia,Artiodactyla,Bovidae,Bos,Genus_Bos,no,no,no,yes,Domestic cow,
+RSFX_000012454,Metazoa,Chordata,Mammalia,Artiodactyla,Bovidae,Bos,Genus_Bos,no,no,no,yes,Domestic cow,
+RSFX_000017704,Metazoa,Chordata,Mammalia,Artiodactyla,Bovidae,Bos,Genus_Bos,no,no,no,yes,Domestic cow,
+RSFX_000021471,Metazoa,Chordata,Mammalia,Artiodactyla,Bovidae,Bos,Genus_Bos,no,no,no,yes,Domestic cow,
+RSFX_000059328,Metazoa,Chordata,Mammalia,Artiodactyla,Bovidae,Bos,Genus_Bos,no,no,no,yes,Domestic cow,
+RSFX_000006649,Metazoa,Chordata,Mammalia,Artiodactyla,Bovidae,Family_Bovidae,Family_Bovidae,no,no,no,yes,Domestic cow,
+RSFX_000028230,Metazoa,Chordata,Mammalia,Artiodactyla,Bovidae,Family_Bovidae,Family_Bovidae,no,no,no,yes,Domestic cow,
+RSFX_000039477,Metazoa,Chordata,Mammalia,Artiodactyla,Bovidae,Family_Bovidae,Family_Bovidae,no,no,no,yes,Domestic cow,
+RSFX_000028860,Metazoa,Chordata,Mammalia,Artiodactyla,Bovidae,Ovis,Ovis_aries,no,no,no,yes,sheep,sheep
+RSFX_000001203,Metazoa,Chordata,Mammalia,Artiodactyla,Cervidae,Family_Cervidae,Family_Cervidae,yes,UNKNOWN,no,no,Native deer,likely native deer
+RSFX_000010601,Metazoa,Chordata,Mammalia,Artiodactyla,Cervidae,Family_Cervidae,Family_Cervidae,yes,UNKNOWN,no,no,Native deer,likely native deer
+RSFX_000003044,Metazoa,Chordata,Mammalia,Artiodactyla,Suidae,Sus,Sus_scrofa,no,no,yes,no,wild boar,Eurasian species
+RSFX_000000117,Metazoa,Chordata,Mammalia,Artiodactyla,Tayassuidae,Pecari,Pecari_tajacu,yes,no,no,no,Collared peccary,Native
+RSFX_000000956,Metazoa,Chordata,Mammalia,Artiodactyla,Tayassuidae,Tayassu,Tayassu_pecari,yes,vulnerable,no,no,White-lipped peccary,
+RSFX_000001191,Metazoa,Chordata,Mammalia,Carnivora,Canidae,Canis,Canis_lupus,no,no,no,no,Wolf,from domestic dogs?
+RSFX_000001603,Metazoa,Chordata,Mammalia,Carnivora,Canidae,Canis,Canis_lupus,no,no,no,no,Wolf,from domestic dogs?
+RSFX_000000411,Metazoa,Chordata,Mammalia,Carnivora,Felidae,Felis,Felis_catus,no,no,yes,yes,Domestic cat,
+RSFX_000011166,Metazoa,Chordata,Mammalia,Carnivora,Procyonidae,Nasua,Nasua_nasua,yes,decreasing,no,no,South American coati,
+RSFX_000002791,Metazoa,Chordata,Mammalia,Chiroptera,Phyllostomidae,Phyllostomus,Phyllostomus_discolor,yes,no,no,no,Pale spear-nosed bat,ag areas and forests
+RSFX_000017716,Metazoa,Chordata,Mammalia,Chiroptera,Phyllostomidae,Uroderma,Uroderma_magnirostrum,yes,no,no,no,Brown tent-making bat,
+RSFX_000002822,Metazoa,Chordata,Mammalia,Cingulata,Chlamyphoridae,Family_Chlamyphoridae,Family_Chlamyphoridae,yes,UNKNOWN,no,no,Armadillo,
+RSFX_000002238,Metazoa,Chordata,Mammalia,Cingulata,Dasypodidae,Dasypus,Dasypus_yepesi,yes,UNKNOWN,no,no,Yungas lesser long-nosed armadillo,Range is unknown but likely Argentina.
+RSFX_000000307,Metazoa,Chordata,Mammalia,Didelphimorphia,Didelphidae,Marmosa,Marmosa_demerarae,yes,no,no,no,Woolly Mouse Opossum,
+RSFX_000000933,Metazoa,Chordata,Mammalia,Didelphimorphia,Didelphidae,Philander,Philander_opossum,yes,no,no,no,gray four-eyed opossum,"likes forest, rainforest, scrub forest"
+RSFX_000003498,Metazoa,Chordata,Mammalia,Perissodactyla,Equidae,Equus,Equus_caballus,no,no,no,yes,domestic horse,
+RSFX_000003809,Metazoa,Chordata,Mammalia,Perissodactyla,Equidae,Equus,Equus_caballus,no,no,no,yes,domestic horse,
+RSFX_000000087,Metazoa,Chordata,Mammalia,Primates,Atelidae,Alouatta,Genus_Alouatta,yes,decreasing,no,no,Howler monkeys,
+RSFX_000000187,Metazoa,Chordata,Mammalia,Primates,Pitheciidae,Plecturocebus,Plecturocebus_cupreus,yes,no,no,no,Coppery titi,
+RSFX_000006460,Metazoa,Chordata,Mammalia,Rodentia,Muridae,Rattus,Rattus_norvegicus,no,no,yes,no,Norway rat,
+RSFX_000070484,Metazoa,Chordata,Mammalia,Rodentia,Muridae,Rattus,Rattus_norvegicus,no,no,yes,no,Norway rat,
+GSFX_000173026,Metazoa,Chordata,Amphibia,Class_Amphibia,Class_Amphibia,Class_Amphibia,Class_Amphibia,no,no,no,no,amphibians,
+GSFX_000053322,Metazoa,Chordata,Aves,Class_Aves,Class_Aves,Class_Aves,Class_Aves,no,no,no,no,birds,
+GSFX_000000460,Metazoa,Chordata,Mammalia,Artiodactyla,Bovidae,Bos,Bos_taurus,no,no,yes,no,cows,
+GSFX_000055237,Metazoa,Chordata,Mammalia,Artiodactyla,Tayassuidae,Pecari,Pecari_tajacu,no,no,no,no,collared peccary,
+GSFX_000319164,Metazoa,Chordata,Mammalia,Cingulata,Dasypodidae,Dasypus,Dasypus_beniensis,no,no,no,no,greater long-nosed armadillo,
+GSFX_000000096,Metazoa,Chordata,Mammalia,Primates,Hominidae,Homo,Homo_sapiens,no,no,yes,no,humans,
+GSFX_000002654,Metazoa,Chordata,Mammalia,Primates,Hominidae,Homo,Homo_sapiens,no,no,yes,no,humans,
+GSFX_000004995,Metazoa,Chordata,Mammalia,Primates,Hominidae,Homo,Homo_sapiens,no,no,yes,no,humans,
+GSFX_000000538,Metazoa,Chordata,Mammalia,Primates,Hominidae,Homo,Homo_sapiens,no,no,yes,no,humans,
+GSFX_000009166,Metazoa,Chordata,Mammalia,Primates,Hominidae,Homo,Homo_sapiens,no,no,yes,no,humans,
+GSFX_000003879,Metazoa,Chordata,Mammalia,Primates,Hominidae,Homo,Homo_sapiens,no,no,yes,no,humans,
+GSFX_000018818,Metazoa,Chordata,Mammalia,Primates,Hominidae,Homo,Homo_sapiens,no,no,yes,no,humans,

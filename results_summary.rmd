@@ -24,7 +24,7 @@ TerraBio's biodiversity indicators break down into two main components: those de
 
 ### Key species present in our sample
 
-We found a total of `r length(cocoaKeySpecie) + length(pastureKeySpecies)` key species in our sample (Table 1).
+We found a total of `r length(cocoaKeySpecies) + length(pastureKeySpecies)` key species in our sample (Table 1).
 
 
 ```{r keySpeciesTable}
