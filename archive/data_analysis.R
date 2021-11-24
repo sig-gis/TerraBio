@@ -13,13 +13,14 @@ library(microbiome)
 source("data_processing.R")
 source("../../../RCode/R_Scripts/PlotTaxaKD.R") # this code is found in my github here: https://github.com/kdyson/R_Scripts
 source("../../../RCode/R_Scripts/repeat_multipatt.R") # ditto
-library(dplyr)
 library(vegan)
 library(indicspecies)
 library(TITAN2)
 library(lme4)
 library(ggplot2)
-
+library(tidyr)
+library(dplyr)
+detach("package:raster")
 
 ## ----- Summary of eDNA data ------------------------------
 
@@ -69,8 +70,7 @@ keySpeciesTable <- tibble(
     best_match = keySpeciesList
 ) %>%
     left_join(cocoaKSTable, "best_match") %>%
-    left_join(pastureKSTable, "best_match")# %>%
-#    left_join(speciesLookup, "best_match")
+    left_join(pastureKSTable, "best_match")
 
 # there are lots of superfulous matches, may want to change this later.
 
@@ -502,11 +502,51 @@ adonis(allBC ~ allSiteSpecies$landUse)
 
 
 
-## _____ Habitat framework ___________________________
+## ----- Habitat framework ------------------------------------------
 
 # what species do we care about???
 
-# Need environmental variables--NDVI or NDFI, secondary forest data, tree height, and elevation along with land use should be enough.
+# Need environmental variables--NDVI, secondary forest age, tree height, and elevation along with land use should be good.
+
+# Test using SSDM Package
+library(SSDM)
+
+## Variable setup
+    envData <- load_var(path = "EnvironmentalData/", tmp = TRUE, format = ".tif")
+    envData
+    # There is something wrong with the projection of NDVI--GEE did not export it in the same projection as the other two. Same with the secondary forest age
+    
+    # Species data needs to be loaded with three columns: Species, Longitude, and Latitude. They should be in the same projection...
+    
+    # For this, we need to have the longitude and latitude data and then match it up based on site.
+    
+    #motuPlots <- pivot_longer(motuData, cols = plotNames, names_to = "plotName", values_to="reads")
+    motuPlots <- pivot_longer(motuData, cols = G01:R68, names_to = "plotName", values_to="reads")
+    motuPlots <- motuPlots[ motuPlots$reads > 0 , ]
+    
+    specData <- left_join(motuPlots, sampledPlotsTable)
+    specData <- specData %>% select(taxid, plotName, xCentroid, yCentroid)
+
+## Models
+
+    # individual species distribution model
+    SDM <- modelling('GLM', subset(Occurrences, Occurrences$SPECIES == 'elliptica'), 
+                     Env, Xcol = 'LONGITUDE', Ycol = 'LATITUDE', verbose = FALSE)
+    plot(SDM@projection, main = 'SDM\nfor Cryptocarya elliptica\nwith GLM algorithm')
+    
+    #ensemble
+    ESDM <- ensemble_modelling(c('CTA', 'MARS'), subset(Occurrences, Occurrences$SPECIES == 'elliptica'),
+                               Env, rep = 1, Xcol = 'LONGITUDE', Ycol = 'LATITUDE',
+                               ensemble.thresh = 0, verbose = FALSE)
+    plot(ESDM@projection, main = 'ESDM\nfor Cryptocarya elliptica\nwith CTA and MARS algorithms')
+    
+    # Stacked
+    SSDM <- stack_modelling(c('CTA', 'SVM'), Occurrences, Env, rep = 1, ensemble.thresh = 0,
+                            Xcol = 'LONGITUDE', Ycol = 'LATITUDE',
+                            Spcol = 'SPECIES', method = "pSSDM", verbose = FALSE)
+    plot(SSDM@diversity.map, main = 'SSDM\nfor Cryptocarya genus\nwith CTA and SVM algorithms')
+
+
 # Possible packages:
 # https://onlinelibrary.wiley.com/doi/10.1111/ecog.02671
 # 
