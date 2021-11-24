@@ -219,8 +219,14 @@ allKSPresent <- allSiteSpecies[, colnames(allSiteSpecies) %in% keyInvertList] %>
 ## Which key species are in cocoa and not in pasture? 
 keyInCocoaOnly <- cocoaKSPresent[!(cocoaKSPresent %in% pastureKSPresent)]
 
+keyInCocoaOnly_Table <- left_join(tibble(id = keyInCocoaOnly),
+                                  keyInvertSpecies)
+
 ## Which key species are in pasture and not in cocoa?
 keyInPastureOnly <- pastureKSPresent[!(pastureKSPresent %in% cocoaKSPresent)]
+
+keyInPastureOnly_Table <- left_join(tibble(id = keyInPastureOnly),
+                                  keyInvertSpecies)
 
 ## Which species are in both?
 keyInBoth <- cocoaKSPresent[cocoaKSPresent %in% pastureKSPresent]
@@ -463,7 +469,8 @@ plot(
     lwd = 2,
     ci.lty = 0,
     ci.col = "pink",
-    main = "Species Accumulation"
+    main = "Species Accumulation",
+    ylab = "Expected (mean) species richness"
 )
 
 plot(

@@ -11,10 +11,10 @@ rm(list = ls()[grepl(ls(), pattern = "riaz|gill|zea")])
 rare = 0
 
 
-if (!requireNamespace("devtools", quietly = TRUE))
-  install.packages("devtools")
-
-devtools::install_github("sylvainschmitt/SSDM")
+# if (!requireNamespace("devtools", quietly = TRUE))
+#   install.packages("devtools")
+# 
+# devtools::install_github("sylvainschmitt/SSDM")
 
 
 ## ----- Habitat framework ------------------------------------------
@@ -53,11 +53,8 @@ specData <- specData %>% dplyr::select(id, order, plotName, xCentroid, yCentroid
                   subset(specData$order %in% c('Lepidoptera', 'Hymenoptera'))
 summary(specData)
 
-## Models
-
-
-# Used stacked with Lepidoptera and Hymenoptera
-
+## ----- Models ---------------------------------------------------------
+#simple
 lepid_SDM <- modelling(
   algorithm = "SVM",
   Occurrences = specData[ specData$order == "Lepidoptera", ],
@@ -75,51 +72,105 @@ knitr::kable(lepid_SDM@variable.importance)
 plot(lepid_SDM)
 save(lepid_SDM, file = "Outputs/LEPID_SDM.RData")
 
-# Used stacked with Lepidoptera and Hymenoptera
 
-invert_SSDM <- stack_modelling(
-  algorithms = "SVM",
-  Occurrences = specData,
+# more environmental data
+
+envData <- load_var(path = "SmallEnvData/", tmp = TRUE, format = ".tif", categorical = "small_classification_20m")
+envData
+plot(envData)
+
+lepid_4ed_SDM <- modelling(
+  algorithm = "SVM",
+  Occurrences = specData[ specData$order == "Lepidoptera", ],
   Env = envData,
   Xcol = 'xCentroid',
   Ycol = 'yCentroid',
   verbose = TRUE,
-  Spcol = "order",
   save = TRUE,
   ensemble.thresh = .1,
   cores = 8
 )
 
+knitr::kable(lepid_4ed_SDM@evaluation)
+knitr::kable(lepid_4ed_SDM@variable.importance)
+plot(lepid_4ed_SDM)
+save(lepid_4ed_SDM, file = "Outputs/LEPID_4ed_SDM.RData")
+
+# try ensemble
+lepid_4ed_ensemb <- ensemble_modelling(
+  algorithms = c("SVM", "GLM", "RF"),
+  Occurrences = specData[ specData$order == "Lepidoptera", ],
+  Env = envData,
+  Xcol = 'xCentroid',
+  Ycol = 'yCentroid',
+  verbose = TRUE,
+  save = TRUE,
+  ensemble.thresh = .5,
+  cores = 8, name = "Lepidoptera"
+)
+
+# hymenoptera ensemble
+hymen_4ed_ensemb <- ensemble_modelling(
+  algorithms = c("SVM", "GLM", "RF"),
+  Occurrences = specData[ specData$order == "Hymenoptera", ],
+  Env = envData,
+  Xcol = 'xCentroid',
+  Ycol = 'yCentroid',
+  verbose = TRUE,
+  save = TRUE,
+  ensemble.thresh = .5,
+  cores = 8, name = "Hymenoptera"
+)
+
+# CTA,MARS gives poor results, as do GBM, ANN, 
+#GAM does not work
+
+SSDM_4ed_ensemb <- stacking(lepid_4ed_ensemb, hymen_4ed_ensemb)
+
+save.stack(SSDM_4ed_ensemb)
+
+plot(SSDM_4ed_ensemb, main = 'SSDM\nfor Lepidoptera and Hymenoptera\nwith Maxent algorithm')
+
+# # evaluate the model
+# knitr::kable(invert_2_SSDM@evaluation)
+# 
+# # examine importance of environmental variables
+# 
+# knitr::kable(invert_2_SSDM@variable.importance)
+
+## ----- try full map --------------------------------------
+## Variable setup
+envDataBig <- load_var(path = "EnvironmentalData/", tmp = TRUE, format = ".tif", categorical = "classification_20m")
+envDataBig
+
+## Lepidoptera
+lepid_big_ensemb <- ensemble_modelling(
+  algorithms = c("SVM", "GLM"),
+  Occurrences = specData[ specData$order == "Lepidoptera", ],
+  Env = envDataBig,
+  Xcol = 'xCentroid',
+  Ycol = 'yCentroid',
+  verbose = TRUE,
+  save = TRUE,
+  ensemble.thresh = .5,
+  cores = 8, name = "LepidopteraBig"
+)
+
+## Hymenoptera
+lepid_big_ensemb <- ensemble_modelling(
+  algorithms = c("SVM", "GLM"),
+  Occurrences = specData[ specData$order == "Hymenoptera", ],
+  Env = envDataBig,
+  Xcol = 'xCentroid',
+  Ycol = 'yCentroid',
+  verbose = TRUE,
+  save = TRUE,
+  ensemble.thresh = .5,
+  cores = 8, name = "HymenopteraBig"
+)
 
 
-invert_2_SSDM <-
-  ensemble_modelling(
-    c('RF'),
-    subset(specData, specData$order %in% c('Lepidoptera', 'Hymenoptera')),
-    Env = envData,
-    Xcol = 'xCentroid',
-    Ycol = 'yCentroid',
-    verbose = TRUE,
-    Spcol = "order",
-    save = TRUE,
-    ensemble.thresh = 0,
-    cores = 8
-  )
-saveRDS(invert_2_SSDM, file = "invert_2_SSDM.RData")
 
-
-
-plot(invert_2_SSDM@projection, main = 'SSDM\nfor Lepidoptera and Hymenoptera\nwith Maxent algorithm')
-
-
-# evaluate the model
-knitr::kable(invert_2_SSDM@evaluation)
-
-# examine importance of environmental variables
-
-knitr::kable(invert_2_SSDM@variable.importance)
-
-  
 
 # Possible packages:
 # https://onlinelibrary.wiley.com/doi/10.1111/ecog.02671
