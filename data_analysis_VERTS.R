@@ -3,7 +3,8 @@
 ## This file takes the processed eDNA data and conducts the biodiversity data
 ## analysis. This file specifically addresses the vertebrates using the Riaz primers.
 
-## There were two protocls followed, one using 2g of soil and the other using 20g.
+## There were two protocols followed, one using 2g of soil and the other using
+## 20g. We used the 2g for analysis as it returned more reads.
 
 ## ------ Setup --------------------------------------------
 
@@ -18,32 +19,40 @@ library(lme4)
 library(ggplot2)
 library(plyr)
 library(tidyr)
+library(compositions)
+library(zCompositions)
 library(dplyr)
-detach("package:raster")
 
 ## ----- Summary of eDNA data ------------------------------
 
 ## eDNA reads found; total number of species variants, etc. 
 riazData$total_reads <- rowSums(riazData[, grepl(x = colnames(riazData), "SFX[0-9]")])
-riazData_2$total_reads <- rowSums(riazData_2[, grepl(x = colnames(riazData_2), "SFX[0-9]")])
-riazData_20$total_reads <- rowSums(riazData_20[, grepl(x = colnames(riazData_2), "SFX[0-9]")])
+# riazData_2$total_reads <- rowSums(riazData_2[, grepl(x = colnames(riazData_2), "SFX[0-9]")])
+# riazData_20$total_reads <- rowSums(riazData_20[, grepl(x = colnames(riazData_2), "SFX[0-9]")])
 
-totalReadsRiaz <- sum(riazData$total_reads)
+totalReadsRiaz_unfiltered <- sum(riazData$total_reads)
+totalReadsRiaz_filtered <- sum(riazData$total_reads[riazData$total_reads >= minAbun])
 totalReadsRiaz_2 <- sum(riazData_2$total_reads)
 totalReadsRiaz_20 <- sum(riazData_20$total_reads)
 
-totalMOTURiaz <- length(unique(riazData$id[riazData$total_reads>0]))
-totalMOTURiaz_2 <- length(unique(riazData_2$id[riazData_2$total_reads>0]))
-totalMOTURiaz_20 <- length(unique(riazData_20$id[riazData_20$total_reads>0]))
+totalMOTURiaz_unfiltered <- length(unique(riazData$id[riazData$total_reads>0]))
+totalMOTURiaz_filtered <- length(unique(riazData$id[riazData$total_reads>=minAbun]))
+totalMOTURiaz_2 <- length(unique(riazData_2$id))
+totalMOTURiaz_20 <- length(unique(riazData_20$id))
 
 
-totalUniqueTaxon <- length(unique(riazData$family))
-totalUniqueTaxon_2 <- length(unique(riazData_2$family))
-totalUniqueTaxon_20 <- length(unique(riazData_20$family))
 
-colSums(select(riazData_2, where(is.numeric)))
+totalUniqueTaxonRiaz_unfiltered <- unique(riazData$family) %>%
+    grep("Class_|Order_", ., invert = TRUE) %>% length()
+totalUniqueTaxonRiaz_filtered <-
+    unique(riazData$family[riazData$total_reads >= minAbun]) %>%
+    grep("Class_|Order_", ., invert = TRUE) %>% length()
+totalUniqueTaxonRiaz_2 <-
+    unique(riazData_2$family) %>% grep("Class_|Order_", ., invert = TRUE) %>% length()
+totalUniqueTaxonRiaz_20 <-
+    unique(riazData_20$family) %>% grep("Class_|Order_", ., invert = TRUE) %>% length()
 
-
+totalReadsRiaz_2 / totalReadsRiaz_filtered
 
 
 ## _______ Key species questions and indicators ________________
@@ -173,14 +182,10 @@ allSpeciesSite <- riazData_2_ReadsOnly
 # Site x Species table
 cocoaSiteSpecies <- riazData_2_cocoaSiteSpecies
 pastureSiteSpecies <- riazData_2_pastureSiteSpecies
-#forestSiteSpecies <- 
+#forestSiteSpecies <- riazData_2_forestSiteSpecies
 allSiteSpecies <- riazData_2_siteSpecies
 
-allSiteSpecies$landUse <- ifelse(grepl("[0-9][0-9]C",rownames(allSiteSpecies)),
-                                 yes = "Cocoa",
-                                 no = ifelse(grepl("[0-9][0-9]P", rownames(allSiteSpecies)),
-                                             yes = "Pasture",
-                                             no = "Forest"))
+allSiteSpecies <- allSiteSpecies[ rowSums(allSiteSpecies) > 0, ]
 
 remove(riazData_2_cocoaOnly, riazData_20_cocoaOnly,
        riazData_2_cocoaSiteSpecies, riazData_20_cocoaSiteSpecies,
@@ -189,6 +194,41 @@ remove(riazData_2_cocoaOnly, riazData_20_cocoaOnly,
        riazData_2_ReadsOnly, riazData_20_ReadsOnly,
        riazData_2_siteSpecies, riazData_20_siteSpecies,
        riazData_2_forestOnly, riazData_20_forestOnly)
+
+
+## ----- Create the compositional matrices ----------------------
+# Just do this for the 2g matrices that will be used for further analysis.
+
+zPatterns(allSiteSpecies[,], 0)
+zPatterns(allSpeciesSite[,-1], 0)
+
+# square-root Bayesian-multiplicative replacement of zeros with the cmultRepl()
+# function (Ladin et al., 2021)
+
+allSiteSpecies_0repl <- cmultRepl(allSiteSpecies, label = 0,
+                                  method = "SQ", output = "prop")
+
+boxplot(aplus(X = allSiteSpecies_0repl[ , ], parts = colnames(allSiteSpecies[ , ])))
+
+allSiteSpecies_comps <- cdt.acomp(x = allSiteSpecies_0repl, )
+
+
+
+plot(allSiteSpecies_comps)
+
+
+allSiteSpecies$landUse <- ifelse(grepl("[0-9][0-9]C",rownames(allSiteSpecies)),
+                                 yes = "Cocoa",
+                                 no = ifelse(grepl("[0-9][0-9]P", rownames(allSiteSpecies)),
+                                             yes = "Pasture",
+                                             no = "Forest"))
+
+remove(allSiteSpecies_0repl)
+
+
+
+
+
 
 ## ----- Biodiversity Indicator 4 -------------------------------
 ## Number of keystone/priority species due to intervention.

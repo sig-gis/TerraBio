@@ -26,7 +26,7 @@ TerraBio's biodiversity indicators break down into two main components: those de
 
 ### Key species present in our sample
 
-We found a total of `r length(unique(c(keyInCocoaOnly, keyInPastureOnly)))` key invertebrate species in our intervention and counterfactual sample (Table 1). A total of `r length(forestKeySpecies)` key species were found in our forest sample.
+We found a total of `r length(unique(c(cocoaKSPresent, pastureKSPresent)))` key invertebrate species in our intervention and counterfactual sample (Table 1). A total of `r length(forestKSPresent)` key species were found in our forest sample.
 
 
 ```{r keySpeciesTable}
