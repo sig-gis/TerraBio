@@ -39,3 +39,6 @@ vignettes/*.pdf
 .Renviron
 BNA4.All_MOTUs_.csv
 *.tif
+
+# Output and archive folders
+archive/
