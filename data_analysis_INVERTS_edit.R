@@ -962,13 +962,25 @@ library("FactoMineR")
 library("factoextra")
 # Good tutorial here: http://www.sthda.com/english/articles/31-principal-component-methods-in-r-practical-guide/112-pca-principal-component-analysis-essentials/
 
+# create a column for pretty names.
+invertData$pretty <- paste0(invertData$species, "_", str_sub(invertData$id, -6,-1))
+
 # Create PCA for all plots
 temp <- allSiteSpecies_comps %>%
     tibble::rownames_to_column(var = "updatedPlot") %>%
     left_join(siteLookup)
 
+# rename the species columns to plot nicely
+
+colnames(temp) <- plyr::mapvalues(colnames(temp),
+                                  invertData$id,
+                                  invertData$pretty)
+    # ignore the "not present in x' message.
+
+
+# create plot pcas
 pca_plots <- temp %>%
-    dplyr::select(GSFX_000000168:ZSFX_000026178) %>%
+    dplyr::select(Class_Arachnida_000168:Class_Arachnida_026178) %>%
     PCA(., scale.unit = F, graph = F)
 
 viz_pcaPlots <- fviz_pca_ind(
@@ -982,7 +994,20 @@ viz_pcaPlots <- fviz_pca_ind(
 # ggpubr::ggpar(viz_pcaPlots,
 #               title = "Plots - PCA")
 
+viz_pcaPlots_contrib <- fviz_contrib(pca_plots, choice = "ind", axes = 1:2)
 
+fviz_pca_biplot(pca_plots,
+                # Sites
+                col.ind = temp$system,
+                addEllipses = T,
+                ellipse.type = "convex",
+                label = "var",
+                repel = T,
+                max.overlaps = 5,
+                alpha.var ="contrib")
+
+
+# 
 temp <- allSiteSpecies_comps %>%
     tibble::rownames_to_column(var = "updatedPlot") %>%
     left_join(siteLookup) %>%
@@ -1007,10 +1032,17 @@ viz_pcaSites <- fviz_pca_ind(
     col.ind = temp$system,
     addEllipses = T,
     ellipse.type = "convex",
-    legend.title = "Group"
-)
+    legend.title = "Group",
+    repel = TRUE
+    )
+
+viz_pcaSites_contrib <- fviz_contrib(pca_sites, choice = "ind", axes = 1:2)
+
 ggpubr::ggpar(viz_pcaSites,
               title = "Sites - PCA")
+
+
+
 
 
 ## ----- END OF CODE ---------------------------
