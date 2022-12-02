@@ -200,14 +200,9 @@ remove(cocoaKeyInvert_2, cocoaKeyInvert_20,
 
 
 # Species x Site tables:
-cocoaSpeciesSite <- invert_2_cocoa
-pastureSpeciesSite <- invert_2_pasture
-allSpeciesSite <- invert_2_ReadOnly
-
-
-# invert_2_ReadOnly
-# invert_20_ReadOnly
-# invert_2_siteSpecies
+cocoaSpeciesSite <- invert_2_cocoaOnly
+pastureSpeciesSite <- invert_2_pastureOnly
+allSpeciesSite <- invert_2_ReadsOnly
 
 
 # Site x Species table
@@ -467,27 +462,20 @@ test_keySpeciesAbundanceLMER <- car::Anova(keySpeciesAbundanceLMER)
 
 plotTBSpeciesAbundance <- tbSpeciesChange %>%
     ggplot() +
-    geom_boxplot(aes(siteField, keySpeciesAbundance),
+    geom_boxplot(aes(siteType, keySpeciesAbundance),
                  outlier.shape = NA) +
     geom_jitter(
-        aes(siteField, keySpeciesAbundance, color = siteType),
+        aes(siteType, keySpeciesAbundance, color = siteType),
         width = 0.1,
         height = 0
     ) +
-    labs(color = "Field Type", y = "Key Species Abundance") +
-    scale_x_discrete(name = "Field Site Code",
-                     labels=c("SFX204-07C" = "Cocoa 1",
-                              "SFX217-03C" = "Cocoa 2",
-                              "SFX225-08C" = "Cocoa 3",
-                              "SFX188-05C" = "Cocoa 4",
-                              "SFX006-02C" = "Cocoa 5",
-                              "SFX237-04P" = "Pasture 1",
-                              "SFX051-02P" = "Pasture 2",
-                              "SFX026-01P" = "Pasture 3",
-                              "SFX128-07P" = "Pasture 4",
-                              "SFX184-03P" = "Pasture 5"
+    labs(y = "Key Species Abundance") +
+    scale_x_discrete(name = "Field Type",
+                     labels=c("COCOA" = "Shaded Cocoa",
+                              "PASTURE" = "Pasture"
                               )) +
-    theme(legend.position="bottom")
+    scale_y_log10(oob = scales::squish_infinite) +
+    theme(legend.position="")
 
 
 #https://cmdlinetips.com/2019/05/how-to-highlight-select-data-points-with-ggplot2-in-r/
@@ -571,27 +559,20 @@ plot(
 
 tbSpeciesAllCount <- tbSpeciesChange %>%
     ggplot() +
-    geom_boxplot(aes(siteField, allSpeciesRichness),
+    geom_boxplot(aes(siteType, allSpeciesRichness),
                  outlier.shape = NA) +
     geom_jitter(
-        aes(siteField, allSpeciesRichness, color = siteType),
+        aes(siteType, allSpeciesRichness, color = siteType),
         width = 0.1,
         height = 0
     ) +
-    labs(color = "Field Type", y = "All Species Richness") +
-    scale_x_discrete(name = "Field Site Code",
-                     labels=c("SFX204-07C" = "Cocoa 1",
-                              "SFX217-03C" = "Cocoa 2",
-                              "SFX225-08C" = "Cocoa 3",
-                              "SFX188-05C" = "Cocoa 4",
-                              "SFX006-02C" = "Cocoa 5",
-                              "SFX237-04P" = "Pasture 1",
-                              "SFX051-02P" = "Pasture 2",
-                              "SFX026-01P" = "Pasture 3",
-                              "SFX128-07P" = "Pasture 4",
-                              "SFX184-03P" = "Pasture 5"
+    labs(y = "Species Richness") +
+    scale_x_discrete(name = "Field Type",
+                     labels=c("COCOA" = "Shaded Cocoa",
+                              "PASTURE" = "Pasture"
                      )) +
-    theme(legend.position="bottom")
+    scale_y_log10(oob = scales::squish_infinite) +
+    theme(legend.position="")
 
 
 ## ----- Question 1.6 ------------------------------
@@ -642,13 +623,18 @@ test_allSpeciesAbundanceLMER <- car::Anova(allAbundanceLMER)
 
 tbSpeciesAllAbundance <- tbSpeciesChange %>%
     ggplot() +
-    geom_boxplot(aes(siteField, allAbundance),
+    geom_boxplot(aes(siteType, allAbundance),
                  outlier.shape = NA) +
-    geom_jitter(aes(siteField, allAbundance, color = siteType),
+    geom_jitter(aes(siteType, allAbundance, color = siteType),
                 width = 0.1,
                 height = 0) +
-    labs(color = "Field Type", y = "All Species Abundance (reads)", x = "Field Site Code")
-
+    labs(color = "Field Type", y = "All Species Abundance (reads)")+
+scale_x_discrete(name = "Field Type",
+                 labels=c("COCOA" = "Shaded Cocoa",
+                          "PASTURE" = "Pasture"
+                 )) +
+    scale_y_log10(oob = scales::squish_infinite) +
+    theme(legend.position="")
 
 
 
@@ -697,27 +683,20 @@ test_shannonLMER <- car::Anova(shannonLMER)
 
 tbSpeciesChange %>%
     ggplot() +
-    geom_boxplot(aes(siteField, shannon),
+    geom_boxplot(aes(siteType, shannon),
                  outlier.shape = NA) +
     geom_jitter(
-        aes(siteField, shannon, color = siteType),
+        aes(siteType, shannon, color = siteType),
         width = 0.1,
         height = 0
     ) +
     labs(color = "Field Type", y = "Shannon Diversity") +
-    scale_x_discrete(name = "Field Site Code",
-                     labels=c("SFX204-07C" = "Cocoa 1",
-                              "SFX217-03C" = "Cocoa 2",
-                              "SFX225-08C" = "Cocoa 3",
-                              "SFX188-05C" = "Cocoa 4",
-                              "SFX006-02C" = "Cocoa 5",
-                              "SFX237-04P" = "Pasture 1",
-                              "SFX051-02P" = "Pasture 2",
-                              "SFX026-01P" = "Pasture 3",
-                              "SFX128-07P" = "Pasture 4",
-                              "SFX184-03P" = "Pasture 5"
+    scale_x_discrete(name = "Field Type",
+                     labels=c("COCOA" = "Shaded Cocoa",
+                              "PASTURE" = "Pasture"
                      )) +
-    theme(legend.position="bottom")
+    #scale_y_log10(oob = scales::squish_infinite) +
+    theme(legend.position="")
 
 
 # test for Simpson's
@@ -734,27 +713,20 @@ test_shannonLMER <- car::Anova(simpsonLMER)
 
 tbSpeciesChange %>%
     ggplot() +
-    geom_boxplot(aes(siteField, simpson),
+    geom_boxplot(aes(siteType, simpson),
                  outlier.shape = NA) +
     geom_jitter(
-        aes(siteField, simpson, color = siteType),
+        aes(siteType, simpson, color = siteType),
         width = 0.1,
         height = 0
     ) +
     labs(color = "Field Type", y = "Simpson Diversity") +
-    scale_x_discrete(name = "Field Site Code",
-                     labels=c("SFX204-07C" = "Cocoa 1",
-                              "SFX217-03C" = "Cocoa 2",
-                              "SFX225-08C" = "Cocoa 3",
-                              "SFX188-05C" = "Cocoa 4",
-                              "SFX006-02C" = "Cocoa 5",
-                              "SFX237-04P" = "Pasture 1",
-                              "SFX051-02P" = "Pasture 2",
-                              "SFX026-01P" = "Pasture 3",
-                              "SFX128-07P" = "Pasture 4",
-                              "SFX184-03P" = "Pasture 5"
+    scale_x_discrete(name = "Field Type",
+                     labels=c("COCOA" = "Shaded Cocoa",
+                              "PASTURE" = "Pasture"
                      )) +
-    theme(legend.position="bottom")
+    #scale_y_log10(oob = scales::squish_infinite) +
+    theme(legend.position="")
 
 
 
@@ -778,27 +750,20 @@ test_effectiveSRLMER<-car::Anova(effectiveSRLMER)
 
 tbSpeciesChange %>%
     ggplot() +
-    geom_boxplot(aes(siteField, effectiveSR),
+    geom_boxplot(aes(siteType, effectiveSR),
                  outlier.shape = NA) +
     geom_jitter(
-        aes(siteField, effectiveSR, color = siteType),
+        aes(siteType, effectiveSR, color = siteType),
         width = 0.1,
         height = 0
     ) +
     labs(color = "Field Type", y = "Effective Species Richness") + 
-    scale_x_discrete(name = "Field Site Code",
-                     labels=c("SFX204-07C" = "Cocoa 1",
-                              "SFX217-03C" = "Cocoa 2",
-                              "SFX225-08C" = "Cocoa 3",
-                              "SFX188-05C" = "Cocoa 4",
-                              "SFX006-02C" = "Cocoa 5",
-                              "SFX237-04P" = "Pasture 1",
-                              "SFX051-02P" = "Pasture 2",
-                              "SFX026-01P" = "Pasture 3",
-                              "SFX128-07P" = "Pasture 4",
-                              "SFX184-03P" = "Pasture 5"
+    scale_x_discrete(name = "Field Type",
+                     labels=c("COCOA" = "Shaded Cocoa",
+                              "PASTURE" = "Pasture"
                      )) +
-    theme(legend.position="bottom")
+    #scale_y_log10(oob = scales::squish_infinite) +
+    theme(legend.position="")
 
 # Test for inverse Simpson
 
@@ -814,27 +779,20 @@ test_shannonLMER <- car::Anova(invSimpsonLMER)
 
 tbSpeciesChange %>%
     ggplot() +
-    geom_boxplot(aes(siteField, invSimpson),
+    geom_boxplot(aes(siteType, invSimpson),
                  outlier.shape = NA) +
     geom_jitter(
-        aes(siteField, invSimpson, color = siteType),
+        aes(siteType, invSimpson, color = siteType),
         width = 0.1,
         height = 0
     ) +
     labs(color = "Field Type", y = "Inv. Simpson Diversity") +
-    scale_x_discrete(name = "Field Site Code",
-                     labels=c("SFX204-07C" = "Cocoa 1",
-                              "SFX217-03C" = "Cocoa 2",
-                              "SFX225-08C" = "Cocoa 3",
-                              "SFX188-05C" = "Cocoa 4",
-                              "SFX006-02C" = "Cocoa 5",
-                              "SFX237-04P" = "Pasture 1",
-                              "SFX051-02P" = "Pasture 2",
-                              "SFX026-01P" = "Pasture 3",
-                              "SFX128-07P" = "Pasture 4",
-                              "SFX184-03P" = "Pasture 5"
+    scale_x_discrete(name = "Field Type",
+                     labels=c("COCOA" = "Shaded Cocoa",
+                              "PASTURE" = "Pasture"
                      )) +
-    theme(legend.position="bottom")
+    #scale_y_log10(oob = scales::squish_infinite) +
+    theme(legend.position="")
 
 
 ## ----- PI2: Beta diversity w/ Aitchison distance -----------------------------
@@ -935,10 +893,10 @@ aitchisonPlot %>%
     mutate(type = if_else(grepl("P", plot1) & grepl("P", plot2),
                          "Pasture-Pasture",
                          if_else(grepl("C", plot1) & grepl("C",plot2),
-                                 "Cocoa-Cocoa",
+                                 "Shd. Cocoa-Shd. Cocoa",
                                  if_else(grepl("01F", plot1) | grepl("01F", plot2), 
                                  "Forest",
-                                 "Cocoa-Pasture"))
+                                 "Shd. Cocoa-Pasture"))
                          )
            ) %>%
     dplyr::filter(type != "Forest") %>%
@@ -1017,7 +975,7 @@ temp <- allSiteSpecies_comps %>%
     
 
 temp$system <- ifelse(grepl("Cocoa",rownames(temp)),
-                      yes = "Cocoa",
+                      yes = "Shd. Cocoa",
                       no = ifelse(grepl("Pasture", rownames(temp)),
                                   yes = "Pasture",
                                   no = "Forest"))

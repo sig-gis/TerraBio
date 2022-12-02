@@ -35,11 +35,11 @@ invertBind <- function(inputOTU1, inputOTU2) {
 
 # ----- Import the motu datasets -----------------------------------
 
-gilletData <- read.csv("FarmData/Gillet_SFX.csv", sep = ",", quote = "\'")
+gilletData <- read.csv("PilotFarmData/Gillet_SFX.csv", sep = ",", quote = "\'")
 
-riazData <- read.csv("FarmData/Riaz_SFX.csv", sep = ",", quote = "\'")
+riazData <- read.csv("PilotFarmData/Riaz_SFX.csv", sep = ",", quote = "\'")
 
-zealeData <- read.csv("FarmData/Zeale_SFX.csv", sep = ",", quote = "\'")
+zealeData <- read.csv("PilotFarmData/Zeale_SFX.csv", sep = ",", quote = "\'")
 
 
 sum(rowSums(riazData[ , grepl(x = colnames(riazData), pattern = "_2g")])>0)
@@ -76,8 +76,8 @@ sum(rowSums(invertData[ , grepl(x = colnames(invertData), pattern = "_")]) > 0)
 
 # ----- Import key species tables -----------------------------------
 
-keyVertSpecies <- read.csv("FarmData/KeyVertebrates.csv")
-keyInvertSpecies <- read.csv("FarmData/KeyInvertebrates.csv")
+keyVertSpecies <- read.csv("PilotFarmData/KeyVertebrates.csv")
+keyInvertSpecies <- read.csv("PilotFarmData/KeyInvertebrates.csv")
 
 
 # this should be an identifier for keySpecies
@@ -88,7 +88,7 @@ keyInvertList <- keyInvertSpecies$id[keyInvertSpecies$keySpecies == "yes"]
 
 
 # Import lookup table, which has field codes and the codes the Salford lab used
-siteLookup <- read.csv("FarmData/Lookup_SFX.csv")
+siteLookup <- read.csv("PilotFarmData/Lookup_SFX.csv")
 
 # ----- Split the OTU datasets in to 2 gram and 20 gram methods --------------
 
@@ -356,19 +356,19 @@ forestField <- (siteLookup$site[siteLookup$system == "FOREST"])
 
 
 ## Import site level data.
-
-library(raster)
-
-# Need lat and long for species distribution models.
-sampledPlots <- shapefile("FarmData/sampledPlots.shp", verbose = T)
-
-plotNames <- unique(sampledPlots$ID)
-
-sampledPlotsTable <- tibble(plotName = sampledPlots$ID,
-                            xCentroid = sampledPlots$xCentroid,
-                            yCentroid = sampledPlots$yCentroid)
-
-detach("package:raster")
+# 
+# library(raster)
+# 
+# # Need lat and long for species distribution models.
+# sampledPlots <- shapefile("PilotFarmData/sampledPlots.shp", verbose = T)
+# 
+# plotNames <- unique(sampledPlots$ID)
+# 
+# sampledPlotsTable <- tibble(plotName = sampledPlots$ID,
+#                             xCentroid = sampledPlots$xCentroid,
+#                             yCentroid = sampledPlots$yCentroid)
+# 
+# detach("package:raster")
 
 
 ## few metrics for quality checks

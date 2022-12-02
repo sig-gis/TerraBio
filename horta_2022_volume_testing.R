@@ -1,4 +1,4 @@
-# This analyis is based on soil samples collected in June at Horta and processed
+# This analysis is based on soil samples collected in June at Horta and processed
 # by EcoMol.
 
 # This file take the eDNA species table provided by EcoMol and determines three

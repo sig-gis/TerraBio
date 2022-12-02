@@ -1,0 +1,174 @@
+EcoMol,pretty,type
+EM91b-R1-A1,Syntropic A1,Syntropic
+EM91b-R1-A2,Syntropic A2,Syntropic
+EM91b-R1-A3,Syntropic A3,Syntropic
+EM91b-R1-B1,Syntropic B1,Syntropic
+EM91b-R1-B2,Syntropic B2,Syntropic
+EM91b-R1-B3,Syntropic B3,Syntropic
+EM91b-R1-C1,Syntropic C1,Syntropic
+EM91b-R1-C2,Syntropic C2,Syntropic
+EM91b-R1-C3,Syntropic C3,Syntropic
+EM91b-R1-CF1,CF 1 Buffer,Counterfactual
+EM91b-R1-CF2,CF 2 Buffer,Counterfactual
+EM91b-R1-CF3,CF 3 Buffer,Counterfactual
+EM91b-R1-Co1,Forest 1 Buffer,Forest
+EM91b-R1-Co2,Forest 2 Buffer,Forest
+EM91b-R1-Co3,Forest 3 Buffer,Forest
+EM91b-R1-D1,Syntropic D1,Syntropic
+EM91b-R1-D2,Syntropic D2,Syntropic
+EM91b-R1-D3,Syntropic D3,Syntropic
+EM91b-R1-E1,Syntropic E1,Syntropic
+EM91b-R1-E2,Syntropic E2,Syntropic
+EM91b-R1-E3,Syntropic E3,Syntropic
+EM91b-R1-F1,Syntropic F1,Syntropic
+EM91b-R1-F2,Syntropic F2,Syntropic
+EM91b-R1-F3,Syntropic F3,Syntropic
+EM91b-R1-G1,Syntropic G1,Syntropic
+EM91b-R1-G2,Syntropic G2,Syntropic
+EM91b-R1-G3,Syntropic G3,Syntropic
+EM91b-R1-H1,Syntropic H1,Syntropic
+EM91b-R1-H2,Syntropic H2,Syntropic
+EM91b-R1-H3,Syntropic H3,Syntropic
+EM91b-R1-I1,Syntropic I1,Syntropic
+EM91b-R1-I2,Syntropic I2,Syntropic
+EM91b-R1-I3,Syntropic I3,Syntropic
+EM91b-R1-Re1,Restoration 1 Buffer,Restoration
+EM91b-R1-Re2,Restoration 2 Buffer,Restoration
+EM91b-R1-Re3,Restoration 3 Buffer,Restoration
+EM91b-R1-Sy1,Syntropic 1 Buffer,Syntropic
+EM91b-R1-Sy2,Syntropic 2 Buffer,Syntropic
+EM91b-R1-Sy3,Syntropic 3 Buffer,Syntropic
+EM91b-R2-A1,Syntropic A1,Syntropic
+EM91b-R2-A2,Syntropic A2,Syntropic
+EM91b-R2-A3,Syntropic A3,Syntropic
+EM91b-R2-B1,Syntropic B1,Syntropic
+EM91b-R2-B2,Syntropic B2,Syntropic
+EM91b-R2-B3,Syntropic B3,Syntropic
+EM91b-R2-C1,Syntropic C1,Syntropic
+EM91b-R2-C2,Syntropic C2,Syntropic
+EM91b-R2-C3,Syntropic C3,Syntropic
+EM91b-R2-CF1,CF 1 Buffer,Counterfactual
+EM91b-R2-CF2,CF 2 Buffer,Counterfactual
+EM91b-R2-CF3,CF 3 Buffer,Counterfactual
+EM91b-R2-Co1,Forest 1 Buffer,Forest
+EM91b-R2-Co2,Forest 2 Buffer,Forest
+EM91b-R2-Co3,Forest 3 Buffer,Forest
+EM91b-R2-D1,Syntropic D1,Syntropic
+EM91b-R2-D2,Syntropic D2,Syntropic
+EM91b-R2-D3,Syntropic D3,Syntropic
+EM91b-R2-E1,Syntropic E1,Syntropic
+EM91b-R2-E2,Syntropic E2,Syntropic
+EM91b-R2-E3,Syntropic E3,Syntropic
+EM91b-R2-F1,Syntropic F1,Syntropic
+EM91b-R2-F2,Syntropic F2,Syntropic
+EM91b-R2-F3,Syntropic F3,Syntropic
+EM91b-R2-G1,Syntropic G1,Syntropic
+EM91b-R2-G2,Syntropic G2,Syntropic
+EM91b-R2-G3,Syntropic G3,Syntropic
+EM91b-R2-H1,Syntropic H1,Syntropic
+EM91b-R2-H2,Syntropic H2,Syntropic
+EM91b-R2-H3,Syntropic H3,Syntropic
+EM91b-R2-I1,Syntropic I1,Syntropic
+EM91b-R2-I2,Syntropic I2,Syntropic
+EM91b-R2-I3,Syntropic I3,Syntropic
+EM91b-R2-Re1,Restoration 1 Buffer,Restoration
+EM91b-R2-Re2,Restoration 2 Buffer,Restoration
+EM91b-R2-Re3,Restoration 3 Buffer,Restoration
+EM91b-R2-Sy2,Syntropic 2 Buffer,Syntropic
+EM91b-R2-Sy3,Syntropic 3 Buffer,Syntropic
+EM91b-Sy1,Syntropic 1 Buffer,Syntropic
+EM91b-R2-Sy1,Syntropic 1 Buffer,Syntropic
+EM91s-R1-A1,Syntropic A1,Syntropic
+EM91s-R1-A2,Syntropic A2,Syntropic
+EM91s-R1-A3,Syntropic A3,Syntropic
+EM91s-R1-B1,Syntropic B1,Syntropic
+EM91s-R1-B2,Syntropic B2,Syntropic
+EM91s-R1-B3,Syntropic B3,Syntropic
+EM91s-R1-C1,Syntropic C1,Syntropic
+EM91s-R1-C2,Syntropic C2,Syntropic
+EM91s-R1-C3,Syntropic C3,Syntropic
+EM91s-R1-CF1,CF 1 Silica,Counterfactual
+EM91s-R1-CF2,CF 2 Silica,Counterfactual
+EM91s-R1-CF3,CF 3 Silica,Counterfactual
+EM91s-R1-Co1,Forest 1 Silica,Forest
+EM91s-R1-Co2,Forest 2 Silica,Forest
+EM91s-R1-Co3,Forest 3 Silica,Forest
+EM91s-R1-D1,Syntropic D1,Syntropic
+EM91s-R1-D2,Syntropic D2,Syntropic
+EM91s-R1-D3,Syntropic D3,Syntropic
+EM91s-R1-E1,Syntropic E1,Syntropic
+EM91s-R1-E2,Syntropic E2,Syntropic
+EM91s-R1-E3,Syntropic E3,Syntropic
+EM91s-R1-F1,Syntropic F1,Syntropic
+EM91s-R1-F2,Syntropic F2,Syntropic
+EM91s-R1-F3,Syntropic F3,Syntropic
+EM91s-R1-G1,Syntropic G1,Syntropic
+EM91s-R1-G2,Syntropic G2,Syntropic
+EM91s-R1-G3,Syntropic G3,Syntropic
+EM91s-R1-H1,Syntropic H1,Syntropic
+EM91s-R1-H2,Syntropic H2,Syntropic
+EM91s-R1-H3,Syntropic H3,Syntropic
+EM91s-R1-I1,Syntropic I1,Syntropic
+EM91s-R1-I2,Syntropic I2,Syntropic
+EM91s-R1-I3,Syntropic I3,Syntropic
+EM91s-R1-Re1,Restoration 1 Silica,Restoration
+EM91s-R1-Re2,Restoration 2 Silica,Restoration
+EM91s-R1-Re3,Restoration 3 Silica,Restoration
+EM91s-R1-Sy1,Syntropic 1 Silica,Syntropic
+EM91s-R1-Sy2,Syntropic 2 Silica,Syntropic
+EM91s-R1-Sy3,Syntropic 3 Silica,Syntropic
+EM91s-R2-A1,Syntropic A1,Syntropic
+EM91s-R2-A2,Syntropic A2,Syntropic
+EM91s-R2-A3,Syntropic A3,Syntropic
+EM91s-R2-B1,Syntropic B1,Syntropic
+EM91s-R2-B2,Syntropic B2,Syntropic
+EM91s-R2-B3,Syntropic B3,Syntropic
+EM91s-R2-C1,Syntropic C1,Syntropic
+EM91s-R2-C2,Syntropic C2,Syntropic
+EM91s-R2-C3,Syntropic C3,Syntropic
+EM91s-R2-CF1,CF 1 Silica,Counterfactual
+EM91s-R2-CF2,CF 2 Silica,Counterfactual
+EM91s-R2-CF3,CF 3 Silica,Counterfactual
+EM91s-R2-Co1,Forest 1 Silica,Forest
+EM91s-R2-Co2,Forest 2 Silica,Forest
+EM91s-R2-Co3,Forest 3 Silica,Forest
+EM91s-R2-D1,Syntropic D1,Syntropic
+EM91s-R2-D2,Syntropic D2,Syntropic
+EM91s-R2-D3,Syntropic D3,Syntropic
+EM91s-R2-E1,Syntropic E1,Syntropic
+EM91s-R2-E2,Syntropic E2,Syntropic
+EM91s-R2-E3,Syntropic E3,Syntropic
+EM91s-R2-F1,Syntropic F1,Syntropic
+EM91s-R2-F2,Syntropic F2,Syntropic
+EM91s-R2-F3,Syntropic F3,Syntropic
+EM91s-R2-G1,Syntropic G1,Syntropic
+EM91s-R2-G2,Syntropic G2,Syntropic
+EM91s-R2-G3,Syntropic G3,Syntropic
+EM91s-R2-H1,Syntropic H1,Syntropic
+EM91s-R2-H2,Syntropic H2,Syntropic
+EM91s-R2-H3,Syntropic H3,Syntropic
+EM91s-R2-I1,Syntropic I1,Syntropic
+EM91s-R2-I2,Syntropic I2,Syntropic
+EM91s-R2-I3,Syntropic I3,Syntropic
+EM91s-R2-Re1,Restoration 1 Silica,Restoration
+EM91s-R2-Re2,Restoration 2 Silica,Restoration
+EM91s-R2-Re3,Restoration 3 Silica,Restoration
+EM91s-R2-Sy1,Syntropic 1 Silica,Syntropic
+EM91s-R2-Sy2,Syntropic 2 Silica,Syntropic
+EM91s-R2-Sy3,Syntropic 3 Silica,Syntropic
+s-R1-Co,Forest,Forest
+s-R1-Re,Restoration,Restoration
+s-R1-Sy,Syntropic,Syntropic
+s-R1-CF,Counterfactual,Counterfactual
+b-R1-Co,Forest,Forest
+b-R1-Re,Restoration,Restoration
+b-R1-Sy,Syntropic,Syntropic
+b-R1-CF,Counterfactual,Counterfactual
+s-R2-Co,Forest,Forest
+s-R2-Re,Restoration,Restoration
+s-R2-Sy,Syntropic,Syntropic
+s-R2-CF,Counterfactual,Counterfactual
+b-R2-Co,Forest,Forest
+b-R2-Re,Restoration,Restoration
+b-R2-Sy,Syntropic,Syntropic
+b-R2-CF,Counterfactual,Counterfactual

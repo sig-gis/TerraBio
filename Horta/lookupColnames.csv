@@ -24,7 +24,7 @@ BLAST_subclass,BLAST_subclass,Y
 Class (BLASTn),classBLASTn,Y
 Phylum (BLASTn),phylumBLASTn,Y
 BLAST_subphylum,BLAST_subphylum,Y
-Kingdom (BLASTn),kingtomBLASTn,Y
+Kingdom (BLASTn),kingdomBLASTn,Y
 1_subject header,B1_subjectHeader,N
 1_subject,B1_subject,N
 1_indentity,B1_identity,N
@@ -55,7 +55,7 @@ Kingdom (BLASTn),kingtomBLASTn,Y
 3_subject,B3_subject,N
 3_indentity,B3_indentity,N
 3_qcovhsp,B3_qcovhsp,N
-c,B3_length,N
+3_length,B3_length,N
 3_mismatches,B3_mismatches,N
 3_gaps,B3_gaps,N
 3_query start,B3_queryStart,N
