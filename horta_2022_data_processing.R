@@ -48,7 +48,7 @@ source("../../../RCode/R_Scripts/triplet_fixer.R")
 minlibrarySize = 5000
 minRelativeAbund = 0.05
 minAbsoluteAbund = 5
-
+rare = 50
 #phylum = c("Annelida", "Nematoda", "Platyhelminthes", "Arthropoda", "Mollusca") #worms and insects
 #phylum = c("Rhodophyta", "Streptophyta", "Chlorophyta", "Bacillariophyta") #plants and algae
 #phylum = c("Rotifera", "Tubulinea", "Oomycota", "Gastrotricha", "Discosea", "Endomyxa", "Ascomycota") #microorganisms and fungi
@@ -62,6 +62,15 @@ phylum = c("Arthropoda")
 head(hortaAllASV)
 hortaAllASV <- hortaAllASV[ , lookupColnames$Keep == "Y"]
 head(hortaAllASV)
+
+# Remove sites not meeting minimum library size
+# removedSites <- unique(hortaAllASV$sample[hortaAllASV$sampleTotalAbd <= minlibrarySize])
+# hortaAllASV <- hortaAllASV[ !(hortaAllASV$sample %in% removedSites) , ]
+# stopifnot(length(unique(hortaAllASV$sample[hortaAllASV$sampleTotalAbd <= minlibrarySize])) == 0)
+# 
+# print(removedSites)
+# remove(removedSites)
+
 
 # Remove ASVs that don't meet criteria.
 

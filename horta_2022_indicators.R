@@ -71,7 +71,7 @@ ggplot(hortaASV, aes(x = preservation, y = asvAbsoluteAbundance)) +
 
 # plot total ASV absolute abundance grouped by sample for buffer/silica
 hortaSampleASV <- hortaASV %>% group_by(metadata_4, primerName, preservation) %>% 
-    summarise(totalAbund = sum(asvAbsoluteAbundance), countASV = length(unique(asvHeader)))
+    summarise(totalAbund = sum(asvAbsoluteAbundance), countASV = length(unique(ASVHeader)))
 
 ggplot(hortaSampleASV, aes(x = preservation, y = totalAbund)) + 
     geom_boxplot() + geom_jitter(aes(color = primerName))
@@ -157,52 +157,38 @@ hortaAlphaGroup <- alphaGroupMetrics(hortaMatrixSmall,
 # Test to compare site diversities between land use types
 
 # Test for raw species number
-
-speciesRLMER <- lme4::lmer( speciesRichness ~
-                                  siteType +
-                                  (1 | siteType),
-                              data = hortaAlpha,
-                              REML = TRUE)
-anova(speciesRLMER)
-lmerTest::rand(speciesRLMER)
-summary(speciesRLMER)
-test_speciesRLMER<-car::Anova(mod = speciesRLMER)
-emmeans::emmeans(speciesRLMER, pairwise~siteType)    
-  
-
-hortaAlpha %>%
-    ggplot() +
-    geom_boxplot(aes(siteType, speciesRichness),
-                 outlier.shape = NA) +
-    geom_jitter(
-        aes(siteType, speciesRichness, color = siteType),
-        width = 0.1,
-        height = 0
-    ) +
-    labs(color = "Site Type", y = "Raw Species Richness",
-         x = "Site Type") + 
-    theme(legend.position="bottom")
+# 
+# speciesRLMER <- lme4::lmer( speciesRichness ~
+#                                   siteType +
+#                                   (1 | siteType),
+#                               data = hortaAlpha,
+#                               REML = TRUE)
+# anova(speciesRLMER)
+# lmerTest::rand(speciesRLMER)
+# summary(speciesRLMER)
+# test_speciesRLMER<-car::Anova(mod = speciesRLMER)
+# emmeans::emmeans(speciesRLMER, pairwise~siteType)    
+#   
+# 
+# hortaAlpha %>%
+#     ggplot() +
+#     geom_boxplot(aes(siteType, speciesRichness),
+#                  outlier.shape = NA) +
+#     geom_jitter(
+#         aes(siteType, speciesRichness, color = siteType),
+#         width = 0.1,
+#         height = 0
+#     ) +
+#     labs(color = "Site Type", y = "Raw Species Richness",
+#          x = "Site Type") + 
+#     theme(legend.position="bottom")
 
 
 # Test for ESR
 
-effectiveSRLMER <- lme4::lmer(effectiveSR ~
-                                  siteType +
-                                  (1 | siteType),
-                              data = hortaAlpha,
-                              REML = TRUE)
-anova(effectiveSRLMER)
-lmerTest::rand(effectiveSRLMER)
-summary(effectiveSRLMER)
-test_effectiveSRLMER<-car::Anova(effectiveSRLMER)
-emmeans::emmeans(effectiveSRLMER, pairwise~siteType)    
-
-effectiveSRchi <- chisq.test(x = hortaAlpha$effectiveSR,
-                             y = hortaAlpha$siteType)
-chisq.po
-
 
 hortaAlpha %>%
+    mutate(siteType = factor(siteType, levels = c("Counterfactual", "Syntropic", "Forest", "Restoration"))) %>%
     ggplot() +
     geom_boxplot(aes(siteType, effectiveSR),
                  outlier.shape = NA) +
@@ -218,6 +204,7 @@ hortaAlpha %>%
     scale_color_manual(values = supportingColorPalette)
 
 hortaAlphaGroup %>% 
+    mutate(siteType = factor(siteType, levels = c("Counterfactual", "Syntropic", "Forest", "Restoration"))) %>%
     ggplot(
         aes(siteType, effectiveSR, fill = siteType)
         ) +
@@ -232,31 +219,31 @@ hortaAlphaGroup %>%
     
 
 
-# Test for inverse Simpson
-
-invSimpsonLMER <- lme4::lmer(invSimpson ~
-                                 siteType +
-                                 (1 | siteType),
-                             data = hortaAlpha,
-                             REML = TRUE)
-anova(invSimpsonLMER)
-lmerTest::rand(invSimpsonLMER)
-summary(invSimpsonLMER)
-test_shannonLMER <- car::Anova(invSimpsonLMER)
-emmeans::emmeans(invSimpsonLMER, pairwise~siteType)    
-
-hortaAlpha %>%
-    ggplot() +
-    geom_boxplot(aes(siteType, invSimpson),
-                 outlier.shape = NA) +
-    geom_jitter(
-        aes(siteType, invSimpson, color = siteType),
-        width = 0.1,
-        height = 0
-    ) +
-    labs(color = "Field Type", y = "Inv. Simpson Diversity",
-         x = "Site Type") +
-    theme(legend.position="bottom")
+# # Test for inverse Simpson
+# 
+# invSimpsonLMER <- lme4::lmer(invSimpson ~
+#                                  siteType +
+#                                  (1 | siteType),
+#                              data = hortaAlpha,
+#                              REML = TRUE)
+# anova(invSimpsonLMER)
+# lmerTest::rand(invSimpsonLMER)
+# summary(invSimpsonLMER)
+# test_shannonLMER <- car::Anova(invSimpsonLMER)
+# emmeans::emmeans(invSimpsonLMER, pairwise~siteType)    
+# 
+# hortaAlpha %>%
+#     ggplot() +
+#     geom_boxplot(aes(siteType, invSimpson),
+#                  outlier.shape = NA) +
+#     geom_jitter(
+#         aes(siteType, invSimpson, color = siteType),
+#         width = 0.1,
+#         height = 0
+#     ) +
+#     labs(color = "Field Type", y = "Inv. Simpson Diversity",
+#          x = "Site Type") +
+#     theme(legend.position="bottom")
 
 
 ## ----- PI2: Beta diversity w/ Aitchison distance -----------------------------
@@ -339,7 +326,7 @@ viz_pcaPlots <- fviz_pca_ind(
     pointsize = 3,
     mean.point = F,
     legend.title = "Site Type",
-    palette = supportingColorPalette
+    palette = supportingColorPalette[c(1,3,4,2)]
 )
 ggpubr::ggpar(viz_pcaPlots,
               title = paste0("Community Composition Visualization using PCA"),#, hortaSubset),
