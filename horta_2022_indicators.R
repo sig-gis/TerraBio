@@ -212,12 +212,19 @@ hortaAlphaGroup %>%
     labs(fill = "Site Type", 
          y = "Effective Species Richness",
          x = "Site Type") +
-    theme(legend.position = "bottom",
-          text = element_text(family = "Calibri")) +
+    theme(legend.position = "bottom") +
     scale_fill_manual(values = supportingColorPalette) +
     geom_text(stat='identity', aes(label=round(effectiveSR)),position = position_stack(vjust = 0.5))
 
-
+ggsave("HortaESR_2022.pdf",
+       plot = last_plot(),
+       device = "pdf",
+       path = "OutputImages/",
+       width = 8,
+       height = 5,
+       units = "in",
+       dpi = 300
+)
 
 ## ----- PI2: Beta diversity w/ Aitchison distance -----------------------------
 # aitchison distance uses the euclidian distance of the compositional data that
@@ -296,6 +303,17 @@ siteHeatmap +
                               "s-R1-Sy" = "Syntropic",
                               "s-R1-CF" = "Counterfactual"))
 
+ggsave("HortaDistHeatmap_2022.pdf",
+       plot = last_plot(),
+       device = "pdf",
+       path = "OutputImages/",
+       width = 8,
+       height = 6,
+       units = "in",
+       dpi = 300
+)
+
+
 #aitComparison(aitchisonSite, lookupSitenames, FALSE)
 
 
@@ -323,6 +341,16 @@ ggpubr::ggpar(viz_pcaPlots,
               title = paste0("Community Composition Visualization using PCA"),#, hortaSubset),
               subtitle = paste0(phylum, collapse = " "), xlab = F, ylab = F, tickslab = F
               )
+ggsave("HortaPCA_2022.pdf",
+       plot = last_plot(),
+       device = "pdf",
+       path = "OutputImages/",
+       width = 8,
+       height = 5,
+       units = "in",
+       dpi = 300
+)
+
 
 viz_pcaPlots_contrib <- fviz_contrib(pca_plots, choice = "ind", axes = 1:2)
 
@@ -335,6 +363,13 @@ fviz_pca_biplot(pca_plots,
                 repel = T,
                 max.overlaps = 5,
                 alpha.var ="contrib")
+
+
+
+
+
+
+
 
 # create plot pcas for both 
 # pca_plotsAll <- hortaCompR1 %>%
