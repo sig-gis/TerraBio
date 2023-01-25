@@ -216,34 +216,7 @@ hortaAlphaGroup %>%
           text = element_text(family = "Calibri")) +
     scale_fill_manual(values = supportingColorPalette) +
     geom_text(stat='identity', aes(label=round(effectiveSR)),position = position_stack(vjust = 0.5))
-    
 
-
-# # Test for inverse Simpson
-# 
-# invSimpsonLMER <- lme4::lmer(invSimpson ~
-#                                  siteType +
-#                                  (1 | siteType),
-#                              data = hortaAlpha,
-#                              REML = TRUE)
-# anova(invSimpsonLMER)
-# lmerTest::rand(invSimpsonLMER)
-# summary(invSimpsonLMER)
-# test_shannonLMER <- car::Anova(invSimpsonLMER)
-# emmeans::emmeans(invSimpsonLMER, pairwise~siteType)    
-# 
-# hortaAlpha %>%
-#     ggplot() +
-#     geom_boxplot(aes(siteType, invSimpson),
-#                  outlier.shape = NA) +
-#     geom_jitter(
-#         aes(siteType, invSimpson, color = siteType),
-#         width = 0.1,
-#         height = 0
-#     ) +
-#     labs(color = "Field Type", y = "Inv. Simpson Diversity",
-#          x = "Site Type") +
-#     theme(legend.position="bottom")
 
 
 ## ----- PI2: Beta diversity w/ Aitchison distance -----------------------------
@@ -263,12 +236,30 @@ max(aitchisonPlot)
 
 #aitchisonPlot %>% aitHeatmap()
 
-levelOrder = c("Counterfactual-Counterfactual", "Forest-Forest", "Restoration-Restoration", "Syntropic-Syntropic",
-               "Forest-Counterfactual", "Restoration-Counterfactual", "Syntropic-Counterfactual",
-               "Restoration-Forest", "Syntropic-Forest",
-               "Syntropic-Restoration")
-aitComparison(aitchisonPlot, remap = lookupSitenames, repeatSamples = TRUE, fillColor = c(supportingColorPalette[c(1,5,2,6,7,3,8)], corporateColorPalette[c(1,2)], supportingColorPalette[4]), levelsPlot = levelOrder)
 
+levelOrder = c(
+    "Counterfactual-Counterfactual",
+    "Forest-Forest",
+    "Restoration-Restoration",
+    "Syntropic-Syntropic",
+    "Forest-Counterfactual",
+    "Restoration-Counterfactual",
+    "Syntropic-Counterfactual",
+    "Restoration-Forest",
+    "Syntropic-Forest",
+    "Syntropic-Restoration"
+)
+aitComparison(
+    inputDist = aitchisonPlot,
+    remap = lookupSitenames,
+    repeatSamples = TRUE,
+    fillColor = c(
+        supportingColorPalette[c(1, 5, 2, 6, 7, 3, 8)],
+        corporateColorPalette[c(1, 2)],
+        supportingColorPalette[4]
+    ),
+    levelsPlot = levelOrder
+)
 
     
 

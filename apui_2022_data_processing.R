@@ -124,6 +124,12 @@ apuiMatrix <- ez.matrify(apuiASV, species.name = "ASVHeader", site.name = "sampl
 
 apuiBufferMatrix <- ez.matrify(apuiBufferASV, species.name = "ASVHeader", site.name = "sampleID", abundance = "asvAbsoluteAbundance")
 
+
+# remove columns with 0s that might result from split
+apuiMatrix <- apuiMatrix [ , colSums(apuiMatrix) > 0 ]
+apuiPairedMatrix <- apuiPairedMatrix[ , colSums(apuiPairedMatrix) > 0 ]
+
+
 ## ----- Buffer vs. Silica for Apui data ------------------------
 ## A limited subset of the samples 
 

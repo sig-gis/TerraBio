@@ -180,7 +180,7 @@ alphaGroupMetrics <- function(inputOTUSiSp, groupNames) {
 }
 
 
-## ----- Plotting funs. | Aitchison -------------------------------
+## ----- Plotting functions | Aitchison -------------------------------
 # helper function
 get_lower_tri <- function(inpMatrix){
     inpMatrix[upper.tri(inpMatrix, diag = T)]<- NA
@@ -200,10 +200,10 @@ graph <-
                  values_drop_na = T) %>%
     ggplot(aes(x = plot1, y = plot2, fill = distance)) + 
     geom_raster() +
+#    geom_text(aes(label = round(distance))) +
+
     scale_fill_gradient(low = fillColor1, high = fillColor2,  
                         name="Aitchison\nDistance") +
-    theme(axis.text.x = element_text(angle = 45, vjust = 1, 
-                                     size = 10, hjust = 1)) +
     theme(
         axis.title.x = element_blank(),
         axis.title.y = element_blank(),
@@ -213,7 +213,10 @@ graph <-
         #axis.ticks = element_blank(),
         legend.justification = c(1, 0),
         legend.position = c(0.5, 0.7),
-        legend.direction = "horizontal")+
+        legend.direction = "horizontal",
+        axis.text.x = element_text(angle = 45, vjust = 1, 
+                                   size = 12, hjust = 1),
+        axis.text.y = element_text(size = 12))+
     guides(fill = guide_colorbar(barwidth = 7, barheight = 1,
                                  title.position = "top", title.hjust = 0.5))
 
@@ -244,7 +247,7 @@ aitComparison <- function(inputDist, remap = NULL, repeatSamples = FALSE, fillCo
             # make this a remap so that the names aren't so awful.
             old <- remap[[1]]
             new <- remap[[2]]
-            temp$plot1[ temp$plot1 %in% old] <- new[match(temp$plot1, old)]
+            temp$plot1[ temp$plot1 %in% old] <- new[base::match(temp$plot1, old)]
             temp$plot2[ temp$plot2 %in% old] <- new[match(temp$plot2, old)]
             
             if(repeatSamples == TRUE) {
@@ -261,11 +264,14 @@ aitComparison <- function(inputDist, remap = NULL, repeatSamples = FALSE, fillCo
         mutate(pair = paste0(plot1, "-", plot2)) 
         }
         
-        if(repeatSamples == TRUE) {
+        if (repeatSamples == TRUE) {
             temp <- temp %>%
-                mutate(pair = paste0(type1, "-", type2)) 
-            
-        }
+                mutate(pair = ifelse(
+                               type1 < type2,
+                               paste(type1, type2, sep = "-"),
+                               paste(type2, type1, sep = "-")
+                           ))
+        } 
         
         if(is.null(fillColor) == TRUE) {
             library(RColorBrewer)
@@ -283,7 +289,10 @@ aitComparison <- function(inputDist, remap = NULL, repeatSamples = FALSE, fillCo
                 ggplot(aes(y = distance, x = pair)) +
                 stat_boxplot(geom = "errorbar",
                              width = 0.25) +
-                geom_boxplot(aes(fill = pair)) +
+                geom_boxplot() +
+                geom_jitter(aes(color = pair), width = 0.05, size = 3) +
+#                geom_text(aes(label = round(distance))) +
+                
                 scale_x_discrete(limits = levelsPlot) +
                 theme(legend.position = "none",
                       plot.margin = margin(t = .5,  # Top margin
@@ -298,7 +307,7 @@ aitComparison <- function(inputDist, remap = NULL, repeatSamples = FALSE, fillCo
                     size = 10,
                     hjust = 1
                 )) +
-                scale_fill_manual(values = fillColor) +
+                scale_color_manual(values = fillColor) +
                 labs(x = element_blank(),
                      y = "Aitchison Distance") 
         }
@@ -308,7 +317,7 @@ aitComparison <- function(inputDist, remap = NULL, repeatSamples = FALSE, fillCo
         if(repeatSamples == FALSE){
             temp <- temp %>%
                 ggplot(aes(y = distance, x = pair)) +
-                geom_bar(stat = "identity", aes(fill = pair)) +
+                geom_bar(aes(fill = distance), stat = "identity") +
                 scale_x_discrete(limits = levelsPlot) +
                 theme(legend.position = "none") +
                 theme(axis.text.x = element_text(angle = 45, vjust = 1, 
