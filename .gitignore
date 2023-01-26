@@ -42,3 +42,7 @@ BNA4.All_MOTUs_.csv
 
 # Output and archive folders
 /archive/
+*.pdf
+CafeApui/convert_complete_results_to_other_formats.R
+*.xlsx
+CafeApui/Apui_2022_bioinfo_results.csv
