@@ -1,0 +1,92 @@
+EM_ColName2022,EM_ColName2023,TB_ColName,Keep
+NA,Researcher,researcher,N
+NA,Project,project,N
+Sample,Sample,sample,Y
+Primer name,Primer,primerName,Y
+File_name,Unique_File_name,fileName,N
+Read_origin,Read origin,readOrigin,N
+Relative abundance on sample,Relative abundance on sample,relativeAbundanceOnSample,Y
+NA,Clean relative abd. on sample,cleanRelativeAbundanceOnSample,Y
+Sample total abd,Sample total abundance,sampleTotalAbd,Y
+NA,Total clean sample abd. by marker,totCleanSampleAbdByMarker,Y
+ASV absolute abundance,ASV absolute abundance,asvAbsoluteAbundance,Y
+Preservation,NA,preservation,Y
+NA,Metadata.1,metadata_1,Y
+metadata_2,Metadata.2,metadata_2,Y
+metadata_3,Metadata.3,metadata_3,Y
+metadata_4,Metadata.4,metadata_4,Y
+metadata_5,Metadata.5,metadata_5,Y
+NA,Identification,identificationFiltered,Y
+NA,Identification Max. taxonomy,identificationMaxTaxon,Y
+obs,NA,obs,N
+Curated ID,Final ID (BLASTn),curatedID,Y
+NA,ID status,IDStatus,Y
+Blast pseudo-score,Blast pseudo-score,blastPseudoScore,Y
+blast ID Origin,blast ID Origin,blastIDOrigin,Y
+Genus (BLASTn),Genus (BLASTn),genusBLASTn,Y
+BLAST_subfamily,Subfamily (BLASTn),BLAST_subfamily,Y
+Family (BLASTn),Family (BLASTn),familyBLASTn,Y
+BLAST_suborder,Suborder (BLASTn),BLAST_suborder,Y
+Order (BLASTn),Order (BLASTn),order_BLASTn,Y
+BLAST_subclass,Subclass (BLASTn),BLAST_subclass,Y
+Class (BLASTn),Class (BLASTn),classBLASTn,Y
+Phylum (BLASTn),Phylum (BLASTn),phylumBLASTn,Y
+BLAST_subphylum,Subphylum (BLASTn),BLAST_subphylum,Y
+Kingdom (BLASTn),Kingdom (BLASTn),kingdomBLASTn,Y
+NA,Superkingdom (BLASTn),superkingdomBLASTn,Y
+1_subject header,1_subject header,B1_subjectHeader,N
+1_subject,1_subject,B1_subject,N
+NA,1_staxid,B1_staxID,N
+1_indentity,1_indentity,B1_identity,N
+1_qcovhsp,1_qcovhsp,B1_qcovhsp,N
+1_length,1_length,B1_length,N
+1_mismatches,1_mismatches,B1_mismatches,N
+1_gaps,1_gaps,B1_gaps,N
+1_query start,1_query start,B1_queryStart,N
+1_query end,1_query end,B1_queryEnd,N
+1_subject start,1_subject start,B1_subjectStart,N
+1_subject end,1_subject end,B1_subjectEnd,N
+1_e-value,1_e-value,B1_eValue,N
+1_bitscore,1_bitscore,B1_bitscore,N
+2_subject header,2_subject header,B2_subjectHeader,N
+NA,2_staxid,B2_staxID,N
+2_subject,2_subject,B2_subject,N
+2_indentity,2_indentity,B2_indentity,N
+2_qcovhsp,2_qcovhsp,B2_qcovhsp,N
+2_length,2_length,B2_length,N
+2_mismatches,2_mismatches,B2_mismatches,N
+2_gaps,2_gaps,B2_gaps,N
+2_query start,2_query start,B2_queryStart,N
+2_query end,2_query end,B2_queryEnd,N
+2_subject start,2_subject start,B2_subjectStart,N
+2_subject end,2_subject end,B2_subjectEnd,N
+2_e-value,2_e-value,B2_eValue,N
+2_bitscore,2_bitscore,B2_bitscore,N
+3_subject header,3_subject header,B3_subjectHeader,N
+NA,3_staxid,B3_staxID,N
+3_subject,3_subject,B3_subject,N
+3_indentity,3_indentity,B3_indentity,N
+3_qcovhsp,3_qcovhsp,B3_qcovhsp,N
+3_length,3_length,B3_length,N
+3_mismatches,3_mismatches,B3_mismatches,N
+3_gaps,3_gaps,B3_gaps,N
+3_query start,3_query start,B3_queryStart,N
+3_query end,3_query end,B3_queryEnd,N
+3_subject start,3_subject start,B3_subjectStart,N
+3_subject end,3_subject end,B3_subjectEnd,N
+3_e-value,3_e-value,B3_eValue,N
+3_bitscore,3_bitscore,B3_bitscore,N
+ASV Size (pb),ASV Size (pb),ASVSize,Y
+ASV header,ASV header,ASVHeader,Y
+ASV (Sequence),ASV (Sequence),ASVSequence,Y
+OTU,OTU,OTU,Y
+Extraction.control,Extraction control,extractionControl,N
+PCR.control,PCR control,PCRControl,N
+Prop. to PCR control,Prop. to PCR control,propToPCRControl,N
+Prop. to Ext control,Prop. to Extraction control,propToExtControl,N
+Prop. to Filt control,Prop. to Filtration control,propToFiltControl,N
+Possible contamination,Contamination status,possibleContamination,N
+,Possible Metazoa,,
+Primer expected length,Primer expected length,primerExpectedLength,Y
+Type,Type,type,N
+NA,Filtration control,filtrationControl,N

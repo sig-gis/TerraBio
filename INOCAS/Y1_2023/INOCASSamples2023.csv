@@ -1,0 +1,28 @@
+﻿N,Sample/ID CIAT,Site,Amplification Success,Replicate,ID EcoMol*,[ng/μL],A260/280
+13,Tbio3_1_CF_R1,Contrafactual/Pastagem,1,1,EM135c2_Tbio3_1_CF_R1, 33.2, 1.93
+14,Tbio3_1_CF_R2,Contrafactual/Pastagem,1,2,EM135c2_Tbio3_1_CF_R2, 33.6, 2.01
+15,Tbio3_1_CF_R3,Contrafactual/Pastagem,1,3,EM135c2_Tbio3_1_CF_R3, 29.5, 1.96
+16,Tbio3_1_I_R1,Interveção/Macaúba,1,1,EM135c2_Tbio3_1_I_R1, 11,1.92 
+17,Tbio3_1_I_R2,Interveção/Macaúba,1,2,EM135c2_Tbio3_1_I_R2, 15.9, 1.89
+18,Tbio3_1_I_R3,Interveção/Macaúba,1,3,EM135c2_Tbio3_1_I_R3, 14.6,1.86 
+19,Tbio3_1_F_R1,Referência/Floresta,1,1,EM135c2_Tbio3_1_F_R1, 21.3, 1.80
+20,Tbio3_1_F_R2,Referência/Floresta,1,2,EM135c2_Tbio3_1_F_R2, 15.9,2.18 
+21,Tbio3_1_F_R3,Referência/Floresta,1,3,EM135c2_Tbio3_1_F_R3, 21.8, 1.97
+22,Tbio3_2_I_R1,Interveção/Macaúba,1,1,EM135c2_Tbio3_2_I_R1, 15.7,1.9 
+23,Tbio3_2_I_R2,Interveção/Macaúba,1,2,EM135c2_Tbio3_2_I_R2, 17.6, 1.88
+24,Tbio3_2_I_R3,Interveção/Macaúba,1,3,EM135c2_Tbio3_2_I_R3, 12.5,1.68 
+25,Tbio3_2_CF_R1,Contrafactual/Pastagem,1,1,EM135c2_Tbio3_2_CF_R1, 22.1, 1.90
+26,Tbio3_2_CF_R2,Contrafactual/Pastagem,1,2,EM135c2_Tbio3_2_CF_R2, 13.5,1.88 
+27,Tbio3_2_CF_R3,Contrafactual/Pastagem,1,3,EM135c2_Tbio3_2_CF_R3, 16.5, 2.07
+28,Tbio3_2_F_R1,Referência/Floresta,1,1,EM135c2_Tbio3_2_F_R1, 12.1,1.93 
+29,Tbio3_2_F_R2,Referência/Floresta,1,2,EM135c2_Tbio3_2_F_R2, 14.4, 2.14
+30,Tbio3_2_F_R3,Referência/Floresta,1,3,EM135c2_Tbio3_2_F_R3, 15.2,2.06 
+31,Tbio3_3_I_R1,Interveção/Macaúba,1,1,EM135c2_Tbio3_3_I_R1, 13.6, 1.96
+32,Tbio3_3_I_R2,Interveção/Macaúba,1,2,EM135c2_Tbio3_3_I_R2, 7.9,2.26 
+33,Tbio3_3_I_R3,Interveção/Macaúba,1,3,EM135c2_Tbio3_3_I_R3, 11.6, 1.94
+34,Tbio3_3_F_R1,Referência/Floresta,2,1,EM135c2_Tbio3_3_F_R1, 17.6,1.82 
+35,Tbio3_3_F_R2,Referência/Floresta,2,2,EM135c2_Tbio3_3_F_R2, 19.2, 1.87
+36,Tbio3_3_F_R3,Referência/Floresta,2,3,EM135c2_Tbio3_3_F_R3, 37.5,1.63 
+37,Tbio3_3_CF_R1,Contrafactual/Pastagem,1,1,EM135c2_Tbio3_3_CF_R1, 16.8, 1.9
+38,Tbio3_3_CF_R2,Contrafactual/Pastagem,1,2,EM135c2_Tbio3_3_CF_R2, 18.6,1.89 
+39,Tbio3_3_CF_R3,Contrafactual/Pastagem,1,3,EM135c2_Tbio3_3_CF_R3, 10.3, 2.17

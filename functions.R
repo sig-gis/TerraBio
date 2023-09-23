@@ -1,5 +1,7 @@
 # This file contains functions for TerraBio eDNA analysis.
 
+# Last modified by KDyson 09/15/2023
+
 ## ----- Data manip. funs. | transpose ---------------------------
 
 speciesSite <- function(inputOTU, rare = 0) {
