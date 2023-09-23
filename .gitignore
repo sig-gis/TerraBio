@@ -40,10 +40,9 @@ vignettes/*.pdf
 BNA4.All_MOTUs_.csv
 *.tif
 
-# Output and archive folders
+# Large raw data, output and archive folders
 /archive/
+/EcoMol Data/
 *.pdf
-CafeApui/convert_complete_results_to_other_formats.R
 *.xlsx
-CafeApui/Apui_2022_bioinfo_results.csv
 CafeApui/Y1_2022/Apui_2022_bioinfo_results.csv
