@@ -1,0 +1,42 @@
+﻿N,Sample/ID CIAT,Site,Lab Volume,Amplification Success,Replicate,ID EcoMol,[ng/μL],A260/280
+1,S1,Intervention / syntropic,40mL,1,1,EM135c1_S1,17.7,1.79
+2,S2,Intervention / syntropic,40mL,1,2,EM135c1_S2,16.4,1.79
+3,S3,Intervention / syntropic,40mL,1,3,EM135c1_S3,17.9,1.81
+4,V1,Vizinho / Counterfactual,40mL,1,1,EM135c1_V1,11.1,1.73
+5,V2,Vizinho / Counterfactual,40mL,1,2,EM135c1_V2,10.9,1.94
+6,V3,Vizinho / Counterfactual,40mL,1,3,EM135c1_V3,11.8,1.8
+7,R1,Restauration,40mL,1,1,EM135c1_R1,22.7,1.79
+8,R2,Restauration,40mL,1,2,EM135c1_R2,20.1,1.76
+9,R3,Restauration,40mL,1,3,EM135c1_R3,35.3,1.66
+10,F1,Floresta / control,20mL,2,1,EM135c1_F1,10.2,1.84
+11,F2,Floresta / control,20mL,2,2,EM135c1_F2,14.7,1.86
+12,F3,Floresta / control,20mL,2,3,EM135c1_F3,13.9,1.74
+,,,,,,,,
+,,,,,,,,
+,,,,,,,,
+,,,,,,,,
+,,,,,,,,
+,,,,,,,,
+,,,,,,,,
+,,,,,,,,
+,,,,,,,,
+,,,,,,,,
+,,,,,,,,
+,,,,,,,,
+,,,,,,,,
+,,,,,,,,
+,,,,,,,,
+,,,,,,,,
+,,,,,,,,
+,,,,,,,,
+,,,,,,,,
+,,,,,,,,
+,,,,,,,,
+,,,,,,,,
+,,,,,,,,
+,,,,,,,,
+,,,,,,,,
+,,,,,,,,
+,,,,,,,,
+,,,,,,,,
+,,,,,,,,
