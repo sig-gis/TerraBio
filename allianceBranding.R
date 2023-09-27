@@ -1,3 +1,5 @@
+require(showtext)
+
 ## Colorways from the Alliance Transition Branding GUidelines (August 2020) 
 
 corporateColorPalette <- c("#2F8927", "#003580", "#CC3333", "#009933", "#414042", "#19191A")
