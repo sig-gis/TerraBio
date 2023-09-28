@@ -1,5 +1,7 @@
-# This analysis is based on soil samples collected at Horta and processed
-# by EcoMol. The 2023 analysis combines both 2022 and 2023 data.
+# This analysis is based on soil samples collected at Horta and processed by
+# EcoMol. There are four land uses: CF = counter factual, Co = control/forest,
+# Re = restauracao, Sy = syntropic. The 2023 analysis combines both 2022 and
+# 2023 data.
 
 # This file take the eDNA species table provided by EcoMol and prepares them for
 # analysis.
@@ -10,37 +12,33 @@
 #   + need to look at which ASVs should be combined or not...
 #   + check high ASV loss. approx 1000-1200 ASV rows are kept out of around 20k.
 #   + add diagnostics/plotting
+#   + add diagnostics for what ASVs are lost
 
 
 ## ----- Data ingestion ---------------------------------------
 
 # libraries
 library(ggplot2)
+library(gridExtra)
 library(tidyr)
 library(vegan)
 library(stringr)
-library(compositions)
-library(zCompositions)
 library(dplyr)
 
 # Ingest codes
-source("allianceBranding.R")
-source("functions.R")
-source("multiyear_functions.R")
 source("../../../RCode/R_Scripts/triplet_fixer.R")
 
 # script variable definitions
 minlibrarySize = 4000
 minRelativeAbund = 0.05
 minAbsoluteAbund = 5
-rare = 50
 
 #Reitmeier, S., Hitch, T.C., Treichel, N., Fikas, N., Hausmann, B., Ramer-Tait,
 #A.E., Neuhaus, K., Berry, D., Haller, D., Lagkouvardos, I. and Clavel, T.,
 #2021. Handling of spurious sequences affects the outcome of high-throughput 16S
 #rRNA gene amplicon profiling. ISME Communications, 1(1), pp.1-12.
 
-phylum = c("Arthropoda")
+phylum = c("Arthropoda") 
 #phylum = c("Annelida", "Nematoda", "Platyhelminthes", "Arthropoda", "Mollusca") #worms and insects
 
 
@@ -62,8 +60,6 @@ infoColnames2023 <- c("N", "sampleID", "siteType", "labVolume",
                       "purityDNA")
 
 # 2022 eDNA data import
-
-# CF = counter factual, Co = control/forest, Re = restauracao, Sy = syntropic.
 
 # Note that 2022 was a unique case because we had the volume information, primer
 # information, and preservation method information to sort out
@@ -207,4 +203,82 @@ head(horta2023Raw)
     
 
 
+# ----- Data quality checks | 2022 & 2023 -------------------------------
 
+# Compare 2022 and 2023 DNA concentration.
+
+p1 <- ggplot(subset(horta2022Info, storage == "Silica"),
+             aes(x = volumeSampleID, y = concentrationDNA_nguL)) + 
+             geom_boxplot() + geom_point(color = "darkgreen") +
+        ylim(5,40)
+    
+p2 <- ggplot(horta2023Info,
+             aes(x = siteType, y = concentrationDNA_nguL)) + 
+             geom_boxplot() + geom_point(aes(color = labVolume)) +
+    ylim(5,40)
+    
+
+    grid.arrange(p1, p2, ncol=2)
+    
+# Compare 2022 and 2023 DNA purity.
+    
+    p1 <- ggplot(subset(horta2022Info, storage == "Silica"),
+                 aes(x = volumeSampleID, y = purityDNA)) + 
+        geom_boxplot() + geom_point(color = "darkgreen") +
+        ylim(1.45,2)
+    
+    p2 <- ggplot(horta2023Info,
+                 aes(x = siteType, y = purityDNA)) + 
+        geom_boxplot() + geom_point(aes(color = labVolume)) +
+        ylim(1.45,2)
+    
+    
+    grid.arrange(p1, p2, ncol=2)    
+    
+# overall data quality of 2023 appears better than 2022, with the 2023 data
+# having higher concentration and purity. For the concentration, forest and
+# restoration had low concentration in 2022 while forest and counterfactual had
+# the lowest in 2023. the forest had low volume sent to the lab and the first
+# amplification failed. Purity for these was fine also, right in the middle of
+# the pack. final note, for 2022 the buffer had much higher concentration than
+# the silica samples.
+    
+# Look at ASV absolute abundance
+    
+    ggplot(horta2022Raw, aes(x = metadata_4, y = asvAbsoluteAbundance)) + 
+        geom_boxplot() #+ geom_jitter()
+    
+    ggplot(horta2023Raw, aes(x = metadata_4, y = asvAbsoluteAbundance)) + 
+        geom_boxplot() #+ geom_jitter()
+    
+    
+    # look at sample total abundance
+    #
+    
+    
+    ## ----- Storage method graphs --------------------------------
+    
+    # plot all ASV absolute abundance by buffer/silica
+    ggplot(hortaASV, aes(x = preservation, y = asvAbsoluteAbundance)) + 
+        geom_boxplot() + geom_jitter()
+    
+    # plot total ASV absolute abundance grouped by sample for buffer/silica
+    hortaSampleASV <- hortaASV %>% group_by(metadata_4, primerName, preservation) %>% 
+        summarise(totalAbund = sum(asvAbsoluteAbundance), countASV = length(unique(ASVHeader)))
+    
+    ggplot(hortaSampleASV, aes(x = preservation, y = totalAbund)) + 
+        geom_boxplot() + geom_jitter(aes(color = primerName))
+    
+    ggplot(hortaSampleASV, aes(x = preservation, y = totalAbund)) + 
+        geom_boxplot() + geom_jitter() + 
+        facet_grid(primerName ~ ., scales = "free")
+    
+    # plot total number of ATVs grouped by sample for buffer/silica
+    ggplot(hortaSampleASV, aes(x = preservation, y = countASV)) + 
+        geom_boxplot() + geom_jitter(aes(color = primerName))
+    
+    ggplot(hortaSampleASV, aes(x = preservation, y = countASV)) + 
+        geom_boxplot() + geom_jitter() + 
+        facet_grid(primerName ~ ., scales = "free")
+    
+    
