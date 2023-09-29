@@ -35,34 +35,20 @@ source("multiyear_functions.R")
 source("../../../RCode/R_Scripts/triplet_fixer.R") # From my github repository
 source("../../../RCode/R_Scripts/repeat_multipatt.R") # ditto
 
-source("horta_2023_data_processing.R")
-remove(abundanceLetter)
+source("Horta/Yr2_2023/horta_2023_data_processing.R")
 
-rare = 50
-hortaGroups2022 <- c(rep("Counterfactual", 3), rep("Forest", 2),
-                     rep("Restoration", 3), rep("Syntropic", 3))
+rare = 5
+hortaGroups2022 <- c(rep("Counterfactual", 3), rep("Forest", 3),
+                     rep("Restoration", 2), rep("Syntropic", 3))
 hortaGroups2023 <- c(rep("Forest", 3), rep("Restoration", 3),
                      rep("Syntropic", 3), rep("Counterfactual", 3))
-
-
-
-# Create compositional matrices
-
-compMatrix2022 <- compMatrix(inputMatrix = hortaMatrix2022)
-
-compMatrix2023 <- compMatrix(inputMatrix = hortaMatrix2023)
-
-compType2022 <- compMatrix(inputMatrix = hortaMatrixType2022)
-
-compType2023 <- compMatrix(inputMatrix = hortaMatrixType2023)
-
-# the 2023 matrices had adjusted imputations--check
 
 
 ## ----- Proposed Indicator 1: Alpha -------------------------------------------
 # PI1: Alpha diversity
 
-# Create a table with the alpha diversity measures for each replicate. 
+# Create a table with the alpha diversity measures for each replicate. Note that
+# this includes rare species.
 
 
 
@@ -74,12 +60,31 @@ hortaAlpha2023 <- alphaMetrics(hortaMatrix2023,
                              replNames = str_sub(rownames(hortaMatrix2023), -2,-1))
 
 hortaAlphaGroup2022 <- alphaGroupMetrics(hortaMatrixType2022,
-                                     groupNames = c("Counterfactual", "Forest", "Restoration", "Syntropic"))
+                                     groupNames = c("Counterfactual", "Forest",
+                                                    "Restoration", "Syntropic"))
 hortaAlphaGroup2023 <- alphaGroupMetrics(hortaMatrixType2023,
-                                         groupNames = c("Forest", "Restoration", "Syntropic", "Counterfactual"))
+                                         groupNames = c("Counterfactual", "Forest",
+                                                        "Restoration", "Syntropic"))
 
 
 # ESR for restoration in 2023 is weirdly low.
+
+# it isn't a lot of rares:
+summary(colSums(hortaMatrix2022) > 50)
+summary(colSums(hortaMatrix2023) > 50)
+
+# check calculation
+vegan::diversity(hortaMatrixType2022, index = "shannon")
+exp(vegan::diversity(hortaMatrixType2022, index = "shannon"))
+specnumber(hortaMatrixType2022)
+
+
+vegan::diversity(hortaMatrixType2023, index = "shannon")
+exp(vegan::diversity(hortaMatrixType2023, index = "shannon"))
+specnumber(hortaMatrixType2023)
+
+# did vegan diversity change
+
 
 
 # Test to compare site diversities between land use types
@@ -115,7 +120,7 @@ hortaAlphaGroup2023 <- alphaGroupMetrics(hortaMatrixType2023,
 # Test for ESR
 
 
-hortaAlpha %>%
+hortaAlpha2023 %>%
     mutate(siteType = factor(siteType, levels = c("Counterfactual", "Syntropic", "Forest", "Restoration"))) %>%
     ggplot() +
     geom_boxplot(aes(siteType, effectiveSR),
@@ -131,7 +136,7 @@ hortaAlpha %>%
           text = element_text(family = "Calibri"))+
     scale_color_manual(values = supportingColorPalette)
 
-hortaAlphaGroup %>% 
+hortaAlphaGroup2023 %>% 
     mutate(siteType = factor(siteType, levels = c("Counterfactual", "Syntropic", "Forest", "Restoration"))) %>%
     ggplot(
         aes(siteType, effectiveSR, fill = siteType)
@@ -153,3 +158,25 @@ ggsave("HortaESR_2022.pdf",
        units = "in",
        dpi = 300
 )
+
+
+
+
+
+
+# Filter rare
+hortaMatrix2022 <- hortaMatrix2022[ , colSums(hortaMatrix2022) >= rare]
+hortaMatrix2023 <- hortaMatrix2023[ , colSums(hortaMatrix2023) >= rare]
+
+
+# Create compositional matrices
+
+compMatrix2022 <- compMatrix(inputMatrix = hortaMatrix2022)
+
+compMatrix2023 <- compMatrix(inputMatrix = hortaMatrix2023)
+
+compType2022 <- compMatrix(inputMatrix = hortaMatrixType2022)
+
+compType2023 <- compMatrix(inputMatrix = hortaMatrixType2023)
+
+# the 2023 matrices had adjusted imputations--check
