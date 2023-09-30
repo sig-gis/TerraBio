@@ -30,7 +30,7 @@ source("../../../RCode/R_Scripts/triplet_fixer.R")
 source("functions.R")
 
 # script variable definitions
-minlibrarySize = 4000
+minlibrarySize = 5000
 minRelativeAbund = 0.05
 minAbsoluteAbund = 5
 preservation2022 = "buffer" # use buffer because the 2022 silica forest data was poor quality
@@ -91,7 +91,15 @@ infoColnames2023 <- c("N", "sampleID", "siteType", "labVolume",
     ecoMolRawSummary(horta2022Raw)
     ecoMolRawSummary(horta2023Raw)
     
+    
+# This identifies sequences in both years' data--this suggests it is probably a
+# "real" sequence and not a fluke.
+    commonASV <- horta2023Raw$ASVSequence[horta2023Raw$ASVSequence %in% horta2022Raw$ASVSequence]
 
+    
+    
+    
+    
 ## ----- Data cleaning and setup | 2022 -------------------------------
 
 # Fix an error where EM91b-S1 should be EM91b-R2-Sy1
@@ -100,17 +108,37 @@ horta2022Raw$sample[horta2022Raw$sample == "EM91b-Sy1"] <- "EM91b-R2-Sy1"
 # Remove the ASVHeader ">" character
 horta2022Raw$ASVHeader <- str_sub(horta2022Raw$ASVHeader, 2, -1)
 
+# Remove all of the volume testing information
+horta2022Raw <- horta2022Raw[ horta2022Raw$metadata_4 %in% str_sub(horta2022Info$EcoMolID, -3, -1), ]
+
+# Remove the R2 primer set information
+horta2022Raw <- horta2022Raw[ horta2022Raw$primerName == "R1", ]
+
 # Remove columns we don't need for analysis.
 head(horta2022Raw)
 horta2022Filt <- horta2022Raw[ , lookupColnames$TB_ColName[which(!is.na(lookupColnames$EM_ColName2022) &
                                                                     lookupColnames$Keep == "Y")]]
 head(horta2022Filt)
 
-# Remove all of the volume testing information
-horta2022Filt <- horta2022Filt[ horta2022Filt$metadata_4 %in% str_sub(horta2022Info$EcoMolID, -3, -1), ]
 
-# Remove the R2 primer set information
-horta2022Filt <- horta2022Filt[ horta2022Filt$primerName == "R1", ]
+
+# Look at phylum in the raw data
+table(horta2022Filt$phylumBLASTn[horta2022Filt$preservation == "buffer"])
+
+ggplot(horta2022Filt[horta2022Filt$preservation == "buffer",], aes(x = phylumBLASTn)) + 
+    geom_bar()
+
+
+
+# Create a group column
+    horta2022Raw$LCGroupRep <- str_sub(horta2022Raw$metadata_4, 1, 3) %>% 
+        str_replace_all(c("Co" = "Forest_",  "CF" = "Counterfactual_", "Re" = "Restoration_", "Sy" = "Syntropic_"))
+    horta2022Raw$LCGroup <- str_split_fixed(horta2022Raw$LCGroupRep, "_",2)[,1] 
+    
+    horta2022Filt$LCGroupRep <- str_sub(horta2022Filt$metadata_4, 1, 3) %>% 
+        str_replace_all(c("Co" = "Forest_",  "CF" = "Counterfactual_", "Re" = "Restoration_", "Sy" = "Syntropic_"))
+    horta2022Filt$LCGroup <- str_split_fixed(horta2022Filt$LCGroupRep, "_",2)[,1] 
+
 
 # Clean the data based on our quality variables
     # Remove sites not meeting minimum library size
@@ -128,21 +156,19 @@ horta2022Filt <- horta2022Filt[ horta2022Filt$primerName == "R1", ]
     # Filter on the phylum
     horta2022Filt <- horta2022Filt[ horta2022Filt$phylumBLASTn %in% phylum, ]
     
-
-# Diagnostic plot for buffer vs. silica (note this the fast and dirty way,
-# correct way would be to pipe it)
+    
+    
+# Diagnostic plot for buffer vs. silica 
     
     ggplot(data = horta2022Filt, 
            aes(x = preservation, y = sampleTotalAbd)) +
-        geom_boxplot() + geom_point(aes(color = str_sub(horta2022Filt$metadata_4,1,2)))
+        geom_boxplot() + geom_point(aes(color = LCGroupRep))
     
     ggplot(data = horta2022Filt, 
            aes(asvAbsoluteAbundance)) +
         geom_density(aes(color = preservation)) +
         xlim(0,100)
-    
-    
-    
+
     
 # Either buffer or silica. Use silica preserved samples so 2022 and 2023 are the
 # same. Use buffer samples to be consistent with 2022 analysis and because the
@@ -161,6 +187,19 @@ head(horta2023Raw)
 horta2023Filt <- horta2023Raw[ , lookupColnames$TB_ColName[which(lookupColnames$TB_ColName %in% temp &
                                                                     lookupColnames$Keep == "Y")]]
 head(horta2023Filt)
+
+# Create a grouping column
+horta2023Raw$LCGroupRep <- str_sub(horta2023Raw$metadata_2, 1,2) %>% 
+    str_replace_all(c("F" = "Forest_", "R" = "Restoration_", "S" = "Syntropic_", "V" = "Counterfactual_"))
+horta2023Raw$LCGroup <- str_sub(horta2023Raw$metadata_2, 1,1) %>% 
+    str_replace_all(c("F" = "Forest", "R" = "Restoration", "S" = "Syntropic", "V" = "Counterfactual"))
+
+horta2023Filt$LCGroupRep <- str_sub(horta2023Filt$metadata_2, 1,2) %>% 
+    str_replace_all(c("F" = "Forest_", "R" = "Restoration_", "S" = "Syntropic_", "V" = "Counterfactual_"))
+horta2023Filt$LCGroup <- str_sub(horta2023Filt$metadata_2, 1,1) %>% 
+    str_replace_all(c("F" = "Forest", "R" = "Restoration", "S" = "Syntropic", "V" = "Counterfactual"))
+
+table(horta2023Filt$phylumBLASTn)
 
     # Clean the data based on our quality variables
     # Remove sites not meeting minimum library size -- none fail
@@ -184,55 +223,6 @@ head(horta2023Filt)
         ecoMolFiltSummary(horta2023Filt) # many more reads after filtering
         
             
-# ----- Create Matrices | 2022 ---------------------------------------
-    
-# Create a matrix with replicates as individual "sites"
-    
-    hortaMatrix2022 <- ez.matrify(horta2022Filt, species.name = "ASVHeader",
-                              site.name = "sample", abundance = "asvAbsoluteAbundance")
-    
-        hist(colSums(hortaMatrix2022), breaks = 50)
-# Create a matrix where the replicates for land use types are combined
-    
-        horta2022Filt$sampleLetter <- paste0(horta2022Filt$metadata_5, "-", horta2022Filt$primerName, "-",
-                                             str_sub(horta2022Filt$metadata_4, 1, 2))
-    
-    hortaType2022 <- horta2022Filt %>%
-        dplyr::select(sampleLetter, ASVHeader, asvAbsoluteAbundance) %>%
-        group_by(sampleLetter, ASVHeader) %>%
-        summarise(abundance = sum(asvAbsoluteAbundance))
-    
-    hortaMatrixType2022 <- ez.matrify(hortaType2022, species.name = "ASVHeader",
-                                    site.name = "sampleLetter", abundance = "abundance")
-    
-#test to make sure everything got in
-    any((colSums(hortaMatrixType2022)-colSums(hortaMatrix2022)) != 0 )
-    
-# ----- Create Matrices | 2023 ---------------------------------------
-    
-# Create a matrix with replicates as individual "sites"
-    
-    hortaMatrix2023 <- ez.matrify(horta2023Filt, species.name = "ASVHeader",
-                                  site.name = "sample", abundance = "asvAbsoluteAbundance")
-    
-    hist(colSums(hortaMatrix2023), breaks = 100)
-# Create a matrix where the replicates for land use types are combined
-    
-    horta2023Filt$sampleLetter <- str_sub(horta2023Filt$metadata_2, 1,1) %>% 
-        str_replace_all(c("F" = "Forest", "R" = "Restoration", "S" = "Syntropic", "V" = "Counterfactual"))
-
-    hortaType2023 <- horta2023Filt %>%
-        dplyr::select(sampleLetter, ASVHeader, asvAbsoluteAbundance) %>%
-        group_by(sampleLetter, ASVHeader) %>%
-        summarise(abundance = sum(asvAbsoluteAbundance))
-    
-    hortaMatrixType2023 <- ez.matrify(hortaType2023, species.name = "ASVHeader",
-                                    site.name = "sampleLetter", abundance = "abundance")
-    
-#test to make sure everything got in
-    any((colSums(hortaMatrixType2023)-colSums(hortaMatrix2023)) != 0 )
-    
-
 
 # ----- Data quality checks | 2022 & 2023 -------------------------------
 
@@ -241,17 +231,17 @@ head(horta2023Filt)
 p0 <- ggplot(subset(horta2022Info, storage == "Silica"),
              aes(x = volumeSampleID, y = concentrationDNA_nguL)) + 
     geom_boxplot() + geom_point(color = "green") +
-    ylim(5,80)
+    ylim(5,80) + xlab("LC type (silica 2022)")
     
 p1 <- ggplot(subset(horta2022Info, storage == "Buffer"),
              aes(x = volumeSampleID, y = concentrationDNA_nguL)) + 
              geom_boxplot() + geom_point(color = "darkgreen") +
-        ylim(5,80)
+        ylim(5,80) + xlab("LC type (buffer 2022)")
     
 p2 <- ggplot(horta2023Info,
              aes(x = siteType, y = concentrationDNA_nguL)) + 
              geom_boxplot() + geom_point(aes(color = labVolume)) +
-    ylim(5,80)
+    ylim(5,80) + xlab("LC type (silica 2023)")
     
 
     grid.arrange(p0, p1, p2, nrow=2)
@@ -261,12 +251,12 @@ p2 <- ggplot(horta2023Info,
     p1 <- ggplot(subset(horta2022Info, storage == "Buffer"),
                  aes(x = volumeSampleID, y = purityDNA)) + 
         geom_boxplot() + geom_point(color = "darkgreen") +
-        ylim(1.45,2)
+        ylim(1.45,2) + xlab("LC type (buffer 2022)")
     
     p2 <- ggplot(horta2023Info,
                  aes(x = siteType, y = purityDNA)) + 
         geom_boxplot() + geom_point(aes(color = labVolume)) +
-        ylim(1.45,2)
+        ylim(1.45,2) + xlab("LC type (silica 2023)")
     
     
     grid.arrange(p1, p2, ncol=2)    
@@ -282,14 +272,14 @@ p2 <- ggplot(horta2023Info,
     
 # Look at ASV absolute abundance
     
-    ggplot(horta2022Raw, aes(x = metadata_4, y = asvAbsoluteAbundance)) + 
-        geom_boxplot() #+ geom_jitter()
-    ggplot(horta2022Filt, aes(x = metadata_4, y = asvAbsoluteAbundance)) + 
-        geom_boxplot() #+ geom_jitter()
+    ggplot(horta2022Raw, aes(x = LCGroup, y = asvAbsoluteAbundance)) + 
+        geom_boxplot() 
+    ggplot(horta2022Filt, aes(x = LCGroup, y = asvAbsoluteAbundance)) + 
+        geom_boxplot() 
     
-    ggplot(horta2023Raw, aes(x = metadata_2, y = asvAbsoluteAbundance)) + 
+    ggplot(horta2023Raw, aes(x = LCGroup, y = asvAbsoluteAbundance)) + 
         geom_boxplot() #+ ylim(0,10000)
-    ggplot(horta2023Filt, aes(x = sampleLetter, y = asvAbsoluteAbundance)) + 
+    ggplot(horta2023Filt, aes(x = LCGroup, y = asvAbsoluteAbundance)) + 
         geom_boxplot() #+ ylim(0,10000)
     # A few very high abundance ASVs in Forest and Restoration. many fewer for
     # Syntropic and the Pasture, except for one Pasture site.
@@ -301,17 +291,97 @@ p2 <- ggplot(horta2023Info,
     # Forest. The raw data also has an Annelid Metaphire sp.
     
 # look at sample total abundance
-    ggplot(horta2022Raw, aes(x = metadata_4, y = sampleTotalAbd)) + 
-        geom_point(aes(color = metadata_4))
+    ggplot(horta2022Filt, aes(x = LCGroup, y = sampleTotalAbd)) + 
+        geom_point(aes(color = LCGroupRep))
     
-    ggplot(horta2023Filt, aes(x = metadata_2, y = sampleTotalAbd)) + 
-        geom_point(aes(color = sampleLetter)) 
+    ggplot(horta2023Filt, aes(x = LCGroup, y = sampleTotalAbd)) + 
+        geom_point(aes(color = LCGroupRep)) 
     
-     # what is the one weird V?
+# what is the one weird V?
     horta2023Raw[horta2023Raw$sampleTotalAbd > 50000, ]
     sum(horta2023Raw$asvAbsoluteAbundance[horta2023Raw$metadata_2 == "V2"])
     # things that get filtered out in the process... none of which are identified.
     horta2023Raw[ horta2023Raw$asvAbsoluteAbundance > 750 & horta2023Raw$metadata_2 == "V2", ]
+ 
+    
+    
+    
+# ----- Filter for rare species | 2022 & 2023 -------------------------
 
+# We want to remove rare species that could be errors 
+
+# Remove ASVs below minimum relative abundance on sample. 
+    plot(
+        horta2022Filt$asvAbsoluteAbundance,
+        horta2022Filt$relativeAbundanceOnSample,
+        ylim = c(0, .05),
+        xlim = c(0, 50)
+    )
+    abline(v = minAbsoluteAbund, col = "red")
+    
+    print("2022 filt. ASV < min absolute abundance:")
+    print(table(horta2022Filt$asvAbsoluteAbundance < minAbsoluteAbund))
+    
+    horta2022Filt <- horta2022Filt[ horta2022Filt$asvAbsoluteAbundance >= minAbsoluteAbund, ]
+    
+# 2023: Remove ASVs below minimum relative abundance on sample. 
+    plot(
+        horta2023Filt$asvAbsoluteAbundance,
+        horta2023Filt$relativeAbundanceOnSample,
+        ylim = c(0, .003),
+        xlim = c(0, 50)
+    )
+    abline(v = minAbsoluteAbund, col = "red")
+    
+    # 2023 has very low relative abundance on sample compared with Horta 2022 and Cafe Apui 2022
+    
+    print("2023 filt. ASV < min absolute abundance:")
+    print(table(horta2023Filt$asvAbsoluteAbundance < minAbsoluteAbund))
+
+    horta2023Filt <- horta2023Filt[ horta2023Filt$asvAbsoluteAbundance >= minAbsoluteAbund, ]
+    
+    
+# ----- Create Matrices | 2022 ---------------------------------------
+    
+    # Create a matrix with replicates as individual "sites"
+    
+    hortaMatrix2022 <- ez.matrify(horta2022Filt, species.name = "ASVHeader",
+                                  site.name = "sample", abundance = "asvAbsoluteAbundance")
+    
+    hist(colSums(hortaMatrix2022), breaks = 50)
+    # Create a matrix where the replicates for land use types are combined
+    
+    hortaType2022 <- horta2022Filt %>%
+        dplyr::select(LCGroup, ASVHeader, asvAbsoluteAbundance) %>%
+        group_by(LCGroup, ASVHeader) %>%
+        summarise(abundance = sum(asvAbsoluteAbundance))
+    
+    hortaMatrixType2022 <- ez.matrify(hortaType2022, species.name = "ASVHeader",
+                                      site.name = "LCGroup", abundance = "abundance")
+    
+    #test to make sure everything got in
+    any((colSums(hortaMatrixType2022)-colSums(hortaMatrix2022)) != 0 )
+    
+# ----- Create Matrices | 2023 ---------------------------------------
+    
+    # Create a matrix with replicates as individual "sites"
+    
+    hortaMatrix2023 <- ez.matrify(horta2023Filt, species.name = "ASVHeader",
+                                  site.name = "sample", abundance = "asvAbsoluteAbundance")
+    
+    hist(colSums(hortaMatrix2023), breaks = 100)
+    # Create a matrix where the replicates for land use types are combined
+    
+    hortaType2023 <- horta2023Filt %>%
+        dplyr::select(LCGroup, ASVHeader, asvAbsoluteAbundance) %>%
+        group_by(LCGroup, ASVHeader) %>%
+        summarise(abundance = sum(asvAbsoluteAbundance))
+    
+    hortaMatrixType2023 <- ez.matrify(hortaType2023, species.name = "ASVHeader",
+                                      site.name = "LCGroup", abundance = "abundance")
+    
+    #test to make sure everything got in
+    any((colSums(hortaMatrixType2023)-colSums(hortaMatrix2023)) != 0 )
+    
     
     

@@ -14,8 +14,6 @@
 #    + Four indicators--which need special multi-year functions?
 
 
-
-
 ## ----- Data ingestion & setup -----------------------------------
 
 # Libraries
@@ -37,18 +35,62 @@ source("../../../RCode/R_Scripts/repeat_multipatt.R") # ditto
 
 source("Horta/Yr2_2023/horta_2023_data_processing.R")
 
-rare = 5
 hortaGroups2022 <- c(rep("Counterfactual", 3), rep("Forest", 3),
                      rep("Restoration", 2), rep("Syntropic", 3))
 hortaGroups2023 <- c(rep("Forest", 3), rep("Restoration", 3),
                      rep("Syntropic", 3), rep("Counterfactual", 3))
+
+## ----- Accumulation curves ----------------------------------
+
+# create species accumulation curves
+plot(specaccum(hortaMatrix2022[ grepl(pattern = "CF",
+                                      x = rownames(hortaMatrix2022)), ]),
+     xlab = "Number of replicates 2022",
+     ylab = "Number of species",
+     ylim = c(0,400))
+plot(specaccum(hortaMatrix2022[ grepl(pattern = "Co",
+                                      x = rownames(hortaMatrix2022)), ]),
+     add = TRUE, col = "green")
+plot(specaccum(hortaMatrix2022[ grepl(pattern = "Sy",
+                                      x = rownames(hortaMatrix2022)), ]),
+     add = TRUE, col = "blue")
+plot(specaccum(hortaMatrix2022[ grepl(pattern = "Re",
+                                      x = rownames(hortaMatrix2022)), ]),
+     add = TRUE, col = "purple")
+
+legend(x = 1, y = 600,
+       legend = c("Pasture", "Forest", "Syntropic", "Restoration"),
+       fill = c("black", "green", "blue", "purple"),
+       cex = 1)
+
+
+# create species accumulation curves
+plot(specaccum(hortaMatrix2023[ grepl(pattern = "V",
+                                       x = rownames(hortaMatrix2023)), ]),
+     xlab = "Number of replicates 2023",
+     ylab = "Number of species",
+     ylim = c(0,400))
+plot(specaccum(hortaMatrix2023[ grepl(pattern = "F",
+                                       x = rownames(hortaMatrix2023)), ]),
+     add = TRUE, col = "green")
+plot(specaccum(hortaMatrix2023[ grepl(pattern = "S",
+                                       x = rownames(hortaMatrix2023)), ]),
+     add = TRUE, col = "blue")
+plot(specaccum(hortaMatrix2023[ grepl(pattern = "R",
+                                      x = rownames(hortaMatrix2023)), ]),
+     add = TRUE, col = "purple")
+
+legend(x = 1, y = 600,
+       legend = c("Pasture", "Forest", "Syntropic", "Restoration"),
+       fill = c("black", "green", "blue", "purple"),
+       cex = 1)
 
 
 ## ----- Proposed Indicator 1: Alpha -------------------------------------------
 # PI1: Alpha diversity
 
 # Create a table with the alpha diversity measures for each replicate. Note that
-# this includes rare species.
+# in 2022 this analysis included rare species.
 
 
 
@@ -66,7 +108,15 @@ hortaAlphaGroup2023 <- alphaGroupMetrics(hortaMatrixType2023,
                                          groupNames = c("Counterfactual", "Forest",
                                                         "Restoration", "Syntropic"))
 
+hortaAlphaGroup2022 <- alphaGroupMetrics(sqrt(hortaMatrixType2022),
+                                         groupNames = c("Counterfactual", "Forest",
+                                                        "Restoration", "Syntropic"))
 
+hortaAlphaGroup2023sqrt <- alphaGroupMetrics(sqrt(hortaMatrixType2023),
+                                         groupNames = c("Counterfactual", "Forest",
+                                                        "Restoration", "Syntropic"))
+
+# Some troubleshooting:
 # ESR for restoration in 2023 is weirdly low.
 
 # it isn't a lot of rares:
@@ -83,42 +133,66 @@ vegan::diversity(hortaMatrixType2023, index = "shannon")
 exp(vegan::diversity(hortaMatrixType2023, index = "shannon"))
 specnumber(hortaMatrixType2023)
 
-# did vegan diversity change
+# it is some very common spp.
+summary(colSums(hortaMatrix2022) > 500)
+
+hortaMatrix2023[, colSums(hortaMatrix2023) < 500] %>%
+    alphaMetrics(
+        groupNames = hortaGroups2023,
+        replNames = str_sub(rownames(hortaMatrix2023), -2,-1)) %>%
+mutate(siteType = factor(
+        siteType,
+        levels = c("Counterfactual", "Syntropic", "Forest", "Restoration")
+    )) %>%
+    ggplot() +
+    geom_boxplot(aes(siteType, effectiveSR),
+                 outlier.shape = NA) +
+    geom_jitter(
+        aes(siteType, effectiveSR, color = siteType),
+        width = 0.05,
+        height = 0,
+        size = 4
+    ) +
+    labs(color = "Site Type", y = "Effective Species Richness (common removed)",
+         x = "Site Type") +
+    theme(legend.position = "bottom",
+          text = element_text(family = "calibri")) +
+    scale_color_manual(values = supportingColorPalette)
 
 
 
-# Test to compare site diversities between land use types
+# Graph species richness
 
-# Test for raw species number
-# 
-# speciesRLMER <- lme4::lmer( speciesRichness ~
-#                                   siteType +
-#                                   (1 | siteType),
-#                               data = hortaAlpha,
-#                               REML = TRUE)
-# anova(speciesRLMER)
-# lmerTest::rand(speciesRLMER)
-# summary(speciesRLMER)
-# test_speciesRLMER<-car::Anova(mod = speciesRLMER)
-# emmeans::emmeans(speciesRLMER, pairwise~siteType)    
-#   
-# 
-# hortaAlpha %>%
-#     ggplot() +
-#     geom_boxplot(aes(siteType, speciesRichness),
-#                  outlier.shape = NA) +
-#     geom_jitter(
-#         aes(siteType, speciesRichness, color = siteType),
-#         width = 0.1,
-#         height = 0
-#     ) +
-#     labs(color = "Site Type", y = "Raw Species Richness",
-#          x = "Site Type") + 
-#     theme(legend.position="bottom")
+hortaAlpha2022 %>%
+    ggplot() +
+    geom_boxplot(aes(siteType, speciesRichness),
+                 outlier.shape = NA) +
+    geom_jitter(
+        aes(siteType, speciesRichness, color = siteType),
+        width = 0.1,
+        height = 0
+    ) +
+    labs(color = "Site Type", y = "Raw Species Richness 2022",
+         x = "Site Type") +
+    theme(legend.position="bottom")
+
+hortaAlpha2023 %>%
+    ggplot() +
+    geom_boxplot(aes(siteType, speciesRichness),
+                 outlier.shape = NA) +
+    geom_jitter(
+        aes(siteType, speciesRichness, color = siteType),
+        width = 0.1,
+        height = 0
+    ) +
+    labs(color = "Site Type", y = "Raw Species Richness 2023",
+         x = "Site Type") +
+    theme(legend.position="bottom")
+
+# Same trend for both 2022 and 2023; Forest, restoration, syntropic, counterfactual.
 
 
-# Test for ESR
-
+# Graph for ESR
 
 hortaAlpha2023 %>%
     mutate(siteType = factor(siteType, levels = c("Counterfactual", "Syntropic", "Forest", "Restoration"))) %>%
@@ -136,6 +210,20 @@ hortaAlpha2023 %>%
           text = element_text(family = "Calibri"))+
     scale_color_manual(values = supportingColorPalette)
 
+# graph for group ESR
+hortaAlphaGroup2022 %>% 
+    mutate(siteType = factor(siteType, levels = c("Counterfactual", "Syntropic", "Forest", "Restoration"))) %>%
+    ggplot(
+        aes(siteType, effectiveSR, fill = siteType)
+    ) +
+    geom_bar(stat = "identity") +
+    labs(fill = "Site Type", 
+         y = "Effective Species Richness 2022",
+         x = "Site Type") +
+    theme(legend.position = "bottom") +
+    scale_fill_manual(values = supportingColorPalette) +
+    geom_text(stat='identity', aes(label=round(effectiveSR)),position = position_stack(vjust = 0.5))
+
 hortaAlphaGroup2023 %>% 
     mutate(siteType = factor(siteType, levels = c("Counterfactual", "Syntropic", "Forest", "Restoration"))) %>%
     ggplot(
@@ -143,13 +231,13 @@ hortaAlphaGroup2023 %>%
     ) +
     geom_bar(stat = "identity") +
     labs(fill = "Site Type", 
-         y = "Effective Species Richness",
+         y = "Effective Species Richness 2023",
          x = "Site Type") +
     theme(legend.position = "bottom") +
     scale_fill_manual(values = supportingColorPalette) +
     geom_text(stat='identity', aes(label=round(effectiveSR)),position = position_stack(vjust = 0.5))
 
-ggsave("HortaESR_2022.pdf",
+ggsave("HortaESR_2023.pdf",
        plot = last_plot(),
        device = "pdf",
        path = "OutputImages/",
@@ -161,22 +249,75 @@ ggsave("HortaESR_2022.pdf",
 
 
 
-
-
-
-# Filter rare
-hortaMatrix2022 <- hortaMatrix2022[ , colSums(hortaMatrix2022) >= rare]
-hortaMatrix2023 <- hortaMatrix2023[ , colSums(hortaMatrix2023) >= rare]
-
+# ----- Setup for Beta diversity etc. ------------------------------------------
 
 # Create compositional matrices
 
-compMatrix2022 <- compMatrix(inputMatrix = hortaMatrix2022)
+compMatrix2022 <- compMatrix(inputMatrix = hortaMatrix2022, z.warning = .99)
 
-compMatrix2023 <- compMatrix(inputMatrix = hortaMatrix2023)
+compMatrix2023 <- compMatrix(inputMatrix = hortaMatrix2023, z.warning = .99)
 
-compType2022 <- compMatrix(inputMatrix = hortaMatrixType2022)
+compType2022 <- compMatrix(inputMatrix = hortaMatrixType2022, z.warning = .99)
 
-compType2023 <- compMatrix(inputMatrix = hortaMatrixType2023)
+compType2023 <- compMatrix(inputMatrix = hortaMatrixType2023, z.warning = .99)
 
-# the 2023 matrices had adjusted imputations--check
+# updated package is more aggressive about throwing away data--discourage it with the z.warning.
+
+
+
+
+
+## ----- Indicator 2: Beta diversity w/ Aitchison distance -----------------------------
+# Aitchison distance uses the Euclidian distance of the compositional data that
+# has been center log transformed; see
+# https://www.ncbi.nlm.nih.gov/pmc/articles/PMC7811025/
+
+# For each replicate--internal use only, really.
+aitchisonReplicate <- vegdist(compMatrix2022, "euc", diag = F)
+
+min(aitchisonReplicate)
+max(aitchisonReplicate)
+
+aitchisonReplicate %>% aitHeatmap()
+
+# For each replicate--internal use only, really.
+aitchisonReplicate <- vegdist(compMatrix2023, "euc", diag = F)
+
+min(aitchisonReplicate)
+max(aitchisonReplicate)
+
+aitchisonReplicate %>% aitHeatmap()
+
+
+
+
+## For each sample (pooled replicates by land use type)
+aitchisonSample2022 <- vegdist(compType2022, "euc", diag = F)
+
+min(aitchisonSample2022)
+max(aitchisonSample2022)
+
+aitchisonSample2023 <- vegdist(compType2023, "euc", diag = F)
+
+min(aitchisonSample2023)
+max(aitchisonSample2023)
+
+## create plots
+aitchisonSample2022 %>% aitHeatmap(fillColor1 = supportingColorPalette[2],
+                                   fillColor2 = corporateColorPalette[4]) 
+
+treatmentHeatmap <-
+    aitchisonSample2023 %>% aitHeatmap(fillColor1 = supportingColorPalette[2],
+                                      fillColor2 = corporateColorPalette[4]) 
+
+
+ggsave("ApuiDistHeatmap_2023.pdf",
+       plot = treatmentHeatmap,
+       device = "pdf",
+       path = "OutputImages/",
+       width = 8,
+       height = 6,
+       units = "in",
+       dpi = 300
+)
+

@@ -10,7 +10,7 @@
 # libraries
 library(iNEXT)
 
-source("apui_2022_data_processing.R")
+source("CafeApui/Y1_2022/apui_2022_data_processing.R")
 
 # checks
 length(apuiASV$ASVHeader[apuiASV$sample == "EM110-01A-R1" &
