@@ -49,8 +49,8 @@ phylum = c("Arthropoda")
 
 ## common data
 lookupColnames <- read.csv("lookupColnames.csv")
-lookupSitenames2022 <- read.csv("Horta/YR1_2022/lookupSitename2022.csv")
-lookupSitenames2023 <- read.csv("Horta/YR2_2023/lookupSitename2023.csv")
+lookupSitenames2022 <- read.csv("Horta/YR1_2022/lookupSitename2022.csv", strip.white = T)
+lookupSitenames2023 <- read.csv("Horta/YR2_2023/lookupSitename2023.csv", strip.white = T)
 
 infoColnames2022 <- c("N", "storage", "volumeSampleID",
                   "replicate", "replicateVolume",
@@ -91,11 +91,6 @@ infoColnames2023 <- c("N", "sampleID", "siteType", "labVolume",
     ecoMolRawSummary(horta2022Raw)
     ecoMolRawSummary(horta2023Raw)
     
-    
-# This identifies sequences in both years' data--this suggests it is probably a
-# "real" sequence and not a fluke.
-    commonASV <- horta2023Raw$ASVSequence[horta2023Raw$ASVSequence %in% horta2022Raw$ASVSequence]
-
     
     
     
@@ -222,7 +217,27 @@ table(horta2023Filt$phylumBLASTn)
         ecoMolFiltSummary(horta2022Filt)
         ecoMolFiltSummary(horta2023Filt) # many more reads after filtering
         
-            
+        
+# This identifies sequences in both years' data--this suggests it is probably a
+# "real" sequence and not a fluke. It also facilitates the joint PCAs
+    commonASV <- tibble(
+        ASVSequence = horta2023Raw$ASVSequence[horta2023Raw$ASVSequence %in% horta2022Raw$ASVSequence]
+    )
+    
+    commonASV <- merge(x = commonASV,
+                       y = horta2022Raw[ , colnames(horta2022Raw) %in% c("ASVSequence", "ASVHeader")],
+                       by = "ASVSequence",
+                       all.x = T
+                       ) %>% unique()
+    colnames(commonASV)[2] <- "ASVHeader2022"
+    commonASV <- merge(x = commonASV,
+                       y = horta2023Raw[ , colnames(horta2023Raw) %in% c("ASVSequence", "ASVHeader")],
+                       by = "ASVSequence",
+                       all.x = T
+    ) %>% unique()
+    colnames(commonASV)[3] <- "ASVHeader2023"
+    commonASV$lookup <- paste0(commonASV$ASVHeader2022, "=",commonASV$ASVHeader2023)
+
 
 # ----- Data quality checks | 2022 & 2023 -------------------------------
 
@@ -260,6 +275,8 @@ p2 <- ggplot(horta2023Info,
     
     
     grid.arrange(p1, p2, ncol=2)    
+    
+    remove(p0, p1, p2)
     
 # overall silica data quality of 2023 appears better than 2022, with the 2023
 # data having higher concentration and purity. For the concentration, forest and
@@ -370,6 +387,11 @@ p2 <- ggplot(horta2023Info,
                                   site.name = "sample", abundance = "asvAbsoluteAbundance")
     
     hist(colSums(hortaMatrix2023), breaks = 100)
+    
+    
+    
+    
+    
     # Create a matrix where the replicates for land use types are combined
     
     hortaType2023 <- horta2023Filt %>%

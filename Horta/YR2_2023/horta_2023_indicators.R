@@ -92,8 +92,6 @@ legend(x = 1, y = 600,
 # Create a table with the alpha diversity measures for each replicate. Note that
 # in 2022 this analysis included rare species.
 
-
-
 hortaAlpha2022 <- alphaMetrics(hortaMatrix2022, 
                           groupNames = hortaGroups2022, 
                           replNames = str_sub(rownames(hortaMatrix2022), -3,-1))
@@ -254,10 +252,13 @@ ggsave("HortaESR_2023.pdf",
 # Create compositional matrices
 
 compMatrix2022 <- compMatrix(inputMatrix = hortaMatrix2022, z.warning = .99)
-
-compMatrix2023 <- compMatrix(inputMatrix = hortaMatrix2023, z.warning = .99)
+compMatrix2022s <- compMatrix(inputMatrix = sqrt(hortaMatrix2022), z.warning = .99)
 
 compType2022 <- compMatrix(inputMatrix = hortaMatrixType2022, z.warning = .99)
+
+
+compMatrix2023 <- compMatrix(inputMatrix = hortaMatrix2023, z.warning = .99)
+compMatrix2023s <- compMatrix(inputMatrix = sqrt(hortaMatrix2023), z.warning = .99)
 
 compType2023 <- compMatrix(inputMatrix = hortaMatrixType2023, z.warning = .99)
 
@@ -273,20 +274,47 @@ compType2023 <- compMatrix(inputMatrix = hortaMatrixType2023, z.warning = .99)
 # https://www.ncbi.nlm.nih.gov/pmc/articles/PMC7811025/
 
 # For each replicate--internal use only, really.
-aitchisonReplicate <- vegdist(compMatrix2022, "euc", diag = F)
+aitchisonReplicate2022 <- vegdist(compMatrix2022, "euc", diag = F)
 
-min(aitchisonReplicate)
-max(aitchisonReplicate)
+min(aitchisonReplicate2022)
+max(aitchisonReplicate2022)
 
-aitchisonReplicate %>% aitHeatmap()
+aitchisonReplicate2022 %>% aitHeatmap()
 
 # For each replicate--internal use only, really.
-aitchisonReplicate <- vegdist(compMatrix2023, "euc", diag = F)
+aitchisonReplicate2023 <- vegdist(compMatrix2023, "euc", diag = F)
+aitchisonReplicate2023s <- vegdist(compMatrix2023s, "euc", diag = F)
 
-min(aitchisonReplicate)
-max(aitchisonReplicate)
+min(aitchisonReplicate2023)
+max(aitchisonReplicate2023)
 
-aitchisonReplicate %>% aitHeatmap()
+aitchisonReplicate2023 %>% aitHeatmap()
+aitchisonReplicate2023s %>% aitHeatmap() # same basic pattern.
+
+levelOrder = c(
+    "Counterfactual-Counterfactual",
+    "Forest-Forest",
+    "Restoration-Restoration",
+    "Syntropic-Syntropic",
+    "Counterfactual-Forest",
+    "Counterfactual-Restoration",
+    "Counterfactual-Syntropic",
+    "Forest-Restoration",
+    "Forest-Syntropic",
+    "Restoration-Syntropic"
+)
+aitComparison(
+    inputDist = aitchisonReplicate2023,
+    remap = lookupSitenames2023[, c(1,6,4)], # remap needs to be old, new, type
+    repeatSamples = TRUE,
+    fillColor = c(
+        supportingColorPalette[c(1, 5, 2, 6, 7, 3, 8)],
+        corporateColorPalette[c(1, 2)],
+        supportingColorPalette[4]
+    ),
+    levelsPlot = levelOrder
+) # same basic pattern sqrt vs not
+
 
 
 
@@ -321,3 +349,112 @@ ggsave("ApuiDistHeatmap_2023.pdf",
        dpi = 300
 )
 
+remove(treatmentHeatmap)
+
+
+## ----- Indicator 3: PCA qualitative assessment ------------------------------------------
+library("FactoMineR")
+library("factoextra")
+# Good tutorial here: http://www.sthda.com/english/articles/31-principal-component-methods-in-r-practical-guide/112-pca-principal-component-analysis-essentials/
+
+
+# create plot pcas--2023 only
+pca_plots <- compMatrix2023 %>%
+    PCA(., scale.unit = F, graph = F)
+
+viz_pcaPlots <- fviz_pca_ind(
+    pca_plots,
+    geom.ind = "point",
+    col.ind = hortaGroups2023,
+    addEllipses = T,
+    ellipse.type = "confidence",
+    pointsize = 3,
+    mean.point = F,
+    legend.title = "Site Type",
+    palette = supportingColorPalette[c(1,3,4,2)]
+)
+ggpubr::ggpar(viz_pcaPlots,
+              title = paste0("Community Composition Visualization using PCA"),#, hortaSubset),
+              subtitle = paste0(phylum, collapse = " "), xlab = F, ylab = F, tickslab = F
+)
+ggsave("HortaPCA_2023.pdf",
+       plot = last_plot(),
+       device = "pdf",
+       path = "OutputImages/",
+       width = 8,
+       height = 5,
+       units = "in",
+       dpi = 300
+)
+
+
+viz_pcaPlots_contrib <- fviz_contrib(pca_plots, choice = "ind", axes = 1:2)
+
+# fviz_pca_biplot(pca_plots,
+#                 # Sites
+#                 col.ind = hortaGroups2023,
+#                 addEllipses = T,
+#                 ellipse.type = "convex",
+#                 label = "var",
+#                 repel = T,
+#                 max.overlaps = 5,
+#                 alpha.var ="contrib", )
+
+remove(pca_plots, viz_pcaPlots, viz_pcaPlots_contrib)
+
+# ----- Indicator 3: Combined 2022 and 2023 --------------------------------------------
+
+# combine the site species matrices for 2022 and 2023. The goal is to have 23 rows that are renamed to include year. Then as many columns as neeeded, with the overlapping ASVs merged.
+
+
+# fix rownames--warning if you switch to silica
+rownames(hortaMatrix2022) <-
+    str_sub(rownames(hortaMatrix2022),-3, -1) %>%
+    paste0(., "-2022")
+rownames(hortaMatrix2023) <-
+    str_sub(rownames(hortaMatrix2023),-2, -1) %>%
+    paste0(., "-2023")
+    
+colnames(hortaMatrix2023) <- plyr::mapvalues(colnames(hortaMatrix2023), from = commonASV$ASVHeader2023,
+                                            to = commonASV$ASVHeader2022,
+                                            warn_missing = F)
+
+hortaMatrixJOINT <- bind_rows(hortaMatrix2022, hortaMatrix2023)
+hortaMatrixJOINT[is.na(hortaMatrixJOINT)] <- 0
+
+
+# Create a compositional matrix for the joint matrix
+compMatrixJOINT <- compMatrix(inputMatrix = hortaMatrixJOINT, z.warning = .99)
+
+jointcolors <- c("#fac091", "#F68B33", "#c2dd97","#8EBF3F","#e3e88c", "#CAD32B","#fae997","#F5D226")
+
+# create plot pcas--2022 and 2023
+    pca_plots <- compMatrixJOINT %>%
+        PCA(., scale.unit = F, graph = F)
+    
+    viz_pcaPlots <- fviz_pca_ind(
+        pca_plots,
+        geom.ind = "point",
+        col.ind = c(paste0(hortaGroups2022,"-2022"), paste0(hortaGroups2023,"-2023")),
+        addEllipses = T,
+        ellipse.type = "confidence",
+        pointsize = 3,
+        point = 16,
+        mean.point = F,
+        legend.title = "Site Type",
+        palette = jointcolors
+    )
+    ggpubr::ggpar(viz_pcaPlots,
+                  title = paste0("Community Composition Visualization using PCA"),#, hortaSubset),
+                  subtitle = paste0(phylum, collapse = " "), xlab = F, ylab = F, tickslab = F
+    )
+    ggsave("HortaPCA_JOINT.pdf",
+           plot = last_plot(),
+           device = "pdf",
+           path = "OutputImages/",
+           width = 8,
+           height = 5,
+           units = "in",
+           dpi = 300
+    )
+    
