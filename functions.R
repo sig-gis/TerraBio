@@ -31,7 +31,7 @@ siteSpecies <- function(inputOTU, rowNames, rare = 0) {
 
 ## ----- Data manip. funs. | Compositional Matrices ----------------
 
-compMatrix <- function(inputMatrix){
+compMatrix <- function(inputMatrix, z.warning = 0.8){
     # square-root Bayesian-multiplicative replacement of zeros with the cmultRepl()
     # function (Ladin et al., 2021) 
     
@@ -40,8 +40,10 @@ compMatrix <- function(inputMatrix){
     # and https://raw.githubusercontent.com/ggloor/CoDaSeq/6ff864aade46cd3c8b0eff3bb54d5460775f92cd/CoDaSeq/vignettes/CoDaSeq_vignette.Rnw
     # This latter contends that this is the most principled method.
     
-    zeroRepl <- cmultRepl(inputMatrix, label = 0,
-                                      method = "CZM")
+    zeroRepl <- cmultRepl(inputMatrix,
+                          label = 0,
+                          method = "CZM",
+                          z.warning = z.warning)
     
     output <- cdt.acomp(x = zeroRepl) %>% 
         as.data.frame()

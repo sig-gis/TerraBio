@@ -1,41 +1,41 @@
-﻿EcoMol,intervention,site,type,replicate,pretty
-EM135c2-3-I-R3,INOCAS,3,Intervention,3,Intervention 3 R3
-EM135c2-3-I-R2,INOCAS,3,Intervention,2,Intervention 3 R2
-EM135c2-3-I-R1,INOCAS,3,Intervention,1,Intervention 3 R1
-EM135c2-3-F-R3,INOCAS,3,Forest ,3,Forest 3 R3
-EM135c2-3-F-R2,INOCAS,3,Forest ,2,Forest 3 R2
-EM135c2-3-F-R1,INOCAS,3,Forest ,1,Forest 3 R1
+﻿EcoMol,Syntropic,site,type,replicate,pretty
+EM135c2-3-I-R3,INOCAS,3,Syntropic,3,Syntropic 3 R3
+EM135c2-3-I-R2,INOCAS,3,Syntropic,2,Syntropic 3 R2
+EM135c2-3-I-R1,INOCAS,3,Syntropic,1,Syntropic 3 R1
+EM135c2-3-F-R3,INOCAS,3,Forest,3,Forest 3 R3
+EM135c2-3-F-R2,INOCAS,3,Forest,2,Forest 3 R2
+EM135c2-3-F-R1,INOCAS,3,Forest,1,Forest 3 R1
 EM135c2-3-CF-R3,INOCAS,3,Counterfactual,3,Counterfactual 3 R3
 EM135c2-3-CF-R2,INOCAS,3,Counterfactual,2,Counterfactual 3 R2
 EM135c2-3-CF-R1,INOCAS,3,Counterfactual,1,Counterfactual 3 R1
-EM135c2-2-I-R3,INOCAS,2,Intervention,3,Intervention 2 R3
-EM135c2-2-I-R2,INOCAS,2,Intervention,2,Intervention 2 R2
-EM135c2-2-I-R1,INOCAS,2,Intervention,1,Intervention 2 R1
-EM135c2-2-F-R3,INOCAS,2,Forest ,3,Forest 2 R3
-EM135c2-2-F-R2,INOCAS,2,Forest ,2,Forest 2 R2
-EM135c2-2-F-R1,INOCAS,2,Forest ,1,Forest 2 R1
+EM135c2-2-I-R3,INOCAS,2,Syntropic,3,Syntropic 2 R3
+EM135c2-2-I-R2,INOCAS,2,Syntropic,2,Syntropic 2 R2
+EM135c2-2-I-R1,INOCAS,2,Syntropic,1,Syntropic 2 R1
+EM135c2-2-F-R3,INOCAS,2,Forest,3,Forest 2 R3
+EM135c2-2-F-R2,INOCAS,2,Forest,2,Forest 2 R2
+EM135c2-2-F-R1,INOCAS,2,Forest,1,Forest 2 R1
 EM135c2-2-CF-R3,INOCAS,2,Counterfactual,3,Counterfactual 2 R3
 EM135c2-2-CF-R2,INOCAS,2,Counterfactual,2,Counterfactual 2 R2
 EM135c2-2-CF-R1,INOCAS,2,Counterfactual,1,Counterfactual 2 R1
-EM135c2-1-I-R3,INOCAS,1,Intervention,3,Intervention 1 R3
-EM135c2-1-I-R2,INOCAS,1,Intervention,2,Intervention 1 R2
-EM135c2-1-I-R1,INOCAS,1,Intervention,1,Intervention 1 R1
-EM135c2-1-F-R3,INOCAS,1,Forest ,3,Forest 1 R3
-EM135c2-1-F-R2,INOCAS,1,Forest ,2,Forest 1 R2
-EM135c2-1-F-R1,INOCAS,1,Forest ,1,Forest 1 R1
+EM135c2-1-I-R3,INOCAS,1,Syntropic,3,Syntropic 1 R3
+EM135c2-1-I-R2,INOCAS,1,Syntropic,2,Syntropic 1 R2
+EM135c2-1-I-R1,INOCAS,1,Syntropic,1,Syntropic 1 R1
+EM135c2-1-F-R3,INOCAS,1,Forest,3,Forest 1 R3
+EM135c2-1-F-R2,INOCAS,1,Forest,2,Forest 1 R2
+EM135c2-1-F-R1,INOCAS,1,Forest,1,Forest 1 R1
 EM135c2-1-CF-R3,INOCAS,1,Counterfactual,3,Counterfactual 1 R3
 EM135c2-1-CF-R2,INOCAS,1,Counterfactual,2,Counterfactual 1 R2
 EM135c2-1-CF-R1,INOCAS,1,Counterfactual,1,Counterfactual 1 R1
 EM135c1-V3,Horta,1,Counterfactual,3,Counterfactual R1
 EM135c1-V2,Horta,1,Counterfactual,2,Counterfactual R2
 EM135c1-V1,Horta,1,Counterfactual,1,Counterfactual R3
-EM135c1-S3,Horta,1,Intervention,3,Intervention R1
-EM135c1-S2,Horta,1,Intervention,2,Intervention R2
-EM135c1-S1,Horta,1,Intervention,1,Intervention R3
+EM135c1-S3,Horta,1,Syntropic,3,Syntropic R1
+EM135c1-S2,Horta,1,Syntropic,2,Syntropic R2
+EM135c1-S1,Horta,1,Syntropic,1,Syntropic R3
 EM135c1-R3,Horta,1,Restoration,3,Restoration 3
 EM135c1-R2,Horta,1,Restoration,2,Restoration 2
 EM135c1-R1,Horta,1,Restoration,1,Restoration 1
 EM135c1-Floresta-12SV5,Horta,1,Forest Mammals,0,Forest Mammals
-EM135c1-F3,Horta,1,Forest ,3,Forest 3
-EM135c1-F2,Horta,1,Forest ,2,Forest 2
-EM135c1-F1,Horta,1,Forest ,1,Forest 1
+EM135c1-F3,Horta,1,Forest,3,Forest 3
+EM135c1-F2,Horta,1,Forest,2,Forest 2
+EM135c1-F1,Horta,1,Forest,1,Forest 1

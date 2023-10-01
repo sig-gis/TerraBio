@@ -22,10 +22,10 @@ source("functions.R")
 source("../../../RCode/R_Scripts/triplet_fixer.R") # from my github repository
 source("../../../RCode/R_Scripts/repeat_multipatt.R") # ditto
 
-lookupColnames <- read.csv("CafeApui/lookupColnames.csv")
-lookupSitenames <- read.csv("CafeApui/lookupSitenames.csv")
+lookupColnames <- read.csv("CafeApui/Y1_2022/lookupColnames.csv")
+lookupSitenames <- read.csv("CafeApui/Y1_2022/lookupSitenames.csv")
 
-apuiAllASV <- read.csv("CafeApui/Apui_2022_bioinfo_results.csv",
+apuiAllASV <- read.csv("CafeApui/Y1_2022/Apui_2022_bioinfo_results.csv",
                         stringsAsFactors = F,
                         col.names = lookupColnames$TB_ColName)
     apuiAllASV$ASVHeader <- str_sub(apuiAllASV$ASVHeader, 2, -1) # strips the > from the ASV header
@@ -162,3 +162,4 @@ ggplot(volumeSampleASV, aes(x = Storage, y = countASV)) +
 
 
 remove(volumeSampleASV)
+
