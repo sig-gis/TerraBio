@@ -428,6 +428,10 @@ compMatrixJOINT <- compMatrix(inputMatrix = hortaMatrixJOINT, z.warning = .99)
 
 jointcolors <- c("#fac091", "#F68B33", "#c2dd97","#8EBF3F","#e3e88c", "#CAD32B","#fae997","#F5D226")
 
+# see here: https://www.colorhexa.com/fac091
+# info on shapes for pca: https://copyprogramming.com/howto/specify-different-pointshapes-for-var-and-ind-in-fviz-pca-biplot
+
+
 # create plot pcas--2022 and 2023
     pca_plots <- compMatrixJOINT %>%
         PCA(., scale.unit = F, graph = F)
