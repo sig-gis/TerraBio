@@ -1,93 +1,103 @@
-EM_ColName2022,EM_ColName2023,EM_Order2023,TB_ColName,Keep
-NA,Researcher,1,researcher,N
-NA,Project,2,project,N
-Sample,Sample,7,sample,Y
-Primer name,Primer,6,primerName,Y
-File_name,Unique_File_name,8,fileName,N
-Read_origin,Read origin,NA,readOrigin,N
-NA,Relative abundance to all samples,9,relativeAbundanceAllSamples,Y
-Relative abundance on sample,Relative abundance on sample,10,relativeAbundanceOnSample,Y
-NA,Clean relative abd. on sample,14,cleanRelativeAbundanceOnSample,Y
-Sample total abd,Sample total abundance,11,sampleTotalAbd,Y
-NA,Total clean sample abd. by marker,13,totCleanSampleAbdByMarker,Y
-ASV absolute abundance,ASV absolute abundance,12,asvAbsoluteAbundance,Y
-Preservation,NA,NA,preservation,Y
-NA,Metadata.1,15,metadata_1,Y
-metadata_2,Metadata.2,16,metadata_2,Y
-metadata_3,Metadata.3,17,metadata_3,Y
-metadata_4,Metadata.4,18,metadata_4,Y
-metadata_5,Metadata.5,NA,metadata_5,Y
-NA,Identification,4,identificationFiltered,Y
-NA,Identification Max. taxonomy,5,identificationMaxTaxon,Y
-obs,NA,NA,obs,N
-Curated ID,Final ID (BLASTn),22,curatedID,Y
-NA,ID status,24,IDStatus,Y
-Blast pseudo-score,Blast pseudo-score,3,blastPseudoScore,Y
-blast ID Origin,blast ID Origin,23,blastIDOrigin,Y
-Genus (BLASTn),Genus (BLASTn),26,genusBLASTn,Y
-BLAST_subfamily,Subfamily (BLASTn),27,BLAST_subfamily,Y
-Family (BLASTn),Family (BLASTn),28,familyBLASTn,Y
-BLAST_suborder,Suborder (BLASTn),29,BLAST_suborder,Y
-Order (BLASTn),Order (BLASTn),30,order_BLASTn,Y
-BLAST_subclass,Subclass (BLASTn),31,BLAST_subclass,Y
-Class (BLASTn),Class (BLASTn),32,classBLASTn,Y
-Phylum (BLASTn),Phylum (BLASTn),33,phylumBLASTn,Y
-BLAST_subphylum,Subphylum (BLASTn),34,BLAST_subphylum,Y
-Kingdom (BLASTn),Kingdom (BLASTn),35,kingdomBLASTn,Y
-NA,Superkingdom (BLASTn),36,superkingdomBLASTn,Y
-1_subject header,1_subject header,37,B1_subjectHeader,N
-NA,1_staxid,38,B1_staxID,N
-1_subject,1_subject,39,B1_subject,N
-1_indentity,1_indentity,40,B1_identity,N
-1_qcovhsp,1_qcovhsp,41,B1_qcovhsp,N
-1_length,1_length,42,B1_length,N
-1_mismatches,1_mismatches,43,B1_mismatches,N
-1_gaps,1_gaps,44,B1_gaps,N
-1_query start,1_query start,45,B1_queryStart,N
-1_query end,1_query end,46,B1_queryEnd,N
-1_subject start,1_subject start,47,B1_subjectStart,N
-1_subject end,1_subject end,48,B1_subjectEnd,N
-1_e-value,1_e-value,49,B1_eValue,N
-1_bitscore,1_bitscore,50,B1_bitscore,N
-2_subject header,2_subject header,51,B2_subjectHeader,N
-NA,2_staxid,52,B2_staxID,N
-2_subject,2_subject,53,B2_subject,N
-2_indentity,2_indentity,54,B2_indentity,N
-2_qcovhsp,2_qcovhsp,55,B2_qcovhsp,N
-2_length,2_length,56,B2_length,N
-2_mismatches,2_mismatches,57,B2_mismatches,N
-2_gaps,2_gaps,58,B2_gaps,N
-2_query start,2_query start,59,B2_queryStart,N
-2_query end,2_query end,60,B2_queryEnd,N
-2_subject start,2_subject start,61,B2_subjectStart,N
-2_subject end,2_subject end,62,B2_subjectEnd,N
-2_e-value,2_e-value,63,B2_eValue,N
-2_bitscore,2_bitscore,64,B2_bitscore,N
-3_subject header,3_subject header,65,B3_subjectHeader,N
-NA,3_staxid,66,B3_staxID,N
-3_subject,3_subject,67,B3_subject,N
-3_indentity,3_indentity,68,B3_indentity,N
-3_qcovhsp,3_qcovhsp,69,B3_qcovhsp,N
-3_length,3_length,70,B3_length,N
-3_mismatches,3_mismatches,71,B3_mismatches,N
-3_gaps,3_gaps,72,B3_gaps,N
-3_query start,3_query start,73,B3_queryStart,N
-3_query end,3_query end,74,B3_queryEnd,N
-3_subject start,3_subject start,75,B3_subjectStart,N
-3_subject end,3_subject end,76,B3_subjectEnd,N
-3_e-value,3_e-value,77,B3_eValue,N
-3_bitscore,3_bitscore,78,B3_bitscore,N
-ASV Size (pb),ASV Size (pb),20,ASVSize,Y
-ASV header,ASV header,79,ASVHeader,Y
-ASV (Sequence),ASV (Sequence),80,ASVSequence,Y
-OTU,OTU,81,OTU,Y
-Extraction.control,Extraction control,NA,extractionControl,N
-PCR.control,PCR control,82,PCRControl,N
-Prop. to PCR control,Prop. to PCR control,83,propToPCRControl,N
-Prop. to Ext control,Prop. to Extraction control,NA,propToExtControl,N
-Prop. to Filt control,Prop. to Filtration control,NA,propToFiltControl,N
-Possible contamination,Contamination status,25,possibleContamination,N
-NA,Possible Metazoa,21,possibleMetazoa,Y
-Primer expected length,Primer expected length,19,primerExpectedLength,Y
-Type,Type,NA,type,N
-NA,Filtration control,NA,filtrationControl,N
+EM_ColName2022,EM_ColName2023,EM_Order2023,EM_ColNameRTerra2023,EM_OrderRTerra2023,TB_ColName,Keep
+NA,Researcher,1,Researcher,1,researcher,N
+NA,Project,2,Project,2,project,N
+Sample,Sample,7,Sample name,7,sample,Y
+Primer name,Primer,6,Primer,6,primerName,Y
+File_name,NA,NA,File_name,37,fileName,N
+NA,Unique_File_name,8,Unique_File_name,8,uniqueFileName,N
+Read_origin,Read origin,NA,Read origin,9,readOrigin,N
+NA,Relative abundance to all samples,9,Relative abundance to all samples,10,relativeAbundanceAllSamples,Y
+Relative abundance on sample,Relative abundance on sample,10,Relative abundance on sample,11,relativeAbundanceOnSample,Y
+NA,Clean relative abd. on sample,14,Clean relative abd. on sample,15,cleanRelativeAbundanceOnSample,Y
+Sample total abd,Sample total abundance,11,Sample total abundance,12,sampleTotalAbd,Y
+NA,Total clean sample abd. by marker,13,Total clean sample abd. by marker,14,totCleanSampleAbdByMarker,Y
+ASV absolute abundance,ASV absolute abundance,12,ASV absolute abundance,13,asvAbsoluteAbundance,Y
+Preservation,NA,NA,NA,NA,preservation,Y
+NA,Metadata.1,15,Metadata 1,16,metadata_1,Y
+metadata_2,Metadata.2,16,Metadata 2,17,metadata_2,Y
+metadata_3,Metadata.3,17,Metadata 3,18,metadata_3,Y
+metadata_4,Metadata.4,18,Metadata 4,19,metadata_4,Y
+metadata_5,Metadata.5,NA,Metadata 5,20,metadata_5,Y
+NA,NA,NA,Metadata 6,21,metadata_6,Y
+NA,NA,NA,Metadata 7,22,metadata_7,Y
+NA,NA,NA,Metadata 8,23,metadata_8,Y
+NA,NA,NA,Metadata 9,24,metadata_9,Y
+NA,NA,NA,Metadata 10,25,metadata_10,N
+NA,NA,NA,Metadata 11,26,metadata_11,N
+NA,NA,NA,Metadata 12,27,metadata_12,N
+NA,Identification,4,Identification,4,identificationFiltered,Y
+NA,Identification Max. taxonomy,5,Identification Max. taxonomy,5,identificationMaxTaxon,Y
+obs,NA,NA,obs,28,obs,N
+Curated ID,Final ID (BLASTn),22,Curated ID,32,curatedID,Y
+NA,NA,NA,Final ID (BLASTn),33,finalID,N
+NA,ID status,24,ID status,35,IDStatus,Y
+Blast pseudo-score,Blast pseudo-score,3,BLASTn pseudo-score,3,blastPseudoScore,Y
+blast ID Origin,blast ID Origin,23,blast ID Origin,34,blastIDOrigin,Y
+Genus (BLASTn),Genus (BLASTn),26,Genus (BLASTn),38,genusBLASTn,Y
+BLAST_subfamily,Subfamily (BLASTn),27,Subfamily (BLASTn),39,BLAST_subfamily,Y
+Family (BLASTn),Family (BLASTn),28,Family (BLASTn),40,familyBLASTn,Y
+BLAST_suborder,Suborder (BLASTn),29,Suborder (BLASTn),41,BLAST_suborder,Y
+Order (BLASTn),Order (BLASTn),30,Order (BLASTn),42,order_BLASTn,Y
+BLAST_subclass,Subclass (BLASTn),31,Subclass (BLASTn),43,BLAST_subclass,Y
+Class (BLASTn),Class (BLASTn),32,Class (BLASTn),44,classBLASTn,Y
+Phylum (BLASTn),Phylum (BLASTn),33,Phylum (BLASTn),45,phylumBLASTn,Y
+BLAST_subphylum,Subphylum (BLASTn),34,Subphylum (BLASTn),46,BLAST_subphylum,Y
+Kingdom (BLASTn),Kingdom (BLASTn),35,Kingdom (BLASTn),47,kingdomBLASTn,Y
+NA,Superkingdom (BLASTn),36,Superkingdom (BLASTn),48,superkingdomBLASTn,Y
+1_subject header,1_subject header,37,1_subject header,49,B1_subjectHeader,N
+NA,1_staxid,38,1_staxid,50,B1_staxID,N
+1_subject,1_subject,39,1_subject,51,B1_subject,N
+1_indentity,1_indentity,40,1_indentity,52,B1_identity,N
+1_qcovhsp,1_qcovhsp,41,1_qcovhsp,53,B1_qcovhsp,N
+1_length,1_length,42,1_length,54,B1_length,N
+1_mismatches,1_mismatches,43,1_mismatches,55,B1_mismatches,N
+1_gaps,1_gaps,44,1_gaps,56,B1_gaps,N
+1_query start,1_query start,45,1_query start,57,B1_queryStart,N
+1_query end,1_query end,46,1_query end,58,B1_queryEnd,N
+1_subject start,1_subject start,47,1_subject start,59,B1_subjectStart,N
+1_subject end,1_subject end,48,1_subject end,60,B1_subjectEnd,N
+1_e-value,1_e-value,49,1_e-value,61,B1_eValue,N
+1_bitscore,1_bitscore,50,1_bitscore,62,B1_bitscore,N
+2_subject header,2_subject header,51,2_subject header,63,B2_subjectHeader,N
+NA,2_staxid,52,2_staxid,64,B2_staxID,N
+2_subject,2_subject,53,2_subject,65,B2_subject,N
+2_indentity,2_indentity,54,2_indentity,66,B2_indentity,N
+2_qcovhsp,2_qcovhsp,55,2_qcovhsp,67,B2_qcovhsp,N
+2_length,2_length,56,2_length,68,B2_length,N
+2_mismatches,2_mismatches,57,2_mismatches,69,B2_mismatches,N
+2_gaps,2_gaps,58,2_gaps,70,B2_gaps,N
+2_query start,2_query start,59,2_query start,71,B2_queryStart,N
+2_query end,2_query end,60,2_query end,72,B2_queryEnd,N
+2_subject start,2_subject start,61,2_subject start,73,B2_subjectStart,N
+2_subject end,2_subject end,62,2_subject end,74,B2_subjectEnd,N
+2_e-value,2_e-value,63,2_e-value,75,B2_eValue,N
+2_bitscore,2_bitscore,64,2_bitscore,76,B2_bitscore,N
+3_subject header,3_subject header,65,3_subject header,77,B3_subjectHeader,N
+NA,3_staxid,66,3_staxid,78,B3_staxID,N
+3_subject,3_subject,67,3_subject,79,B3_subject,N
+3_indentity,3_indentity,68,3_indentity,80,B3_indentity,N
+3_qcovhsp,3_qcovhsp,69,3_qcovhsp,81,B3_qcovhsp,N
+3_length,3_length,70,3_length,82,B3_length,N
+3_mismatches,3_mismatches,71,3_mismatches,83,B3_mismatches,N
+3_gaps,3_gaps,72,3_gaps,84,B3_gaps,N
+3_query start,3_query start,73,3_query start,85,B3_queryStart,N
+3_query end,3_query end,74,3_query end,86,B3_queryEnd,N
+3_subject start,3_subject start,75,3_subject start,87,B3_subjectStart,N
+3_subject end,3_subject end,76,3_subject end,88,B3_subjectEnd,N
+3_e-value,3_e-value,77,3_e-value,89,B3_eValue,N
+3_bitscore,3_bitscore,78,3_bitscore,90,B3_bitscore,N
+ASV Size (pb),ASV Size (pb),20,ASV Size (pb),30,ASVSize,Y
+ASV header,ASV header,79,ASV header,92,ASVHeader,Y
+ASV (Sequence),ASV (Sequence),80,ASV (Sequence),93,ASVSequence,Y
+OTU,OTU,81,OTU,94,OTU,Y
+Extraction.control,Extraction control,NA,NA,NA,extractionControl,N
+PCR.control,PCR control,82,PCR control,95,PCRControl,N
+Prop. to PCR control,Prop. to PCR control,83,Prop. to PCR control,96,propToPCRControl,N
+Prop. to Ext control,Prop. to Extraction control,NA,NA,NA,propToExtControl,N
+Prop. to Filt control,Prop. to Filtration control,NA,NA,NA,propToFiltControl,N
+Possible contamination,Contamination status,25,Contamination status,36,possibleContamination,N
+NA,Possible Metazoa,21,Possible Metazoa,31,possibleMetazoa,Y
+Primer expected length,Primer expected length,19,Primer expected length,29,primerExpectedLength,Y
+Type,Type,NA,Type,97,type,N
+NA,Filtration control,NA,NA,NA,filtrationControl,N
+NA,NA,NA,Contamination control,91,contaminationControl,Y 

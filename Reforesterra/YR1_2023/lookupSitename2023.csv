@@ -1,0 +1,55 @@
+﻿EcoMol,sample code,site code,site,treatment code,treatment code original,treatment,treatment_br,replicate,pretty
+EM135c3-1,Tbio-RTERRA-1-I-R1,1,Hélio Rosa de Paula,I,I,Intervention,Interveção,1,Intervention S1 R1
+EM135c3-2,Tbio-RTERRA-1-I-R2,1,Hélio Rosa de Paula,I,I,Intervention,Interveção,2,Intervention S1 R2
+EM135c3-3,Tbio-RTERRA-1-I-R3,1,Hélio Rosa de Paula,I,I,Intervention,Interveção,3,Intervention S1 R3
+EM135c3-4,Tbio-RTERRA-1-CF-R1,1,Hélio Rosa de Paula,CF,CF,Pasture,Contrafactual,1,Pasture S1 R1
+EM135c3-5,Tbio-RTERRA-1-CF-R2,1,Hélio Rosa de Paula,CF,CF,Pasture,Contrafactual,2,Pasture S1 R2
+EM135c3-6,Tbio-RTERRA-1-CF-R3,1,Hélio Rosa de Paula,CF,CF,Pasture,Contrafactual,3,Pasture S1 R3
+EM135c3-7,Tbio-RTERRA-1-R-R1,1,Hélio Rosa de Paula,R,R,Forest,Referência,1,Forest S1 R1
+EM135c3-8,Tbio-RTERRA-1-R-R2,1,Hélio Rosa de Paula,R,R,Forest,Referência,2,Forest S1 R2
+EM135c3-9,Tbio-RTERRA-1-R-R3,1,Hélio Rosa de Paula,R,R,Forest,Referência,3,Forest S1 R3
+EM135c3-10,Tbio-RTERRA-2-I-R1,2,Genivaldo dos Reis Domingues,I,I,Intervention,Interveção,1,Intervention S2 R1
+EM135c3-11,Tbio-RTERRA-2-I-R2,2,Genivaldo dos Reis Domingues,I,I,Intervention,Interveção,2,Intervention S2 R2
+EM135c3-12,Tbio-RTERRA-2-I-R3,2,Genivaldo dos Reis Domingues,I,I,Intervention,Interveção,3,Intervention S2 R3
+EM135c3-13,Tbio-RTERRA-2-CF-R1,2,Genivaldo dos Reis Domingues,CF,CF,Pasture,Contrafactual,1,Pasture S2 R1
+EM135c3-14,Tbio-RTERRA-2-CF-R2,2,Genivaldo dos Reis Domingues,CF,CF,Pasture,Contrafactual,2,Pasture S2 R2
+EM135c3-15,Tbio-RTERRA-2-CF-R3,2,Genivaldo dos Reis Domingues,CF,CF,Pasture,Contrafactual,3,Pasture S2 R3
+EM135c3-16,Tbio-RTERRA-2-R-R1,2,Genivaldo dos Reis Domingues,R,R,Forest,Referência,1,Forest S2 R1
+EM135c3-17,Tbio-RTERRA-2-R-R2,2,Genivaldo dos Reis Domingues,R,R,Forest,Referência,2,Forest S2 R2
+EM135c3-18,Tbio-RTERRA-2-R-R3,2,Genivaldo dos Reis Domingues,R,R,Forest,Referência,3,Forest S2 R3
+EM135c3-19,Tbio-RTERRA-3-IA-R1,3,Joel Gonçalves Antunes,I,IA,Intervention,Interveção,1,Intervention S3 R1
+EM135c3-20,Tbio-RTERRA-3-IA-R2,3,Joel Gonçalves Antunes,I,IA,Intervention,Interveção,2,Intervention S3 R2
+EM135c3-21,Tbio-RTERRA-3-IA-R3,3,Joel Gonçalves Antunes,I,IA,Intervention,Interveção,3,Intervention S3 R3
+EM135c3-22,Tbio-RTERRA-3-IB-R1,3,Joel Gonçalves Antunes,I,IB,Intervention,Interveção,1,Intervention S3 R1
+EM135c3-23,Tbio-RTERRA-3-IB-R2,3,Joel Gonçalves Antunes,I,IB,Intervention,Interveção,2,Intervention S3 R2
+EM135c3-24,Tbio-RTERRA-3-IB-R3,3,Joel Gonçalves Antunes,I,IB,Intervention,Interveção,3,Intervention S3 R3
+EM135c3-25,Tbio-RTERRA-3-CF-R1,3,Joel Gonçalves Antunes,CF,CF,Pasture,Contrafactual,1,Pasture S3 R1
+EM135c3-26,Tbio-RTERRA-3-CF-R2,3,Joel Gonçalves Antunes,CF,CF,Pasture,Contrafactual,2,Pasture S3 R2
+EM135c3-27,Tbio-RTERRA-3-CF-R3,3,Joel Gonçalves Antunes,CF,CF,Pasture,Contrafactual,3,Pasture S3 R3
+EM135c3-28,Tbio-RTERRA-3-R-R1,3,Joel Gonçalves Antunes,R,R,Forest,Referência,1,Forest S3 R1
+EM135c3-29,Tbio-RTERRA-3-R-R2,3,Joel Gonçalves Antunes,R,R,Forest,Referência,2,Forest S3 R2
+EM135c3-30,Tbio-RTERRA-3-R-R3,3,Joel Gonçalves Antunes,R,R,Forest,Referência,3,Forest S3 R3
+EM135c3-31,Tbio-RTERRA-3-CF2-R1,3,Joel Gonçalves Antunes,CF2,CF2,Riparian Pasture,Contrafactual 2,1,Riparian Pasture S3 R1
+EM135c3-32,Tbio-RTERRA-3-CF2-R2,3,Joel Gonçalves Antunes,CF2,CF2,Riparian Pasture,Contrafactual 2,2,Riparian Pasture S3 R2
+EM135c3-33,Tbio-RTERRA-3-CF2-R3,3,Joel Gonçalves Antunes,CF2,CF2,Riparian Pasture,Contrafactual 2,3,Riparian Pasture S3 R3
+EM135c3-34,Tbio-RTERRA-4-I-R1,4,Edione de Oliveira Lopes,I,I,Intervention,Interveção,1,Intervention S4 R1
+EM135c3-35,Tbio-RTERRA-4-I-R2,4,Edione de Oliveira Lopes,I,I,Intervention,Interveção,2,Intervention S4 R2
+EM135c3-36,Tbio-RTERRA-4-I-R3,4,Edione de Oliveira Lopes,I,I,Intervention,Interveção,3,Intervention S4 R3
+EM135c3-37,Tbio-RTERRA-4-CF-R1,4,Edione de Oliveira Lopes,CF,CF,Pasture,Contrafactual,1,Pasture S4 R1
+EM135c3-38,Tbio-RTERRA-4-CF-R2,4,Edione de Oliveira Lopes,CF,CF,Pasture,Contrafactual,2,Pasture S4 R2
+EM135c3-39,Tbio-RTERRA-4-CF-R3,4,Edione de Oliveira Lopes,CF,CF,Pasture,Contrafactual,3,Pasture S4 R3
+EM135c3-40,Tbio-RTERRA-4-R-R1,4,Edione de Oliveira Lopes,R,R,Forest,Referência,1,Forest S4 R1
+EM135c3-41,Tbio-RTERRA-4-R-R2,4,Edione de Oliveira Lopes,R,R,Forest,Referência,2,Forest S4 R2
+EM135c3-42,Tbio-RTERRA-4-R-R3,4,Edione de Oliveira Lopes,R,R,Forest,Referência,3,Forest S4 R3
+EM135c3-43,Tbio-RTERRA-4-CF2-R1,4,Edione de Oliveira Lopes,CF2,CF2,Riparian Pasture,Contrafactual 2,1,Riparian Pasture S4 R1
+EM135c3-44,Tbio-RTERRA-4-CF2-R2,4,Edione de Oliveira Lopes,CF2,CF2,Riparian Pasture,Contrafactual 2,2,Riparian Pasture S4 R2
+EM135c3-45,Tbio-RTERRA-4-CF2-R3,4,Edione de Oliveira Lopes,CF2,CF2,Riparian Pasture,Contrafactual 2,3,Riparian Pasture S4 R3
+EM135c3-46,Tbio-RTERRA-5-I-R1,5,Pedro Antônio de Oliveira,I,I,Intervention,Interveção,1,Intervention S5 R1
+EM135c3-47,Tbio-RTERRA-5-I-R2,5,Pedro Antônio de Oliveira,I,I,Intervention,Interveção,2,Intervention S5 R2
+EM135c3-48,Tbio-RTERRA-5-I-R3,5,Pedro Antônio de Oliveira,I,I,Intervention,Interveção,3,Intervention S5 R3
+EM135c3-49,Tbio-RTERRA-5-CF-R1,5,Pedro Antônio de Oliveira,CF,CF,Pasture,Contrafactual,1,Pasture S5 R1
+EM135c3-50,Tbio-RTERRA-5-CF-R2,5,Pedro Antônio de Oliveira,CF,CF,Pasture,Contrafactual,2,Pasture S5 R2
+EM135c3-51,Tbio-RTERRA-5-CF-R3,5,Pedro Antônio de Oliveira,CF,CF,Pasture,Contrafactual,3,Pasture S5 R3
+EM135c3-52,Tbio-RTERRA-5-R-R1,5,Pedro Antônio de Oliveira,R,R,Forest,Referência,1,Forest S5 R1
+EM135c3-53,Tbio-RTERRA-5-R-R2,5,Pedro Antônio de Oliveira,R,R,Forest,Referência,2,Forest S5 R2
+EM135c3-54,Tbio-RTERRA-5-R-R3,5,Pedro Antônio de Oliveira,R,R,Forest,Referência,3,Forest S5 R3

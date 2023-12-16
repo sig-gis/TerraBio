@@ -91,7 +91,9 @@ infoColnames2023 <- c("N", "sampleID", "siteType", "labVolume",
     ecoMolRawSummary(horta2022Raw)
     ecoMolRawSummary(horta2023Raw)
     
-    
+    horta2023Raw %>%
+        group_by(identificationMaxTaxon) %>%
+        summarise(asvAbsoluteAbundance)
     
     
     
