@@ -6,7 +6,7 @@ Primer name,Primer,6,Primer,6,primerName,Y
 File_name,NA,NA,File_name,37,fileName,N
 NA,Unique_File_name,8,Unique_File_name,8,uniqueFileName,N
 Read_origin,Read origin,NA,Read origin,9,readOrigin,N
-NA,Relative abundance to all samples,9,Relative abundance to all samples,10,relativeAbundanceAllSamples,Y
+NA,Relative abundance to all samples,9,Relative abundance to all samples,10,relativeAbundanceAllSamples,N
 Relative abundance on sample,Relative abundance on sample,10,Relative abundance on sample,11,relativeAbundanceOnSample,Y
 NA,Clean relative abd. on sample,14,Clean relative abd. on sample,15,cleanRelativeAbundanceOnSample,Y
 Sample total abd,Sample total abundance,11,Sample total abundance,12,sampleTotalAbd,Y
