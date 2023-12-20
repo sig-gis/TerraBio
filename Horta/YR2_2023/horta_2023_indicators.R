@@ -10,8 +10,6 @@
 
 # Code written Sept. 2023 by Karen Dyson
 
-# to do list:
-#    + Four indicators--which need special multi-year functions?
 
 
 ## ----- Data ingestion & setup -----------------------------------
@@ -153,8 +151,7 @@ mutate(siteType = factor(
     ) +
     labs(color = "Site Type", y = "Effective Species Richness (common removed)",
          x = "Site Type") +
-    theme(legend.position = "bottom",
-          text = element_text(family = "calibri")) +
+    theme(legend.position = "bottom") +
     scale_color_manual(values = supportingColorPalette)
 
 
@@ -204,8 +201,7 @@ hortaAlpha2023 %>%
     ) +
     labs(color = "Site Type", y = "Effective Species Richness",
          x = "Site Type") + 
-    theme(legend.position="bottom",
-          text = element_text(family = "Calibri"))+
+    theme(legend.position="bottom")+
     scale_color_manual(values = supportingColorPalette)
 
 # graph for group ESR
@@ -339,7 +335,7 @@ treatmentHeatmap <-
                                       fillColor2 = corporateColorPalette[4]) 
 
 
-ggsave("ApuiDistHeatmap_2023.pdf",
+ggsave("HortaDistHeatmap_2023.pdf",
        plot = treatmentHeatmap,
        device = "pdf",
        path = "OutputImages/",
@@ -375,7 +371,7 @@ viz_pcaPlots <- fviz_pca_ind(
 )
 ggpubr::ggpar(viz_pcaPlots,
               title = paste0("Community Composition Visualization using PCA"),#, hortaSubset),
-              subtitle = paste0(phylum, collapse = " "), xlab = F, ylab = F, tickslab = F
+              subtitle = paste0(phylum, collapse = " "), xlab = F, ylab = F, tickslab = F, orientation = "horizontal"
 )
 ggsave("HortaPCA_2023.pdf",
        plot = last_plot(),
@@ -426,7 +422,13 @@ hortaMatrixJOINT[is.na(hortaMatrixJOINT)] <- 0
 # Create a compositional matrix for the joint matrix
 compMatrixJOINT <- compMatrix(inputMatrix = hortaMatrixJOINT, z.warning = .99)
 
+# order is counterfactual, forest, restoration, syntropic
 jointcolors <- c("#fac091", "#F68B33", "#c2dd97","#8EBF3F","#e3e88c", "#CAD32B","#fae997","#F5D226")
+jointcolors2 <- c( "#aaaaaa", "#444444", "#c2dd97","#8EBF3F","#fae997","#F5D226", "#bf9edf", "#8545c2")
+
+# see here: https://www.colorhexa.com/fac091
+# info on shapes for pca: https://copyprogramming.com/howto/specify-different-pointshapes-for-var-and-ind-in-fviz-pca-biplot
+
 
 # create plot pcas--2022 and 2023
     pca_plots <- compMatrixJOINT %>%
@@ -442,7 +444,7 @@ jointcolors <- c("#fac091", "#F68B33", "#c2dd97","#8EBF3F","#e3e88c", "#CAD32B",
         point = 16,
         mean.point = F,
         legend.title = "Site Type",
-        palette = jointcolors
+        palette = jointcolors2
     )
     ggpubr::ggpar(viz_pcaPlots,
                   title = paste0("Community Composition Visualization using PCA"),#, hortaSubset),
