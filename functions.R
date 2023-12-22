@@ -248,7 +248,7 @@ aitComparison <- function(inputDist, remap = NULL, repeatSamples = FALSE, fillCo
         )
         
         if(!is.null(remap)) {
-            # make this a remap so that the names aren't so awful.
+            # make this a remap so that the names aren't so awful. need to add else to handle if remap is NULL
             old <- remap[[1]]
             new <- remap[[2]]
             temp$plot1[ temp$plot1 %in% old] <- new[base::match(temp$plot1, old)]

@@ -228,5 +228,19 @@ rterra2023Filt <- rterra2023Filt %>%
     any((colSums(rterraSite2023Matrix)-colSums(rterra2023Matrix)) != 0 )
     
     
+    # Create a matrix where all land uses across sites are combined. Note that
+    # this may need to change based on what IA and IB actually are... there is
+    # also a problem with different n.
+    
+    rterra2023LC <- rterra2023Filt %>%
+        dplyr::select(treatment.code.original, ASVHeader, asvAbsoluteAbundance) %>%
+        group_by(treatment.code.original, ASVHeader) %>%
+        summarise(abundance = sum(asvAbsoluteAbundance))
+    
+    rterraLC2023Matrix <- ez.matrify(rterra2023LC, species.name = "ASVHeader",
+                                       site.name = "treatment.code.original", abundance = "abundance")
+    
+    #test to make sure everything got in
+    any((colSums(rterraLC2023Matrix)-colSums(rterra2023Matrix)) != 0 )
     
     
