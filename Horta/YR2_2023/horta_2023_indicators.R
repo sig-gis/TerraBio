@@ -104,7 +104,7 @@ hortaAlphaGroup2023 <- alphaGroupMetrics(hortaMatrixType2023,
                                          groupNames = c("Counterfactual", "Forest",
                                                         "Restoration", "Syntropic"))
 
-hortaAlphaGroup2022 <- alphaGroupMetrics(sqrt(hortaMatrixType2022),
+hortaAlphaGroup2022sqrt <- alphaGroupMetrics(sqrt(hortaMatrixType2022),
                                          groupNames = c("Counterfactual", "Forest",
                                                         "Restoration", "Syntropic"))
 

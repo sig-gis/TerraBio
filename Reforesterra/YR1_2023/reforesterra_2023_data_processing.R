@@ -1,6 +1,7 @@
-# This analysis is based on soil samples collected at Reforesterra and processed by
-# EcoMol. There are four land uses: CF = counter factual, Co = control/forest,
-# Re = restauracao, Sy = syntropic. The 2023 analysis is the first year.
+# This analysis is based on soil samples collected at Reforesterra and processed
+# by EcoMol. There are three main land uses: CF = counter factual, R =
+# control/forest, I = intervention; and some variants: CF2 = riparian
+# counterfatual, IA and IB + ??.  The 2023 analysis is the first year.
 
 # This file take the eDNA species table provided by EcoMol and prepares them for
 # analysis.
@@ -9,7 +10,7 @@
 
 # to do list:
 #   + need to look at which ASVs should be combined or not...
-#   + check high ASV loss. approx 1000-1200 ASV rows are kept out of around 20k.
+#   + check high ASV loss. Degenerate primers.
 #   + add diagnostics/plotting
 #   + add diagnostics for what ASVs are lost
 
@@ -49,6 +50,10 @@ phylum = c("Arthropoda")
 lookupColnames <- read.csv("lookupColnames.csv")
 lookupSitenames2023 <- read.csv("Reforesterra/YR1_2023/lookupSitename2023.csv", strip.white = T)
 
+# remove Tbio-RTERRA-5-CF-R2 from sitenames because it failed and is not in the ASV data.
+lookupSitenames2023 <- lookupSitenames2023[lookupSitenames2023$sample.code != "Tbio-RTERRA-5-CF-R2",]
+
+
 infoColnames2023 <- c("N", "sampleID", "siteType", "labVolume",
                       "amplificationSuccess", "replicate",
                       "EcoMolID", "concentrationDNA_nguL",
@@ -66,18 +71,18 @@ infoColnames2023 <- c("N", "sampleID", "siteType", "labVolume",
     
     
     ## WAITING ON THIS INFORMATION
-    horta2023Info <- read.csv("Horta/Yr2_2023/HortaSamples2023.csv",
-                              stringsAsFactors = F,
-                              col.names = infoColnames2023,
-                              header = T)
-    
-
-    ecoMolRawSummary(horta2022Raw)
-    ecoMolRawSummary(horta2023Raw)
-    
-    horta2023Raw %>%
-        group_by(identificationMaxTaxon) %>%
-        summarise(asvAbsoluteAbundance)
+    # horta2023Info <- read.csv("Horta/Yr2_2023/HortaSamples2023.csv",
+    #                           stringsAsFactors = F,
+    #                           col.names = infoColnames2023,
+    #                           header = T)
+    # 
+    # 
+    # ecoMolRawSummary(horta2022Raw)
+    # ecoMolRawSummary(horta2023Raw)
+    # 
+    # horta2023Raw %>%
+    #     group_by(identificationMaxTaxon) %>%
+    #     summarise(asvAbsoluteAbundance)
     
     
     
@@ -115,21 +120,20 @@ rterra2023Filt <- merge(rterra2023Filt,
 
 # lc-site-replicates and lc-site; lc only handled by "treatment"
 rterra2023Filt <- rterra2023Filt %>%
-    mutate(LCSiteRep = paste0(treatment.code, "-S", site.code, "-R", replicate),
-           LCSite    = paste0(treatment.code, "-S", site.code))
+    mutate(LCSiteRep = paste0(treatment.code.original, "-S", site.code, "-R", replicate),
+           LCSite    = paste0(treatment.code.original, "-S", site.code))
 
 
 # Clean the data based on our quality variables
     # Remove sites not meeting minimum library size
     print(unique(rterra2023Filt$sampleTotalAbd))
-    rterra2023Filt %>% select(sample, sampleTotalAbd) %>% unique()
+    #rterra2023Filt %>% dplyr::select(sample, sampleTotalAbd) %>% unique()
     removedSites <- unique(rterra2023Filt$sample[rterra2023Filt$sampleTotalAbd <= minlibrarySize])
     rterra2023Filt <- rterra2023Filt[ !(rterra2023Filt$sample %in% removedSites) , ]
     stopifnot(length(unique(rterra2023Filt$sample[rterra2023Filt$sampleTotalAbd <= minlibrarySize])) == 0)
 
     print(removedSites)
-    remove(removedSites)
-    
+
     # Remove ASVs not meeting primer expected length
     rterra2023Filt <- rterra2023Filt[ rterra2023Filt$primerExpectedLength == "in range", ]
     
@@ -143,25 +147,25 @@ rterra2023Filt <- rterra2023Filt %>%
 # Examine 2023 DNA concentration.
     
     # Waiting on data from EcoMOL
-
-p0 <- ggplot(subset(horta2022Info, storage == "Silica"),
-             aes(x = volumeSampleID, y = concentrationDNA_nguL)) + 
-    geom_boxplot() + geom_point(color = "green") +
-    ylim(5,80) + xlab("LC type (silica 2022)")
-    
-    grid.arrange(p0, p1, p2, nrow=2)
-    
-# Examine 2023 DNA purity.
-    
-    p1 <- ggplot(subset(horta2022Info, storage == "Buffer"),
-                 aes(x = volumeSampleID, y = purityDNA)) + 
-        geom_boxplot() + geom_point(color = "darkgreen") +
-        ylim(1.45,2) + xlab("LC type (buffer 2022)")
-    
-
-    grid.arrange(p0, p1, ncol=2)    
-    
-    remove(p0, p1, p2)
+# 
+# p0 <- ggplot(subset(horta2022Info, storage == "Silica"),
+#              aes(x = volumeSampleID, y = concentrationDNA_nguL)) + 
+#     geom_boxplot() + geom_point(color = "green") +
+#     ylim(5,80) + xlab("LC type (silica 2022)")
+#     
+#     grid.arrange(p0, p1, p2, nrow=2)
+#     
+# # Examine 2023 DNA purity.
+#     
+#     p1 <- ggplot(subset(horta2022Info, storage == "Buffer"),
+#                  aes(x = volumeSampleID, y = purityDNA)) + 
+#         geom_boxplot() + geom_point(color = "darkgreen") +
+#         ylim(1.45,2) + xlab("LC type (buffer 2022)")
+#     
+# 
+#     grid.arrange(p0, p1, ncol=2)    
+#     
+#     remove(p0, p1, p2)
     
 # add analysis notes here
     
@@ -217,12 +221,26 @@ p0 <- ggplot(subset(horta2022Info, storage == "Silica"),
         group_by(LCSite, ASVHeader) %>%
         summarise(abundance = sum(asvAbsoluteAbundance))
     
-    rterraSite2022Matrix <- ez.matrify(rterra2023LCSite, species.name = "ASVHeader",
+    rterraSite2023Matrix <- ez.matrify(rterra2023LCSite, species.name = "ASVHeader",
                                       site.name = "LCSite", abundance = "abundance")
     
     #test to make sure everything got in
-    any((colSums(rterraSite2022Matrix)-colSums(rterra2023Matrix)) != 0 )
+    any((colSums(rterraSite2023Matrix)-colSums(rterra2023Matrix)) != 0 )
     
     
+    # Create a matrix where all land uses across sites are combined. Note that
+    # this may need to change based on what IA and IB actually are... there is
+    # also a problem with different n.
+    
+    rterra2023LC <- rterra2023Filt %>%
+        dplyr::select(treatment.code.original, ASVHeader, asvAbsoluteAbundance) %>%
+        group_by(treatment.code.original, ASVHeader) %>%
+        summarise(abundance = sum(asvAbsoluteAbundance))
+    
+    rterraLC2023Matrix <- ez.matrify(rterra2023LC, species.name = "ASVHeader",
+                                       site.name = "treatment.code.original", abundance = "abundance")
+    
+    #test to make sure everything got in
+    any((colSums(rterraLC2023Matrix)-colSums(rterra2023Matrix)) != 0 )
     
     

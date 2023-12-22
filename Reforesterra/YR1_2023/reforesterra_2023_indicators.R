@@ -1,17 +1,16 @@
-# This analysis is based on soil samples collected at Horta and processed by
-# EcoMol. There are four land uses: CF = counter factual, Co = control/forest,
-# Re = restauracao, Sy = syntropic.
+# This analysis is based on soil samples collected at Reforesterra and processed by
+# EcoMol. There are three main land uses: CF = counter factual, R =
+# control/forest, I = intervention; and some variants: CF2 = riparian
+# counterfatual, IA and IB + ??.  The 2023 analysis is the first year.
 
-# This analysis includes data from 2022 and 2023
+# This analysis includes data from 2023
 
 # This file take the eDNA species table provided by EcoMol and determines the
 # TerraBio biodiversity indicators. There are also some species accumulation
 # curves to verify sampling completeness.
 
-# Code written Sept. 2023 by Karen Dyson
+# Code written Dec. 2023 by Karen Dyson
 
-# to do list:
-#    + Four indicators--which need special multi-year functions?
 
 
 ## ----- Data ingestion & setup -----------------------------------
@@ -33,147 +32,102 @@ source("multiyear_functions.R")
 source("../../../RCode/R_Scripts/triplet_fixer.R") # From my github repository
 source("../../../RCode/R_Scripts/repeat_multipatt.R") # ditto
 
-source("Horta/Yr2_2023/horta_2023_data_processing.R")
-
-hortaGroups2022 <- c(rep("Counterfactual", 3), rep("Forest", 3),
-                     rep("Restoration", 2), rep("Syntropic", 3))
-hortaGroups2023 <- c(rep("Forest", 3), rep("Restoration", 3),
-                     rep("Syntropic", 3), rep("Counterfactual", 3))
+source("Reforesterra/YR1_2023/reforesterra_2023_data_processing.R")
 
 ## ----- Accumulation curves ----------------------------------
 
 # create species accumulation curves
-plot(specaccum(hortaMatrix2022[ grepl(pattern = "CF",
-                                      x = rownames(hortaMatrix2022)), ]),
+plot(specaccum(rterra2023Matrix[ grepl(pattern = "I",
+                                      x = rownames(rterra2023Matrix)), ]),
      xlab = "Number of replicates 2022",
      ylab = "Number of species",
-     ylim = c(0,400))
-plot(specaccum(hortaMatrix2022[ grepl(pattern = "Co",
-                                      x = rownames(hortaMatrix2022)), ]),
+     ylim = c(0,1000))
+plot(specaccum(rterra2023Matrix[ grepl(pattern = "-R-",
+                                      x = rownames(rterra2023Matrix)), ]),
      add = TRUE, col = "green")
-plot(specaccum(hortaMatrix2022[ grepl(pattern = "Sy",
-                                      x = rownames(hortaMatrix2022)), ]),
+plot(specaccum(rterra2023Matrix[ grepl(pattern = "CF-",
+                                      x = rownames(rterra2023Matrix)), ]),
      add = TRUE, col = "blue")
-plot(specaccum(hortaMatrix2022[ grepl(pattern = "Re",
-                                      x = rownames(hortaMatrix2022)), ]),
+plot(specaccum(rterra2023Matrix[ grepl(pattern = "CF2",
+                                      x = rownames(rterra2023Matrix)), ]),
      add = TRUE, col = "purple")
 
-legend(x = 1, y = 600,
-       legend = c("Pasture", "Forest", "Syntropic", "Restoration"),
+legend(x = 1, y = 700,
+       legend = c("Intervention", "Forest", "Pasture", "Riparian Pasture"),
        fill = c("black", "green", "blue", "purple"),
        cex = 1)
 
-
-# create species accumulation curves
-plot(specaccum(hortaMatrix2023[ grepl(pattern = "V",
-                                       x = rownames(hortaMatrix2023)), ]),
-     xlab = "Number of replicates 2023",
-     ylab = "Number of species",
-     ylim = c(0,400))
-plot(specaccum(hortaMatrix2023[ grepl(pattern = "F",
-                                       x = rownames(hortaMatrix2023)), ]),
-     add = TRUE, col = "green")
-plot(specaccum(hortaMatrix2023[ grepl(pattern = "S",
-                                       x = rownames(hortaMatrix2023)), ]),
-     add = TRUE, col = "blue")
-plot(specaccum(hortaMatrix2023[ grepl(pattern = "R",
-                                      x = rownames(hortaMatrix2023)), ]),
-     add = TRUE, col = "purple")
-
-legend(x = 1, y = 600,
-       legend = c("Pasture", "Forest", "Syntropic", "Restoration"),
-       fill = c("black", "green", "blue", "purple"),
-       cex = 1)
 
 
 ## ----- Proposed Indicator 1: Alpha -------------------------------------------
 # PI1: Alpha diversity
 
+lookupSitenames2023$sample.code[!(lookupSitenames2023$sample.code %in% removedSites) & !(lookupSitenames2023$sample.code %in% rownames(rterra2023Matrix))]
+
+
 # Create a table with the alpha diversity measures for each replicate. Note that
 # in 2022 this analysis included rare species.
 
-hortaAlpha2022 <- alphaMetrics(hortaMatrix2022, 
-                          groupNames = hortaGroups2022, 
-                          replNames = str_sub(rownames(hortaMatrix2022), -3,-1))
-hortaAlpha2023 <- alphaMetrics(hortaMatrix2023,
-                             groupNames = hortaGroups2023,
-                             replNames = str_sub(rownames(hortaMatrix2023), -2,-1))
-
-hortaAlphaGroup2022 <- alphaGroupMetrics(hortaMatrixType2022,
-                                     groupNames = c("Counterfactual", "Forest",
-                                                    "Restoration", "Syntropic"))
-hortaAlphaGroup2023 <- alphaGroupMetrics(hortaMatrixType2023,
-                                         groupNames = c("Counterfactual", "Forest",
-                                                        "Restoration", "Syntropic"))
-
-hortaAlphaGroup2022 <- alphaGroupMetrics(sqrt(hortaMatrixType2022),
-                                         groupNames = c("Counterfactual", "Forest",
-                                                        "Restoration", "Syntropic"))
-
-hortaAlphaGroup2023sqrt <- alphaGroupMetrics(sqrt(hortaMatrixType2023),
-                                         groupNames = c("Counterfactual", "Forest",
-                                                        "Restoration", "Syntropic"))
-
-# Some troubleshooting:
-# ESR for restoration in 2023 is weirdly low.
-
-# it isn't a lot of rares:
-summary(colSums(hortaMatrix2022) > 50)
-summary(colSums(hortaMatrix2023) > 50)
-
-# check calculation
-vegan::diversity(hortaMatrixType2022, index = "shannon")
-exp(vegan::diversity(hortaMatrixType2022, index = "shannon"))
-specnumber(hortaMatrixType2022)
-
-
-vegan::diversity(hortaMatrixType2023, index = "shannon")
-exp(vegan::diversity(hortaMatrixType2023, index = "shannon"))
-specnumber(hortaMatrixType2023)
-
-# it is some very common spp.
-summary(colSums(hortaMatrix2022) > 500)
-
-hortaMatrix2023[, colSums(hortaMatrix2023) < 500] %>%
-    alphaMetrics(
-        groupNames = hortaGroups2023,
-        replNames = str_sub(rownames(hortaMatrix2023), -2,-1)) %>%
-mutate(siteType = factor(
+rterrAlpha2023 <- alphaMetrics(
+    rterra2023Matrix,
+    groupNames = str_split_fixed(rownames(rterra2023Matrix), "-", 5)[, 4],
+    replNames = str_split_fixed(rownames(rterra2023Matrix), "-", 5)[, 5]
+) %>%
+    mutate(siteType = factor(
         siteType,
-        levels = c("Counterfactual", "Syntropic", "Forest", "Restoration")
-    )) %>%
-    ggplot() +
-    geom_boxplot(aes(siteType, effectiveSR),
-                 outlier.shape = NA) +
-    geom_jitter(
-        aes(siteType, effectiveSR, color = siteType),
-        width = 0.05,
-        height = 0,
-        size = 4
-    ) +
-    labs(color = "Site Type", y = "Effective Species Richness (common removed)",
-         x = "Site Type") +
-    theme(legend.position = "bottom") +
-    scale_color_manual(values = supportingColorPalette)
+        levels = c("CF", "CF2", "I", "IA", "IB", "R"),
+        labels = c(
+            "Counterfactual",
+            "Riparian CF",
+            "Intervention",
+            "Interv. A",
+            "Interv. B",
+            "Forest"
+        )
+    ))
+
+rterrAlpha2023$siteNumber <- str_split_fixed(rterrAlpha2023$siteNames, "-",5)[,3]
+
+    
+
+
+rterraAlphaGroup2023 <- alphaGroupMetrics(rterraSite2023Matrix,
+                                          groupNames = str_split_fixed(rownames(rterraSite2023Matrix), "-", 2)[, 1]) %>%
+    mutate(siteType = factor(
+        siteType,
+        levels = c("CF", "CF2", "I", "IA", "IB", "R"),
+        labels = c(
+            "Counterfactual",
+            "Riparian CF",
+            "Intervention",
+            "Interv. A",
+            "Interv. B",
+            "Forest"
+        )
+    ))
+
+rterraAlphaGroup2023sqrt <-
+    alphaGroupMetrics(sqrt(rterraSite2023Matrix),
+                      groupNames = str_split_fixed(rownames(rterraSite2023Matrix), "-", 2)[, 1]) %>%
+    mutate(siteType = factor(
+        siteType,
+        levels = c("CF", "CF2", "I", "IA", "IB", "R"),
+        labels = c(
+            "Counterfactual",
+            "Riparian CF",
+            "Intervention",
+            "Interv. A",
+            "Interv. B",
+            "Forest"
+        )
+    ))
+
 
 
 
 # Graph species richness
 
-hortaAlpha2022 %>%
-    ggplot() +
-    geom_boxplot(aes(siteType, speciesRichness),
-                 outlier.shape = NA) +
-    geom_jitter(
-        aes(siteType, speciesRichness, color = siteType),
-        width = 0.1,
-        height = 0
-    ) +
-    labs(color = "Site Type", y = "Raw Species Richness 2022",
-         x = "Site Type") +
-    theme(legend.position="bottom")
-
-hortaAlpha2023 %>%
+rterrAlpha2023 %>%
     ggplot() +
     geom_boxplot(aes(siteType, speciesRichness),
                  outlier.shape = NA) +
@@ -184,15 +138,45 @@ hortaAlpha2023 %>%
     ) +
     labs(color = "Site Type", y = "Raw Species Richness 2023",
          x = "Site Type") +
-    theme(legend.position="bottom")
+    theme(legend.position="bottom") +
+    scale_color_manual(values = supportingColorPalette)
 
-# Same trend for both 2022 and 2023; Forest, restoration, syntropic, counterfactual.
+
+rterrAlpha2023 %>%
+    ggplot() +
+    geom_boxplot(aes(siteType, speciesRichness),
+                 outlier.shape = NA) +
+    geom_jitter(
+        aes(siteType, speciesRichness, color = siteType),
+        width = 0.1,
+        height = 0
+    ) +
+    facet_grid(cols = vars(siteNumber))+
+    labs(color = "Site Type", y = "Raw Species Richness 2023",
+         x = "Site Type") +
+    theme(legend.position="bottom", 
+          axis.text.x = element_text(angle = 45, vjust = 1, hjust=1))+
+    scale_color_manual(values = supportingColorPalette)
+
+# graph for group SR
+rterraAlphaGroup2023 %>% 
+    ggplot(
+        aes(siteType, speciesRichness, fill = siteType)
+    ) +
+    geom_bar(stat = "identity") +
+    labs(fill = "Site Type", 
+         y = "Raw Species Richness 2023",
+         x = "Site Type") +
+    theme(legend.position = "bottom") +
+    scale_fill_manual(values = supportingColorPalette) +
+    geom_text(stat='identity', aes(label=round(speciesRichness)),position = position_stack(vjust = 0.5))
+
+
 
 
 # Graph for ESR
 
-hortaAlpha2023 %>%
-    mutate(siteType = factor(siteType, levels = c("Counterfactual", "Syntropic", "Forest", "Restoration"))) %>%
+rterrAlpha2023 %>%
     ggplot() +
     geom_boxplot(aes(siteType, effectiveSR),
                  outlier.shape = NA) +
@@ -207,21 +191,7 @@ hortaAlpha2023 %>%
     scale_color_manual(values = supportingColorPalette)
 
 # graph for group ESR
-hortaAlphaGroup2022 %>% 
-    mutate(siteType = factor(siteType, levels = c("Counterfactual", "Syntropic", "Forest", "Restoration"))) %>%
-    ggplot(
-        aes(siteType, effectiveSR, fill = siteType)
-    ) +
-    geom_bar(stat = "identity") +
-    labs(fill = "Site Type", 
-         y = "Effective Species Richness 2022",
-         x = "Site Type") +
-    theme(legend.position = "bottom") +
-    scale_fill_manual(values = supportingColorPalette) +
-    geom_text(stat='identity', aes(label=round(effectiveSR)),position = position_stack(vjust = 0.5))
-
-hortaAlphaGroup2023 %>% 
-    mutate(siteType = factor(siteType, levels = c("Counterfactual", "Syntropic", "Forest", "Restoration"))) %>%
+rterraAlphaGroup2023 %>% 
     ggplot(
         aes(siteType, effectiveSR, fill = siteType)
     ) +
@@ -233,7 +203,19 @@ hortaAlphaGroup2023 %>%
     scale_fill_manual(values = supportingColorPalette) +
     geom_text(stat='identity', aes(label=round(effectiveSR)),position = position_stack(vjust = 0.5))
 
-ggsave("HortaESR_2023.pdf",
+rterraAlphaGroup2023sqrt %>% 
+    ggplot(
+        aes(siteType, effectiveSR, fill = siteType)
+    ) +
+    geom_bar(stat = "identity") +
+    labs(fill = "Site Type", 
+         y = "Effective Species Richness 2023",
+         x = "Site Type") +
+    theme(legend.position = "bottom") +
+    scale_fill_manual(values = supportingColorPalette) +
+    geom_text(stat='identity', aes(label=round(effectiveSR)),position = position_stack(vjust = 0.5))
+
+ggsave("RterraESR_2023.pdf",
        plot = last_plot(),
        device = "pdf",
        path = "OutputImages/",
@@ -249,16 +231,11 @@ ggsave("HortaESR_2023.pdf",
 
 # Create compositional matrices
 
-compMatrix2022 <- compMatrix(inputMatrix = hortaMatrix2022, z.warning = .99)
-compMatrix2022s <- compMatrix(inputMatrix = sqrt(hortaMatrix2022), z.warning = .99)
+compMatrix2023 <- compMatrix(inputMatrix = rterra2023Matrix, z.warning = .999)
+    # row 11, 13, 14, 15, 19, 20, 22 removed with .99
+compSite2023 <- compMatrix(inputMatrix = rterraSite2023Matrix, z.warning = .999)
 
-compType2022 <- compMatrix(inputMatrix = hortaMatrixType2022, z.warning = .99)
-
-
-compMatrix2023 <- compMatrix(inputMatrix = hortaMatrix2023, z.warning = .99)
-compMatrix2023s <- compMatrix(inputMatrix = sqrt(hortaMatrix2023), z.warning = .99)
-
-compType2023 <- compMatrix(inputMatrix = hortaMatrixType2023, z.warning = .99)
+compType2023 <- compMatrix(inputMatrix = rterraLC2023Matrix, z.warning = .99)
 
 # updated package is more aggressive about throwing away data--discourage it with the z.warning.
 
@@ -272,73 +249,114 @@ compType2023 <- compMatrix(inputMatrix = hortaMatrixType2023, z.warning = .99)
 # https://www.ncbi.nlm.nih.gov/pmc/articles/PMC7811025/
 
 # For each replicate--internal use only, really.
-aitchisonReplicate2022 <- vegdist(compMatrix2022, "euc", diag = F)
-
-min(aitchisonReplicate2022)
-max(aitchisonReplicate2022)
-
-aitchisonReplicate2022 %>% aitHeatmap()
-
-# For each replicate--internal use only, really.
 aitchisonReplicate2023 <- vegdist(compMatrix2023, "euc", diag = F)
-aitchisonReplicate2023s <- vegdist(compMatrix2023s, "euc", diag = F)
 
 min(aitchisonReplicate2023)
 max(aitchisonReplicate2023)
 
 aitchisonReplicate2023 %>% aitHeatmap()
-aitchisonReplicate2023s %>% aitHeatmap() # same basic pattern.
+aitchisonReplicate2023
 
 levelOrder = c(
-    "Counterfactual-Counterfactual",
-    "Forest-Forest",
-    "Restoration-Restoration",
-    "Syntropic-Syntropic",
-    "Counterfactual-Forest",
-    "Counterfactual-Restoration",
-    "Counterfactual-Syntropic",
-    "Forest-Restoration",
-    "Forest-Syntropic",
-    "Restoration-Syntropic"
+    "CF-CF",
+    "CF-CF2",
+    "CF-I",
+    "CF-IA",
+    "CF-R",
+    "CF2-CF2",
+    "CF2-I",
+    "CF2-IA",
+    "CF2-R",
+    "I-I",
+    "I-IA",
+    "I-R",
+    "IA-IA",
+    "IA-R",
+    "R-R"
 )
 aitComparison(
     inputDist = aitchisonReplicate2023,
-    remap = lookupSitenames2023[, c(1,6,4)], # remap needs to be old, new, type
+    remap = lookupSitenames2023[, c(2,10,6)], # remap needs to be old, new, type
     repeatSamples = TRUE,
     fillColor = c(
         supportingColorPalette[c(1, 5, 2, 6, 7, 3, 8)],
         corporateColorPalette[c(1, 2)],
-        supportingColorPalette[4]
+        supportingColorPalette[c(4,1,2,3,4,5)]
     ),
     levelsPlot = levelOrder
-) # same basic pattern sqrt vs not
+) + theme(legend.position = "bottom")
 
 
 
 
 
-## For each sample (pooled replicates by land use type)
-aitchisonSample2022 <- vegdist(compType2022, "euc", diag = F)
+## For each site (pooled replicates for each land use and site)
 
-min(aitchisonSample2022)
-max(aitchisonSample2022)
+aitchisonSite2023 <- vegdist(compSite2023, "euc", diag = F)
 
-aitchisonSample2023 <- vegdist(compType2023, "euc", diag = F)
-
-min(aitchisonSample2023)
-max(aitchisonSample2023)
+min(aitchisonSite2023)
+max(aitchisonSite2023)
 
 ## create plots
-aitchisonSample2022 %>% aitHeatmap(fillColor1 = supportingColorPalette[2],
-                                   fillColor2 = corporateColorPalette[4]) 
 
-treatmentHeatmap <-
-    aitchisonSample2023 %>% aitHeatmap(fillColor1 = supportingColorPalette[2],
+siteHeatmap <-
+    aitchisonSite2023 %>% aitHeatmap(fillColor1 = supportingColorPalette[2],
                                       fillColor2 = corporateColorPalette[4]) 
 
+lookupSitenames2023$treatment.site <- paste0(lookupSitenames2023$treatment.code.original, "-S", lookupSitenames2023$site.code)
 
-ggsave("HortaDistHeatmap_2023.pdf",
-       plot = treatmentHeatmap,
+levelOrder = c(
+    "CF-CF",
+    "CF-CF2",
+    "CF-I",
+    "CF-IA",
+    "CF-IB",
+    "CF-R",
+    "CF2-CF2",
+    "CF2-I",
+    "CF2-IA",
+    "CF2-IB",
+    "CF2-R",
+    "I-I",
+    "I-IA",
+    "I-IB",
+    "I-R",
+    "IA-IB",
+    "IA-R",
+    "IB-R",
+    "R-R"
+)
+
+aitComparison(
+    inputDist = aitchisonSite2023,
+    remap = lookupSitenames2023[, c(11,11,6)], # remap needs to be old, new, type
+    repeatSamples = TRUE,
+    fillColor = c(
+        supportingColorPalette[c(1, 5, 2, 6, 7, 3, 8)],
+        corporateColorPalette[c(1, 2, 3:6)],
+        supportingColorPalette
+    ),
+    levelsPlot = levelOrder
+) + theme(legend.position = "bottom")
+
+
+
+## For each land cover type (pooled replicates across sites)
+
+aitchisonLC2023 <- vegdist(compType2023, "euc", diag = F)
+
+min(aitchisonLC2023)
+max(aitchisonLC2023)
+
+## create plots
+
+typeHeatmap <-
+    aitchisonLC2023 %>% aitHeatmap(fillColor1 = supportingColorPalette[2],
+                                     fillColor2 = corporateColorPalette[4]) 
+
+
+ggsave("RTerraDistHeatmap_2023.pdf",
+       plot = typeHeatmap,
        device = "pdf",
        path = "OutputImages/",
        width = 8,
@@ -347,7 +365,7 @@ ggsave("HortaDistHeatmap_2023.pdf",
        dpi = 300
 )
 
-remove(treatmentHeatmap)
+remove(siteHeatmap, typeHeatmap)
 
 
 ## ----- Indicator 3: PCA qualitative assessment ------------------------------------------
@@ -356,26 +374,48 @@ library("factoextra")
 # Good tutorial here: http://www.sthda.com/english/articles/31-principal-component-methods-in-r-practical-guide/112-pca-principal-component-analysis-essentials/
 
 
-# create plot pcas--2023 only
-pca_plots <- compMatrix2023 %>%
+# create replicate pca
+pca_repl <- compMatrix2023 %>%
     PCA(., scale.unit = F, graph = F)
 
-viz_pcaPlots <- fviz_pca_ind(
-    pca_plots,
+fviz_pca_ind(
+    pca_repl,
     geom.ind = "point",
-    col.ind = hortaGroups2023,
+    col.ind = str_split_fixed(rownames(compMatrix2023), "-",5)[,4],
     addEllipses = T,
     ellipse.type = "confidence",
     pointsize = 3,
     mean.point = F,
-    legend.title = "Site Type",
-    palette = supportingColorPalette[c(1,3,4,2)]
+    legend.title = "LC Type",
+    palette = supportingColorPalette[c(1:8)]
 )
-ggpubr::ggpar(viz_pcaPlots,
-              title = paste0("Community Composition Visualization using PCA"),#, hortaSubset),
-              subtitle = paste0(phylum, collapse = " "), xlab = F, ylab = F, tickslab = F, orientation = "horizontal"
+
+
+# create LC-Site pca
+pca_LCplots <- compSite2023 %>%
+    PCA(., scale.unit = F, graph = F)
+
+groupstemp <- str_split_fixed(rownames(compSite2023), "-",2)[,1]
+groupstemp[groupstemp %in% c("IA", "IB")] <- "I"
+
+viz_pcaLCPlots <- fviz_pca_ind(
+    pca_LCplots,
+    geom.ind = "point",
+    col.ind = groupstemp,
+    addEllipses = T,
+    ellipse.type = "confidence",
+    pointsize = 3,
+    mean.point = F,
+    legend.title = "LC Type",
+    palette = supportingColorPalette[c(1:8)]
 )
-ggsave("HortaPCA_2023.pdf",
+
+ggpubr::ggpar(viz_pcaLCPlots,
+              title = "Community Composition Visualization using PCA",
+              subtitle = paste0(phylum, collapse = " "), xlab = F, ylab = F, tickslab = F
+)
+
+ggsave("RTerraPCA_2023.pdf",
        plot = last_plot(),
        device = "pdf",
        path = "OutputImages/",
@@ -386,79 +426,15 @@ ggsave("HortaPCA_2023.pdf",
 )
 
 
-viz_pcaPlots_contrib <- fviz_contrib(pca_plots, choice = "ind", axes = 1:2)
+viz_pcaPlots_contrib <- fviz_contrib(pca_LCplots, choice = "ind", axes = 1:2)
 
-# fviz_pca_biplot(pca_plots,
-#                 # Sites
-#                 col.ind = hortaGroups2023,
+# fviz_pca_biplot(pca_LCplots, 
+#                 # Sites 
+#                 col.ind = groupstemp,
 #                 addEllipses = T,
 #                 ellipse.type = "convex",
 #                 label = "var",
 #                 repel = T,
-#                 max.overlaps = 5,
-#                 alpha.var ="contrib", )
+#                 alpha.var ="contrib")
 
 remove(pca_plots, viz_pcaPlots, viz_pcaPlots_contrib)
-
-# ----- Indicator 3: Combined 2022 and 2023 --------------------------------------------
-
-# combine the site species matrices for 2022 and 2023. The goal is to have 23 rows that are renamed to include year. Then as many columns as neeeded, with the overlapping ASVs merged.
-
-
-# fix rownames--warning if you switch to silica
-rownames(hortaMatrix2022) <-
-    str_sub(rownames(hortaMatrix2022),-3, -1) %>%
-    paste0(., "-2022")
-rownames(hortaMatrix2023) <-
-    str_sub(rownames(hortaMatrix2023),-2, -1) %>%
-    paste0(., "-2023")
-    
-colnames(hortaMatrix2023) <- plyr::mapvalues(colnames(hortaMatrix2023), from = commonASV$ASVHeader2023,
-                                            to = commonASV$ASVHeader2022,
-                                            warn_missing = F)
-
-hortaMatrixJOINT <- bind_rows(hortaMatrix2022, hortaMatrix2023)
-hortaMatrixJOINT[is.na(hortaMatrixJOINT)] <- 0
-
-
-# Create a compositional matrix for the joint matrix
-compMatrixJOINT <- compMatrix(inputMatrix = hortaMatrixJOINT, z.warning = .99)
-
-# order is counterfactual, forest, restoration, syntropic
-jointcolors <- c("#fac091", "#F68B33", "#c2dd97","#8EBF3F","#e3e88c", "#CAD32B","#fae997","#F5D226")
-jointcolors2 <- c( "#aaaaaa", "#444444", "#c2dd97","#8EBF3F","#fae997","#F5D226", "#bf9edf", "#8545c2")
-
-# see here: https://www.colorhexa.com/fac091
-# info on shapes for pca: https://copyprogramming.com/howto/specify-different-pointshapes-for-var-and-ind-in-fviz-pca-biplot
-
-
-# create plot pcas--2022 and 2023
-    pca_plots <- compMatrixJOINT %>%
-        PCA(., scale.unit = F, graph = F)
-    
-    viz_pcaPlots <- fviz_pca_ind(
-        pca_plots,
-        geom.ind = "point",
-        col.ind = c(paste0(hortaGroups2022,"-2022"), paste0(hortaGroups2023,"-2023")),
-        addEllipses = T,
-        ellipse.type = "confidence",
-        pointsize = 3,
-        point = 16,
-        mean.point = F,
-        legend.title = "Site Type",
-        palette = jointcolors2
-    )
-    ggpubr::ggpar(viz_pcaPlots,
-                  title = paste0("Community Composition Visualization using PCA"),#, hortaSubset),
-                  subtitle = paste0(phylum, collapse = " "), xlab = F, ylab = F, tickslab = F
-    )
-    ggsave("HortaPCA_JOINT.pdf",
-           plot = last_plot(),
-           device = "pdf",
-           path = "OutputImages/",
-           width = 8,
-           height = 5,
-           units = "in",
-           dpi = 300
-    )
-    
