@@ -1,6 +1,6 @@
-# This file contains functions for TerraBio eDNA analysis.
+# This file contains functions for eDNA analysis.
 
-# Last modified by KDyson 09/15/2023
+# Last modified by KDyson 02/15/2024
 
 ## ----- Data manip. funs. | transpose ---------------------------
 
@@ -62,11 +62,12 @@ compMatrix <- function(inputMatrix, z.warning = 0.8){
 # Creates a summary table for number of eDNA reads found; total number of species variants, etc. 
 # note this is customized for Eco Mol output tables. Column names will differ for other providers.
 
-ecoMolRawSummary <- function(rawInput) {
+
+ecoMolSummary <- function(ecoMolInput) {
     output <- tibble(
-        rawReads = dplyr::select(rawInput, asvAbsoluteAbundance) %>% sum(),
-        ASVCount = dplyr::select(rawInput, ASVHeader) %>% unique() %>% nrow(),
-        genusCount = dplyr::select(rawInput, genusBLASTn) %>% unique() %>% nrow()
+        sumReads = dplyr::select(ecoMolInput, asvAbsoluteAbundance) %>% sum(),
+        ASVCount = dplyr::select(ecoMolInput, ASVHeader) %>% unique() %>% nrow(),
+        genusCount = dplyr::select(ecoMolInput, genusBLASTn) %>% unique() %>% nrow()
     )
     
     return (output)
@@ -74,17 +75,6 @@ ecoMolRawSummary <- function(rawInput) {
 
 
 
-ecoMolFiltSummary <- function(filteredInput){
-
-    output <- tibble(
-        filteredReads = dplyr::select(filteredInput, asvAbsoluteAbundance) %>% sum(),
-        ASVCount = dplyr::select(filteredInput, ASVHeader) %>% unique() %>% nrow(),
-        genusCount = dplyr::select(filteredInput, genusBLASTn) %>% unique() %>% nrow()
-    )
-    
-    
-return (output)    
-}
 
 ## ----- Data Summary | Alpha Diversity --------------------------
 
@@ -159,25 +149,33 @@ alphaMetrics <- function(inputOTUSiSp, groupNames, replNames){
     alphaTable <- tibble(
         siteNames = rownames(inputOTUSiSp),
         siteType = groupNames,
-        siteReplicate = replNames,
+        replicate = replNames,
         speciesRichness = specnumberMOD(inputOTUSiSp , MARGIN = 1),
         shannonRichness = vegan::diversity(inputOTUSiSp, index = "shannon"),
         effectiveSR = exp(shannonRichness),
         invSimpson = vegan::diversity(inputOTUSiSp, index = "invsimpson")
     )
-
+    
+    temp <- alphaTable %>% group_by(siteType) %>% summarise(siteType_n = n())
+    
+    alphaTable <- left_join(x = alphaTable, y = temp)
+    
     return(alphaTable)
             
 }
 
 alphaGroupMetrics <- function(inputOTUSiSp, groupNames) {
     alphaTable <- tibble(
-        siteType = groupNames %>% unique(),
+        siteType = groupNames %>% unique(), # unique preserves order of groupNames, no alph reordering
         speciesRichness = specnumberMOD(inputOTUSiSp, MARGIN = 1, groups = groupNames),
         shannonRichness = diversityMOD(inputOTUSiSp, index = "shannon", groups = groupNames),
         effectiveSR = exp(shannonRichness),
         invSimpson = diversityMOD(inputOTUSiSp, index = "invsimpson", groups = groupNames)
     )
+    
+    temp <- as_tibble(groupNames) %>% group_by(value) %>% summarise(siteType_n = n())
+    
+    alphaTable <- left_join(x = alphaTable, y = temp, join_by(siteType == value))
     
     return(alphaTable)
     
@@ -191,7 +189,7 @@ get_lower_tri <- function(inpMatrix){
     return(inpMatrix)
 }
 
-aitHeatmap <- function(inputDist, fillColor1 = "blue", fillColor2 = "orange"){
+aitHeatmap <- function(inputDist, fillColor1 = "blue", fillColor2 = "orange", textPlease = FALSE){
 graph <-
     inputDist %>%
     as.matrix() %>%
@@ -204,7 +202,6 @@ graph <-
                  values_drop_na = T) %>%
     ggplot(aes(x = plot1, y = plot2, fill = distance)) + 
     geom_raster() +
-#    geom_text(aes(label = round(distance))) +
 
     scale_fill_gradient(low = fillColor1, high = fillColor2,  
                         name="Aitchison\nDistance") +
@@ -224,6 +221,14 @@ graph <-
     guides(fill = guide_colorbar(barwidth = 7, barheight = 1,
                                  title.position = "top", title.hjust = 0.5))
 
+if(textPlease == TRUE){
+ graph <- graph +
+    geom_text(aes(label = round(distance)))
+
+  
+}
+
+
 return(graph)   
 }
 
@@ -231,7 +236,7 @@ return(graph)
 # Create function that takes distance matrix, switches to long form, then
 # creates relevant columns. Then can feed it into a box plot.
 
-aitComparison <- function(inputDist, remap = NULL, repeatSamples = FALSE, fillColor = NULL, levelsPlot = NULL) {
+aitComparison <- function(inputDist, remap = NULL, repeatSamples = FALSE, fillColor = NULL, levelsPlot = NULL, plotPlease = TRUE) {
 # remap should have three columns: the original site names, pretty site names,
 # and the type of site (for grouping)
         temp <-
@@ -277,26 +282,27 @@ aitComparison <- function(inputDist, remap = NULL, repeatSamples = FALSE, fillCo
                            ))
         } 
         
+        print(temp$pair)
+        
         if(is.null(fillColor) == TRUE) {
             library(RColorBrewer)
             fillColor <- brewer.pal(length(unique(temp$pair)),"Set1")
         }
         
         if(is.null(levelsPlot) == TRUE){
-            levelsPlot <- temp$pair
+            levelsPlot <- sort(unique(temp$pair))
         }
             
         
         #make the graph here.
-        if(repeatSamples == TRUE){
+        if(repeatSamples == TRUE & plotPlease == TRUE){
             temp <- temp %>%
+                mutate(pair = factor(pair, levels = levelsPlot)) %>%
                 ggplot(aes(y = distance, x = pair)) +
                 stat_boxplot(geom = "errorbar",
                              width = 0.25) +
                 geom_boxplot() +
                 geom_jitter(aes(color = pair), width = 0.05, size = 3) +
-#                geom_text(aes(label = round(distance))) +
-                
                 scale_x_discrete(limits = levelsPlot) +
                 theme(legend.position = "none",
                       plot.margin = margin(t = .5,  # Top margin
@@ -318,10 +324,11 @@ aitComparison <- function(inputDist, remap = NULL, repeatSamples = FALSE, fillCo
         
         
         
-        if(repeatSamples == FALSE){
+        if(repeatSamples == FALSE & plotPlease == TRUE){
             temp <- temp %>%
                 ggplot(aes(y = distance, x = pair)) +
-                geom_bar(aes(fill = distance), stat = "identity") +
+                geom_bar(aes(y = distance, fill = pair), stat = "identity") +
+                geom_text(aes(label = round(distance,1)), vjust = -0.5) +
                 scale_x_discrete(limits = levelsPlot) +
                 theme(legend.position = "none") +
                 theme(axis.text.x = element_text(angle = 45, vjust = 1, 
