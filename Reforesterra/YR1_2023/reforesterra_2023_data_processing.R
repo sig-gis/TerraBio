@@ -26,7 +26,7 @@ library(stringr)
 library(dplyr)
 
 # Ingest codes
-source("../../../RCode/R_Scripts/triplet_fixer.R")
+source("../../../../RCode/R_Scripts/triplet_fixer.R")
 source("functions.R")
 
 # script variable definitions

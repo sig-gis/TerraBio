@@ -1,0 +1,71 @@
+N,storage,paired,farmPerson,farmName,farmNumber,BP_Treatment,treatment,EM-ID,replicateNumber,replicateLetter,farmReplicate,EM_IDRepl,EM_Sample,sampleID,replSampleID,shortSampleID,dnaConcentration,dnaPurity,lowReads
+1,Silica,N,Edmundo,Farm 1,1,Juquira,Succession,EM110-01,1,A,01A,EM110_01A,EM110-01A-R1,Farm1-Succession-01A-Silica,Farm1-Succession-1,Farm1-Succession,16.8,1.9,N
+2,Silica,N,Edmundo,Farm 1,1,Juquira,Succession,EM110-01,2,B,01B,EM110_01B,EM110-01B-R1,Farm1-Succession-01B-Silica,Farm1-Succession-2,Farm1-Succession,15.4,1.8,N
+3,Silica,N,Edmundo,Farm 1,1,Juquira,Succession,EM110-01,3,C,01C,EM110_01C,EM110-01C-R1,Farm1-Succession-01C-Silica,Farm1-Succession-3,Farm1-Succession,18.6,1.8,N
+4,Silica,N,Everaldo,Farm 2,2,Floresta,Forest,EM110-02,1,A,02A,EM110_02A,EM110-02A-R1,Farm2-Forest-02A-Silica,Farm2-Forest-1,Farm2-Forest,43.5,1.6,N
+5,Silica,N,Everaldo,Farm 2,2,Floresta,Forest,EM110-02,2,B,02B,EM110_02B,EM110-02B-R1,Farm2-Forest-02B-Silica,Farm2-Forest-2,Farm2-Forest,9.1,1.8,N
+6,Silica,N,Everaldo,Farm 2,2,Floresta,Forest,EM110-02,3,C,02C,EM110_02C,EM110-02C-R1,Farm2-Forest-02C-Silica,Farm2-Forest-3,Farm2-Forest,41.1,1.6,N
+7,Silica,N,Everaldo,Farm 2,2,Juquira,Succession,EM110-03,1,A,03A,EM110_03A,EM110-03A-R1,Farm2-Succession-03A-Silica,Farm2-Succession-1,Farm2-Succession,11.5,1.9,N
+8,Silica,N,Everaldo,Farm 2,2,Juquira,Succession,EM110-03,2,B,03B,EM110_03B,EM110-03B-R1,Farm2-Succession-03B-Silica,Farm2-Succession-2,Farm2-Succession,14.2,1.7,N
+9,Silica,N,Everaldo,Farm 2,2,Juquira,Succession,EM110-03,3,C,03C,EM110_03C,EM110-03C-R1,Farm2-Succession-03C-Silica,Farm2-Succession-3,Farm2-Succession,13.5,2,N
+10,Silica,N,Everaldo,Farm 2,2,Pasto,Pasture,EM110-04,1,A,04A,EM110_04A,EM110-04A-R1,Farm2-Pasture-04A-Silica,Farm2-Pasture-1,Farm2-Pasture,12,1.8,N
+11,Silica,N,Everaldo,Farm 2,2,Pasto,Pasture,EM110-04,2,B,04B,EM110_04B,EM110-04B-R1,Farm2-Pasture-04B-Silica,Farm2-Pasture-2,Farm2-Pasture,9.8,1.8,N
+12,Silica,N,Everaldo,Farm 2,2,Pasto,Pasture,EM110-04,3,C,04C,EM110_04C,EM110-04C-R1,Farm2-Pasture-04C-Silica,Farm2-Pasture-3,Farm2-Pasture,11.6,1.7,N
+13,Silica,Y,Viriato,Farm 3,3,Pasto,Pasture,EM110-05,1,A,05A,EM110_05A,EM110-05A-R1,Farm3-Pasture-05A-Silica,Farm3-Pasture-1,Farm3-Pasture,14.9,1.7,N
+14,Silica,Y,Viriato,Farm 3,3,Pasto,Pasture,EM110-05,2,B,05B,EM110_05B,EM110-05B-R1,Farm3-Pasture-05B-Silica,Farm3-Pasture-2,Farm3-Pasture,21,1.6,N
+15,Silica,Y,Viriato,Farm 3,3,Pasto,Pasture,EM110-05,3,C,05C,EM110_05C,EM110-05C-R1,Farm3-Pasture-05C-Silica,Farm3-Pasture-3,Farm3-Pasture,13.1,1.7,N
+16,Silica,Y,Viriato,Farm 3,3,SAF 1,SAF,EM110-06,1,A,06A,EM110_06A,EM110-06A-R1,Farm3-SAF-06A-Silica,Farm3-SAF-1,Farm3-SAF,15.1,1.8,N
+17,Silica,Y,Viriato,Farm 3,3,SAF 1,SAF,EM110-06,2,B,06B,EM110_06B,EM110-06B-R1,Farm3-SAF-06B-Silica,Farm3-SAF-2,Farm3-SAF,19.5,1.7,N
+18,Silica,Y,Viriato,Farm 3,3,SAF 1,SAF,EM110-06,3,C,06C,EM110_06C,EM110-06C-R1,Farm3-SAF-06C-Silica,Farm3-SAF-3,Farm3-SAF,20.9,1.7,N
+19,Silica,Y,Viriato,Farm 3,3,SAF 2,SAF,EM110-07,1,A,07A,EM110_07A,EM110-07A-R1,Farm3-SAF-07A-Silica,Farm3-SAF-1,Farm3-SAF,16.6,1.8,N
+20,Silica,Y,Viriato,Farm 3,3,SAF 2,SAF,EM110-07,2,B,07B,EM110_07B,EM110-07B-R1,Farm3-SAF-07B-Silica,Farm3-SAF-2,Farm3-SAF,16.3,1.8,N
+21,Silica,Y,Viriato,Farm 3,3,SAF 3,SAF,EM110-07,3,C,07C,EM110_07C,EM110-07C-R1,Farm3-SAF-07C-Silica,Farm3-SAF-3,Farm3-SAF,16.7,1.7,Y
+22,Silica,Y,Viriato,Farm 3,3,Floresta,Forest,EM110-08,1,A,08A,EM110_08A,EM110-08A-R1,Farm3-Forest-08A-Silica,Farm3-Forest-1,Farm3-Forest,15.5,1.7,N
+23,Silica,Y,Viriato,Farm 3,3,Floresta,Forest,EM110-08,2,B,08B,EM110_08B,EM110-08B-R1,Farm3-Forest-08B-Silica,Farm3-Forest-2,Farm3-Forest,15,1.6,N
+24,Silica,Y,Viriato,Farm 3,3,Floresta,Forest,EM110-08,3,C,08C,EM110_08C,EM110-08C-R1,Farm3-Forest-08C-Silica,Farm3-Forest-3,Farm3-Forest,14.7,1.7,N
+25,Silica,Y,Idesam,Farm 4,4,SAF,SAF,EM110-09,1,A,09A,EM110_09A,EM110-09A-R1,Farm4-SAF-09A-Silica,Farm4-SAF-1,Farm4-SAF,13.6,1.7,N
+26,Silica,Y,Idesam,Farm 4,4,SAF,SAF,EM110-09,2,B,09B,EM110_09B,EM110-09B-R1,Farm4-SAF-09B-Silica,Farm4-SAF-2,Farm4-SAF,14.6,1.7,N
+27,Silica,Y,Idesam,Farm 4,4,SAF,SAF,EM110-09,3,C,09C,EM110_09C,EM110-09C-R1,Farm4-SAF-09C-Silica,Farm4-SAF-3,Farm4-SAF,13.7,1.8,N
+28,Silica,N,Jocelio,Farm 5,5,Juquira,Succession,EM110-10,1,A,10A,EM110_10A,EM110-10A-R1,Farm5-Succession-10A-Silica,Farm5-Succession-1,Farm5-Succession,13.8,1.8,N
+29,Silica,N,Jocelio,Farm 5,5,Juquira,Succession,EM110-10,2,B,10B,EM110_10B,EM110-10B-R1,Farm5-Succession-10B-Silica,Farm5-Succession-2,Farm5-Succession,14.8,1.7,N
+30,Silica,N,Jocelio,Farm 5,5,Juquira,Succession,EM110-10,3,C,10C,EM110_10C,EM110-10C-R1,Farm5-Succession-10C-Silica,Farm5-Succession-3,Farm5-Succession,14.6,1.7,N
+31,Silica,Y,Jocelio,Farm 5,5,Pasto,Pasture,EM110-11,1,A,11A,EM110_11A,EM110-11A-R1,Farm5-Pasture-11A-Silica,Farm5-Pasture-1,Farm5-Pasture,10.8,1.6,N
+32,Silica,Y,Jocelio,Farm 5,5,Pasto,Pasture,EM110-11,2,B,11B,EM110_11B,EM110-11B-R1,Farm5-Pasture-11B-Silica,Farm5-Pasture-2,Farm5-Pasture,13,1.7,N
+33,Silica,Y,Jocelio,Farm 5,5,Pasto,Pasture,EM110-11,3,C,11C,EM110_11C,EM110-11C-R1,Farm5-Pasture-11C-Silica,Farm5-Pasture-3,Farm5-Pasture,13,1.7,N
+34,Silica,N,Ronaldo,Farm 6,6,SAF 1,SAF,EM110-12,1,A,12A,EM110_12A,EM110-12A-R1,Farm6-SAF-12A-Silica,Farm6-SAF-1,Farm6-SAF,9.4,1.6,N
+35,Silica,N,Ronaldo,Farm 6,6,SAF 1,SAF,EM110-12,2,B,12B,EM110_12B,EM110-12B-R1,Farm6-SAF-12B-Silica,Farm6-SAF-2,Farm6-SAF,11.3,1.6,N
+36,Silica,N,Ronaldo,Farm 6,6,SAF 1,SAF,EM110-12,3,C,12C,EM110_12C,EM110-12C-R1,Farm6-SAF-12C-Silica,Farm6-SAF-3,Farm6-SAF,11.8,1.6,N
+37,Silica,N,Ronaldo,Farm 6,6,Floresta,Forest,EM110-13,1,A,13A,EM110_13A,EM110-13A-R1,Farm6-Forest-13A-Silica,Farm6-Forest-1,Farm6-Forest,21.3,1.8,N
+38,Silica,N,Ronaldo,Farm 6,6,Floresta,Forest,EM110-13,2,B,13B,EM110_13B,EM110-13B-R1,Farm6-Forest-13B-Silica,Farm6-Forest-2,Farm6-Forest,23.8,1.7,N
+39,Silica,N,Ronaldo,Farm 6,6,Floresta,Forest,EM110-13,3,C,13C,EM110_13C,EM110-13C-R1,Farm6-Forest-13C-Silica,Farm6-Forest-3,Farm6-Forest,21.7,1.7,N
+40,Silica,N,Ronaldo,Farm 6,6,SAF 2,SAF,EM110-14,1,A,14A,EM110_14A,EM110-14A-R1,Farm6-SAF-14A-Silica,Farm6-SAF-1,Farm6-SAF,9.6,1.5,N
+41,Silica,N,Ronaldo,Farm 6,6,SAF 2,SAF,EM110-14,2,B,14B,EM110_14B,EM110-14B-R1,Farm6-SAF-14B-Silica,Farm6-SAF-2,Farm6-SAF,9.5,1.4,N
+42,Silica,N,Ronaldo,Farm 6,6,SAF 2,SAF,EM110-14,3,C,14C,EM110_14C,EM110-14C-R1,Farm6-SAF-14C-Silica,Farm6-SAF-3,Farm6-SAF,10.7,1.5,N
+43,Silica,Y,Celione,Farm 7,7,Floresta,Forest,EM110-15,1,A,15A,EM110_15A,EM110-15A-R1,Farm7-Forest-15A-Silica,Farm7-Forest-1,Farm7-Forest,20.4,1.7,N
+44,Silica,Y,Celione,Farm 7,7,Floresta,Forest,EM110-15,2,B,15B,EM110_15B,EM110-15B-R1,Farm7-Forest-15B-Silica,Farm7-Forest-2,Farm7-Forest,21.6,1.6,N
+45,Silica,Y,Celione,Farm 7,7,Floresta,Forest,EM110-15,3,C,15C,EM110_15C,EM110-15C-R1,Farm7-Forest-15C-Silica,Farm7-Forest-3,Farm7-Forest,22.9,1.6,N
+46,Silica,N,Celione,Farm 7,7,Juquira,Succession,EM110-16,1,A,16A,EM110_16A,EM110-16A-R1,Farm7-Succession-16A-Silica,Farm7-Succession-1,Farm7-Succession,12.7,1.5,N
+47,Silica,N,Celione,Farm 7,7,Juquira,Succession,EM110-16,2,B,16B,EM110_16B,EM110-16B-R1,Farm7-Succession-16B-Silica,Farm7-Succession-2,Farm7-Succession,13.7,1.5,N
+48,Silica,N,Celione,Farm 7,7,Juquira,Succession,EM110-16,3,C,16C,EM110_16C,EM110-16C-R1,Farm7-Succession-16C-Silica,Farm7-Succession-3,Farm7-Succession,13.7,1.5,N
+49,Buffer,Y,Celione,Farm 7,7,Floresta,Forest,EM110-17,1,A,17A,EM110_17A,EM110-17A-R1,Farm7-Forest-17A-Buffer,Farm7-Forest-1,Farm7-Forest,68.8,1.5,N
+50,Buffer,Y,Celione,Farm 7,7,Floresta,Forest,EM110-17,2,B,17B,EM110_17B,EM110-17B-R1,Farm7-Forest-17B-Buffer,Farm7-Forest-2,Farm7-Forest,32.9,1.7,N
+51,Buffer,Y,Celione,Farm 7,7,Floresta,Forest,EM110-17,3,C,17C,EM110_17C,EM110-17C-R1,Farm7-Forest-17C-Buffer,Farm7-Forest-3,Farm7-Forest,52.3,1.6,N
+52,Buffer,Y,Celione,Farm 7,7,Floresta,Forest,EM110-17,4,D,17D,EM110_17D,EM110-17D-R1,Farm7-Forest-17D-Buffer,Farm7-Forest-4,Farm7-Forest,31,1.7,N
+53,Buffer,Y,Jocelio,Farm 5,5,Pasto,Pasture,EM110-18,1,A,18A,EM110_18A,EM110-18A-R1,Farm5-Pasture-18A-Buffer,Farm5-Pasture-1,Farm5-Pasture,74.3,1.6,N
+54,Buffer,Y,Jocelio,Farm 5,5,Pasto,Pasture,EM110-18,2,B,18B,EM110_18B,EM110-18B-R1,Farm5-Pasture-18B-Buffer,Farm5-Pasture-2,Farm5-Pasture,15.9,1.7,N
+55,Buffer,Y,Jocelio,Farm 5,5,Pasto,Pasture,EM110-18,3,C,18C,EM110_18C,EM110-18C-R1,Farm5-Pasture-18C-Buffer,Farm5-Pasture-3,Farm5-Pasture,16.3,1.7,N
+56,Buffer,Y,Idesam,Farm 4,4,SAF,SAF,EM110-19,1,A,19A,EM110_19A,EM110-19A-R1,Farm4-SAF-19A-Buffer,Farm4-SAF-1,Farm4-SAF,44.4,1.8,N
+57,Buffer,Y,Idesam,Farm 4,4,SAF,SAF,EM110-19,2,B,19B,EM110_19B,EM110-19B-R1,Farm4-SAF-19B-Buffer,Farm4-SAF-2,Farm4-SAF,33.1,1.6,N
+58,Buffer,Y,Idesam,Farm 4,4,SAF,SAF,EM110-19,3,C,19C,EM110_19C,EM110-19C-R1,Farm4-SAF-19C-Buffer,Farm4-SAF-3,Farm4-SAF,15.5,1.7,N
+59,Buffer,Y,Viriato,Farm 3,3,Floresta,Forest,EM110-20,1,A,20A,EM110_20A,EM110-20A-R1,Farm3-Forest-20A-Buffer,Farm3-Forest-1,Farm3-Forest,49.4,1.6,N
+60,Buffer,Y,Viriato,Farm 3,3,Floresta,Forest,EM110-20,2,B,20B,EM110_20B,EM110-20B-R1,Farm3-Forest-20B-Buffer,Farm3-Forest-2,Farm3-Forest,24.8,1.6,N
+61,Buffer,Y,Viriato,Farm 3,3,Floresta,Forest,EM110-20,3,C,20C,EM110_20C,EM110-20C-R1,Farm3-Forest-20C-Buffer,Farm3-Forest-3,Farm3-Forest,31.3,1.5,N
+62,Buffer,Y,Viriato,Farm 3,3,Pasto,Pasture,EM110-21,1,A,21A,EM110_21A,EM110-21A-R1,Farm3-Pasture-21A-Buffer,Farm3-Pasture-1,Farm3-Pasture,104.7,1.4,N
+63,Buffer,Y,Viriato,Farm 3,3,Pasto,Pasture,EM110-21,2,B,21B,EM110_21B,EM110-21B-R1,Farm3-Pasture-21B-Buffer,Farm3-Pasture-2,Farm3-Pasture,14.5,1.5,N
+64,Buffer,Y,Viriato,Farm 3,3,Pasto,Pasture,EM110-21,3,C,21C,EM110_21C,EM110-21C-R1,Farm3-Pasture-21C-Buffer,Farm3-Pasture-3,Farm3-Pasture,18.9,1.6,N
+65,Buffer,Y,Viriato,Farm 3,3,SAF 1,SAF,EM110-22,1,A,22A,EM110_22A,EM110-22A-R1,Farm3-SAF-22A-Buffer,Farm3-SAF-1,Farm3-SAF,128.3,1.4,Y
+66,Buffer,Y,Viriato,Farm 3,3,SAF 1,SAF,EM110-22,2,B,22B,EM110_22B,EM110-22B-R1,Farm3-SAF-22B-Buffer,Farm3-SAF-2,Farm3-SAF,23,1.7,N
+67,Buffer,Y,Viriato,Farm 3,3,SAF 1,SAF,EM110-22,3,C,22C,EM110_22C,EM110-22C-R1,Farm3-SAF-22C-Buffer,Farm3-SAF-3,Farm3-SAF,21,1.4,N
+68,Buffer,Y,Viriato,Farm 3,3,SAF 2,SAF,EM110-23,1,A,23A,EM110_23A,EM110-23A-R1,Farm3-SAF-23A-Buffer,Farm3-SAF-1,Farm3-SAF,55,1.7,N
+69,Buffer,Y,Viriato,Farm 3,3,SAF 2,SAF,EM110-23,2,B,23B,EM110_23B,EM110-23B-R1,Farm3-SAF-23B-Buffer,Farm3-SAF-2,Farm3-SAF,31.4,1.6,Y
+70,Buffer,Y,Viriato,Farm 3,3,SAF 2,SAF,EM110-23,3,C,23C,EM110_23C,EM110-23C-R1,Farm3-SAF-23C-Buffer,Farm3-SAF-3,Farm3-SAF,29.8,1.5,Y
