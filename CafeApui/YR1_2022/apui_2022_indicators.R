@@ -8,8 +8,6 @@
 ## ----- Data ingestion & setup -----------------------------------
 
 # libraries
-library(iNEXT)
-
 source("CafeApui/Y1_2022/apui_2022_data_processing.R")
 
 # checks
