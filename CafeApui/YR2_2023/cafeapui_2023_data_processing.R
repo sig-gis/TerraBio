@@ -129,7 +129,7 @@ apui2022Filt <- apui2022Filt[ apui2022Filt$readOrigin == readOrigin , ]
 # add information about the treatments to the ASV tables
 
 apui2022Filt <- lookupSitenames2022 %>%
-    select(EM_Sample, farmName, treatment, storage, replSampleID, shortSampleID) %>%
+    dplyr::select(EM_Sample, farmName, treatment, storage, replSampleID, shortSampleID) %>%
     right_join(., y = apui2022Filt, 
                by = c("EM_Sample" = "sample")
                )
@@ -181,7 +181,7 @@ apuiSummary2023 <- apui2023Filt %>% group_by(readOrigin) %>%
 # add information about the treatments to the ASV tables
 
 apui2023Filt <- lookupSitenames2023 %>%
-    select(EM_Sample, farmName, treatment, storage, replSampleID, shortSampleID) %>%
+    dplyr::select(EM_Sample, farmName, treatment, storage, replSampleID, shortSampleID) %>%
     right_join(., y = apui2023Filt, 
                by = c("EM_Sample" = "sample")
     )
@@ -277,7 +277,11 @@ ggplot(apui2023Filt, aes(x = treatment, y = sampleTotalAbd)) +
     geom_boxplot() + geom_point() 
 
 
-# ----- Filter for rare species | 2022 & 2023 -------------------------
+# ----- Filter for rare species, etc. | 2022 & 2023 -------------------------
+
+# Filter to include silica samples only for 2022.
+
+apui2022Filt <- apui2022Filt[ apui2022Filt$storage == "Silica", ]
 
 # We want to remove rare species that could be errors 
 
@@ -317,23 +321,36 @@ apui2023Filt <- apui2023Filt[ apui2023Filt$asvAbsoluteAbundance >= minAbsoluteAb
 # ----- Create Matrices | 2022 ---------------------------------------
 
 # Create a matrix with replicates as individual "sites"
+# Use silica data only.
 
 apuiMatrix2022 <- ez.matrify(apui2022Filt, species.name = "ASVHeader",
                               site.name = "replSampleID", abundance = "asvAbsoluteAbundance")
 
 hist(colSums(apuiMatrix2022), breaks = 50)
-# Create a matrix where the replicates for land use types are combined
 
-apuiType2022 <- apui2022Filt %>%
+# Create a matrix where the replicates for land use types are combined per farm
+apuiFarm2022 <- apui2022Filt %>%
     dplyr::select(shortSampleID, ASVHeader, asvAbsoluteAbundance) %>%
     group_by(shortSampleID, ASVHeader) %>%
     summarise(abundance = sum(asvAbsoluteAbundance))
 
-apuiMatrixType2022 <- ez.matrify(apuiType2022, species.name = "ASVHeader",
+apuiMatrixFarm2022 <- ez.matrify(apuiFarm2022, species.name = "ASVHeader",
                                   site.name = "shortSampleID", abundance = "abundance")
 
 #test to make sure everything got in
-any((colSums(apuiMatrixType2022)-colSums(apuiMatrix2022)) != 0 )
+any((colSums(apuiMatrixFarm2022)-colSums(apuiMatrix2022)) != 0 )
+
+# Create a matrix where the replicates for land use types are combined across all farms
+# used for the beta land use comparisons only
+
+apuiType2022 <- apui2022Filt %>%
+    dplyr::select(treatment, ASVHeader, asvAbsoluteAbundance) %>%
+    group_by(treatment, ASVHeader) %>%
+    summarise(abundance = sum(asvAbsoluteAbundance))
+
+apuiMatrixType2022 <- ez.matrify(apuiType2022, species.name = "ASVHeader",
+                                 site.name = "treatment", abundance = "abundance")
+
 
 # ----- Create Matrices | 2023 ---------------------------------------
 
@@ -350,15 +367,24 @@ hist(colSums(apuiMatrix2023), breaks = 100)
 
 # Create a matrix where the replicates for land use types are combined
 
-apuiType2023 <- apui2023Filt %>%
+apuiFarm2023 <- apui2023Filt %>%
     dplyr::select(shortSampleID, ASVHeader, asvAbsoluteAbundance) %>%
     group_by(shortSampleID, ASVHeader) %>%
     summarise(abundance = sum(asvAbsoluteAbundance))
 
-apuiMatrixType2023 <- ez.matrify(apuiType2023, species.name = "ASVHeader",
+apuiMatrixFarm2023 <- ez.matrify(apuiFarm2023, species.name = "ASVHeader",
                                   site.name = "shortSampleID", abundance = "abundance")
 
 #test to make sure everything got in
-any((colSums(apuiMatrixType2023)-colSums(apuiMatrix2023)) != 0 )
+any((colSums(apuiMatrixFarm2023)-colSums(apuiMatrix2023)) != 0 )
 
+# Create a matrix where the replicates for land use types are combined across all farms
+# used for the beta land use comparisons only
 
+apuiType2023 <- apui2023Filt %>%
+    dplyr::select(treatment, ASVHeader, asvAbsoluteAbundance) %>%
+    group_by(treatment, ASVHeader) %>%
+    summarise(abundance = sum(asvAbsoluteAbundance))
+
+apuiMatrixType2023 <- ez.matrify(apuiType2023, species.name = "ASVHeader",
+                                 site.name = "treatment", abundance = "abundance")
